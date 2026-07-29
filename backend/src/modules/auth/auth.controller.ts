@@ -1,0 +1,16 @@
+import { Controller, Post, Body, Get, UseGuards, Request } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly svc: AuthService) {}
+
+  @Post('login')
+  login(@Body() dto: LoginDto) { return this.svc.login(dto); }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getMe(@Request() req) { return req.user; }
+}

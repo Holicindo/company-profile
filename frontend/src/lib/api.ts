@@ -1,0 +1,23 @@
+import axios from 'axios';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL
+  ? `${process.env.NEXT_PUBLIC_API_URL}/api`
+  : '/api';
+
+export const api = axios.create({ baseURL: API_BASE, timeout: 10000 });
+
+export const getProducts = (p?: any) => api.get('/products', { params: p }).then(r => r.data);
+export const getProductBySlug = (slug: string) => api.get(`/products/${slug}`).then(r => r.data);
+export const getFeaturedProducts = (limit = 8) => api.get('/products/featured', { params: { limit } }).then(r => r.data);
+export const getProductCategories = () => api.get('/products/categories').then(r => r.data);
+export const getProductCategoryBySlug = (slug: string) => api.get(`/products/categories/${slug}`).then(r => r.data);
+
+export const getPortfolio = (p?: any) => api.get('/portfolio', { params: p }).then(r => r.data);
+export const getFeaturedPortfolio = (limit = 6) => api.get('/portfolio/featured', { params: { limit } }).then(r => r.data);
+export const getPortfolioBySlug = (slug: string) => api.get(`/portfolio/${slug}`).then(r => r.data);
+
+export const getBlogPosts = (p?: any) => api.get('/blog', { params: p }).then(r => r.data);
+export const getLatestBlogPosts = (limit = 3) => api.get('/blog/latest', { params: { limit } }).then(r => r.data);
+export const getBlogPostBySlug = (slug: string) => api.get(`/blog/${slug}`).then(r => r.data);
+
+export const submitContact = (data: any) => api.post('/contact', data).then(r => r.data);
