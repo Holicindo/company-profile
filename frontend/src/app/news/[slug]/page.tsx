@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { getBlogPostBySlug } from '@/lib/api';
+import { parseHtmlContent } from '@/lib/content-parser';
 
 interface Props { params: { slug: string } }
 
@@ -44,7 +45,7 @@ export default async function NewsDetailPage({ params }: Props) {
               <Image src={post.featuredImage} alt={post.title} fill className="object-cover" sizes="800px" unoptimized />
             </div>
           )}
-          <div className="prose-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className="prose-content max-w-none text-neutral-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: parseHtmlContent(post.content) }} />
           {post.tags?.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t border-neutral-100">
               {post.tags.map((t: string) => <span key={t} className="px-3 py-1 bg-neutral-100 text-neutral-600 text-sm rounded-full">#{t}</span>)}

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, IsNull } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { ProductCategory } from './entities/product-category.entity';
 
@@ -12,16 +12,24 @@ export class ProductsService {
   ) {}
 
   async getCategories() {
-    return this.categoryRepo.find({
-      where: { parentId: IsNull() },
-      relations: ['children'],
+    // Load semua kategori sekaligus, hindari N+1 dengan single query
+    const all = await this.categoryRepo.find({
       order: { order: 'ASC', name: 'ASC' },
     });
+    // Return hanya root categories (parentId null) dengan children di-attach manual
+    const roots = all.filter(c => c.parentId === null);
+    roots.forEach(r => {
+      (r as any).children = all.filter(c => c.parentId === r.id);
+    });
+    return roots;
   }
 
   async getCategoryBySlug(slug: string) {
-    const cat = await this.categoryRepo.findOne({ where: { slug }, relations: ['children', 'parent'] });
+    const all = await this.categoryRepo.find({ order: { name: 'ASC' } });
+    const cat = all.find(c => c.slug === slug);
     if (!cat) throw new NotFoundException('Category not found');
+    (cat as any).children = all.filter(c => c.parentId === cat.id);
+    (cat as any).parent = cat.parentId ? all.find(c => c.id === cat.parentId) || null : null;
     return cat;
   }
 
@@ -34,9 +42,12 @@ export class ProductsService {
     if (search) qb.andWhere('(p.name ILIKE :s OR p.description ILIKE :s)', { s: `%${search}%` });
     if (featured) qb.andWhere('p.isFeatured = true');
     if (category) {
-      const cat = await this.categoryRepo.findOne({ where: { slug: category }, relations: ['children'] });
+      // Load kategori dan children-nya dalam satu query
+      const allCats = await this.categoryRepo.find();
+      const cat = allCats.find(c => c.slug === category);
       if (cat) {
-        const ids = [cat.id, ...(cat.children?.map((c) => c.id) || [])];
+        const childIds = allCats.filter(c => c.parentId === cat.id).map(c => c.id);
+        const ids = [cat.id, ...childIds];
         qb.andWhere('p.categoryId IN (:...ids)', { ids });
       }
     }

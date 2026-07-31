@@ -12,11 +12,11 @@ export function LatestNewsSection({ posts }: { posts: BlogPost[] }) {
       <div className="container-wide">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <div>
-            <p className="text-brand-600 font-semibold text-sm uppercase tracking-wider mb-2">Blog & News</p>
-            <h2 className="section-title">Berita Terbaru</h2>
-            <p className="section-subtitle">Update terkini seputar industri mesin makanan</p>
+            <p className="text-brand-600 font-semibold text-sm uppercase tracking-widest mb-2">Blog & News</p>
+            <h2 className="section-title text-slate-900">Berita Terbaru</h2>
+            <p className="section-subtitle text-slate-600">Update terkini dan wawasan seputar industri mesin makanan</p>
           </div>
-          <Link href="/news" className="flex items-center gap-2 text-brand-600 font-semibold hover:gap-3 transition-all">
+          <Link href="/news" className="flex items-center gap-2 text-brand-700 font-semibold hover:text-brand-500 hover:gap-3 transition-all">
             Semua Berita <ArrowRight size={18} />
           </Link>
         </div>

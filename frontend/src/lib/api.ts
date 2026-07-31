@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL
   ? `${process.env.NEXT_PUBLIC_API_URL}/api`
-  : '/api';
+  : (typeof window !== 'undefined' ? '/api' : 'http://localhost:3011/api');
 
 export const api = axios.create({ baseURL: API_BASE, timeout: 10000 });
 
@@ -16,7 +16,7 @@ export const getPortfolio = (p?: any) => api.get('/portfolio', { params: p }).th
 export const getFeaturedPortfolio = (limit = 6) => api.get('/portfolio/featured', { params: { limit } }).then(r => r.data);
 export const getPortfolioBySlug = (slug: string) => api.get(`/portfolio/${slug}`).then(r => r.data);
 
-export const getBlogPosts = (p?: any) => api.get('/blog', { params: p }).then(r => r.data);
+export const getBlogPosts = (p?: any) => api.get('/blog', { params: p }).then(r => r.data).catch(e => { console.error('Blog fetch error:', e.message, e.response?.data); throw e; });
 export const getLatestBlogPosts = (limit = 3) => api.get('/blog/latest', { params: { limit } }).then(r => r.data);
 export const getBlogPostBySlug = (slug: string) => api.get(`/blog/${slug}`).then(r => r.data);
 

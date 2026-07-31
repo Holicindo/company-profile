@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { getProductBySlug } from '@/lib/api';
+import { parseHtmlContent } from '@/lib/content-parser';
 
 interface Props { params: { slug: string } }
 
@@ -33,6 +35,9 @@ export default async function ProductDetailPage({ params }: Props) {
       </div>
 
       <div className="container-wide py-12">
+        <Link href="/products" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-brand-600 mb-8 transition-colors">
+          <ArrowLeft size={16} /> Kembali ke Products
+        </Link>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
             <div className="relative h-96 bg-neutral-100 rounded-2xl overflow-hidden">
@@ -59,7 +64,7 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
             <h1 className="text-2xl md:text-3xl font-bold font-display text-neutral-900 mt-2 mb-4">{product.name}</h1>
             {product.shortDescription && (
-              <div className="text-neutral-600 leading-relaxed mb-6 prose-content" dangerouslySetInnerHTML={{ __html: product.shortDescription }} />
+              <div className="text-neutral-600 leading-relaxed mb-6 prose-content" dangerouslySetInnerHTML={{ __html: parseHtmlContent(product.shortDescription) }} />
             )}
             {product.sku && <p className="text-sm text-neutral-400 mb-6">SKU: <span className="font-medium text-neutral-600">{product.sku}</span></p>}
             <div className="flex flex-col sm:flex-row gap-3">
@@ -73,7 +78,7 @@ export default async function ProductDetailPage({ params }: Props) {
         {product.description && (
           <div className="mt-14">
             <h2 className="text-xl font-bold font-display text-neutral-900 mb-6">Deskripsi Produk</h2>
-            <div className="prose-content max-w-none" dangerouslySetInnerHTML={{ __html: product.description }} />
+            <div className="prose-content max-w-none" dangerouslySetInnerHTML={{ __html: parseHtmlContent(product.description) }} />
           </div>
         )}
       </div>

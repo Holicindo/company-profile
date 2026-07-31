@@ -5,16 +5,20 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
-          400: '#60a5fa', 500: '#3b82f6', 600: '#1d4ed8', 700: '#1e3a8a',
-          800: '#1e3066', 900: '#172554',
+        brand: { // Metallic Gold Palette
+          50: '#FDFBF7', 100: '#F9F4E8', 200: '#F2E5C6', 300: '#EBD49F',
+          400: '#E2C172', 500: '#D4AF37', 600: '#B8962E', 700: '#997B34',
+          800: '#755C25', 900: '#524017',
         },
-        accent: { 400: '#fb923c', 500: '#f97316', 600: '#ea580c' },
+        slate: { // Elegant Dark Charcoal Palette
+          850: '#1a1f26', 900: '#12161A', 950: '#0d1013',
+        },
+        accent: { 400: '#FDE08B', 500: '#D4AF37', 600: '#C5A059' },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
