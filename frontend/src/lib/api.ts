@@ -4,7 +4,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL
   ? `${process.env.NEXT_PUBLIC_API_URL}/api`
   : (typeof window !== 'undefined' ? '/api' : 'http://localhost:3011/api');
 
-export const api = axios.create({ baseURL: API_BASE, timeout: 10000 });
+export const api = axios.create({ baseURL: API_BASE, timeout: 60000 });
 
 export const getProducts = (p?: any) => api.get('/products', { params: p }).then(r => r.data);
 export const getProductBySlug = (slug: string) => api.get(`/products/${slug}`).then(r => r.data);

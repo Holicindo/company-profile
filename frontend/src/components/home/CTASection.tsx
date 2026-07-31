@@ -14,7 +14,7 @@ export function CTASection() {
       <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       <div className="relative z-10 container-wide">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-brand-400 font-semibold text-sm uppercase tracking-widest mb-3">Mulai Proyek Anda</p>
+          <p className="text-brand-400 font-semibold text-sm uppercase tracking-widest mb-3"></p>
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand-400 uppercase mb-4 whitespace-nowrap">
             Siap Mulai Proyek Anda?
           </h2>

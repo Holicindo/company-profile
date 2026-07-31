@@ -15,11 +15,14 @@ export default async function ProjectsPage({ searchParams }: { searchParams: { p
     <div className="min-h-screen bg-brand-50">
       {/* Luxury Dark Header */}
       <div className="relative bg-[#0d1013] py-20 overflow-hidden">
-        {/* Faded Background Text */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-0 pointer-events-none select-none">
-          <h1 className="text-[15vw] font-black tracking-tighter leading-none text-white/5" style={{ textShadow: '0 10px 20px rgba(0,0,0,0.5)', transform: 'translateZ(0)' }}>
+        {/* Faded Background Text — diposisikan di atas */}
+        <div className="absolute inset-0 flex items-start justify-center pt-0 overflow-hidden pointer-events-none select-none z-0">
+          <span
+            className="font-black tracking-tighter leading-none text-white/[0.05]"
+            style={{ fontSize: 'clamp(80px, 18vw, 280px)', whiteSpace: 'nowrap', textShadow: '0 10px 20px rgba(0,0,0,0.5)', transform: 'translateZ(0)', marginTop: '-0.05em' }}
+          >
             PROJECTS
-          </h1>
+          </span>
         </div>
         
         <div className="relative z-10 container-wide">

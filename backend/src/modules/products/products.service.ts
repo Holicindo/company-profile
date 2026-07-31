@@ -12,15 +12,9 @@ export class ProductsService {
   ) {}
 
   async getCategories() {
-    // Load semua kategori sekaligus, hindari N+1 dengan single query
-    const all = await this.categoryRepo.find({
-      order: { order: 'ASC', name: 'ASC' },
-    });
-    // Return hanya root categories (parentId null) dengan children di-attach manual
+    const all = await this.categoryRepo.find({ order: { order: 'ASC', name: 'ASC' } });
     const roots = all.filter(c => c.parentId === null);
-    roots.forEach(r => {
-      (r as any).children = all.filter(c => c.parentId === r.id);
-    });
+    roots.forEach(r => { (r as any).children = all.filter(c => c.parentId === r.id); });
     return roots;
   }
 
@@ -42,7 +36,6 @@ export class ProductsService {
     if (search) qb.andWhere('(p.name ILIKE :s OR p.description ILIKE :s)', { s: `%${search}%` });
     if (featured) qb.andWhere('p.isFeatured = true');
     if (category) {
-      // Load kategori dan children-nya dalam satu query
       const allCats = await this.categoryRepo.find();
       const cat = allCats.find(c => c.slug === category);
       if (cat) {
@@ -64,5 +57,36 @@ export class ProductsService {
 
   async getFeaturedProducts(limit = 8) {
     return this.productRepo.find({ where: { isFeatured: true, isActive: true }, relations: ['category'], take: limit });
+  }
+
+  // ── Admin CRUD ───────────────────────────────────────────────────────────────
+
+  async getAllForAdmin(page = 1, limit = 20) {
+    const qb = this.productRepo.createQueryBuilder('p')
+      .leftJoinAndSelect('p.category', 'cat')
+      .orderBy('p.createdAt', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit);
+    const [items, total] = await qb.getManyAndCount();
+    return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
+  }
+
+  async createProduct(dto: any) {
+    const product = this.productRepo.create(dto);
+    return this.productRepo.save(product);
+  }
+
+  async updateProduct(id: number, dto: any) {
+    const product = await this.productRepo.findOne({ where: { id } });
+    if (!product) throw new NotFoundException('Product not found');
+    Object.assign(product, dto);
+    return this.productRepo.save(product);
+  }
+
+  async deleteProduct(id: number) {
+    const product = await this.productRepo.findOne({ where: { id } });
+    if (!product) throw new NotFoundException('Product not found');
+    await this.productRepo.delete(id);
+    return { message: 'Product deleted successfully' };
   }
 }

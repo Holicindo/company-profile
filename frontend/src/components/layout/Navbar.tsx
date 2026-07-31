@@ -20,7 +20,7 @@ const navLinks = [
     ],
   },
   { label: 'Project Experiences', href: '/projects' },
-  { label: 'News', href: '/news' },
+  { label: 'Holic Insights', href: '/news' },
 ];
 
 const socialLinks = [

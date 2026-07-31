@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Query, Body, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -27,4 +28,28 @@ export class ProductsController {
 
   @Get(':slug')
   getBySlug(@Param('slug') slug: string) { return this.svc.getProductBySlug(slug); }
+
+  // ── Admin endpoints ──────────────────────────────────────────────────────────
+
+  @UseGuards(JwtAuthGuard)
+  @Get('admin/all')
+  getAllAdmin(@Query('page') page?: string, @Query('limit') limit?: string) {
+    return this.svc.getAllForAdmin(page ? +page : 1, limit ? +limit : 20);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('admin')
+  createProduct(@Body() dto: any) { return this.svc.createProduct(dto); }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('admin/:id')
+  updateProduct(@Param('id', ParseIntPipe) id: number, @Body() dto: any) {
+    return this.svc.updateProduct(id, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('admin/:id')
+  deleteProduct(@Param('id', ParseIntPipe) id: number) {
+    return this.svc.deleteProduct(id);
+  }
 }

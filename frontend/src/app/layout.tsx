@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { PublicLayout } from '@/components/layout/PublicLayout';
 
 export const metadata: Metadata = {
   title: { default: 'Holic | Food Machinery, Refrigerator & Showcase', template: '%s | Holic' },
@@ -15,9 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id">
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <PublicLayout>{children}</PublicLayout>
       </body>
     </html>
   );

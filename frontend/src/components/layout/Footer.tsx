@@ -13,7 +13,7 @@ const products = [
 const company = [
   { label: 'About Us', href: '/about' },
   { label: 'Project Experiences', href: '/projects' },
-  { label: 'News & Blog', href: '/news' },
+  { label: 'Holic Insights', href: '/news' },
   { label: 'Contact Us', href: '/contact' },
 ];
 const socialLinks = [
@@ -73,9 +73,23 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-5 font-display">Contact</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin size={16} className="text-brand-400 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-neutral-400">Jakarta, Indonesia</span>
+              <li>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1.5 font-semibold">Jakarta</p>
+                <div className="flex items-start gap-3">
+                  <MapPin size={14} className="text-brand-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-neutral-400 leading-relaxed">
+                    Green Sedayu Bizpark Blok GSB No. 016, Cakung Tim., Jakarta Timur 13910
+                  </span>
+                </div>
+              </li>
+              <li>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1.5 font-semibold">Cimahi</p>
+                <div className="flex items-start gap-3">
+                  <MapPin size={14} className="text-brand-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-neutral-400 leading-relaxed">
+                    Komplek Jersindo, Jl. Raya Cimindi No.115, Cimahi Selatan, Jawa Barat 40535
+                  </span>
+                </div>
               </li>
               <li>
                 <a href="https://wa.me/6281111825718" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-neutral-400 hover:text-white transition-colors">
