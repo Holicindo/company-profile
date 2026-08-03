@@ -26,24 +26,24 @@ export function ClientsMarquee() {
   const row2 = [...ROW_2, ...ROW_2, ...ROW_2];
 
   return (
-    <section className="relative py-20 bg-slate-900 overflow-hidden">
+    <section className="relative pt-32 pb-32 md:pt-40 md:pb-40 bg-slate-900 overflow-hidden">
       {/* Dot pattern */}
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
       {/* Wavy divider ATAS — dari white ke slate-900 */}
       <div className="absolute -top-[2px] left-0 right-0 w-full overflow-hidden leading-none z-20" style={{ transform: 'rotate(180deg)' }}>
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[70px] fill-white block">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[80px] fill-white block">
           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z" />
         </svg>
       </div>
 
       {/* Heading */}
-      <div className="relative z-10 container-wide mb-12 text-center">
+      <div className="relative z-10 container-wide mb-10 md:mb-12 text-center px-4">
         <p className="text-brand-400 font-bold text-xs uppercase tracking-widest mb-3">Dipercaya Oleh</p>
-        <h2 className="text-3xl md:text-4xl font-extrabold text-white">
+        <h2 className="text-2xl md:text-4xl font-extrabold text-white">
           Klien &amp; Mitra Kami
         </h2>
-        <p className="text-neutral-400 mt-3 max-w-xl mx-auto text-base">
+        <p className="text-neutral-400 mt-3 max-w-xl mx-auto text-sm md:text-base">
           Ratusan bisnis kuliner terkemuka di Indonesia mempercayakan kebutuhan mesin mereka kepada Holicindo.
         </p>
       </div>
@@ -72,7 +72,7 @@ export function ClientsMarquee() {
 
       {/* Wavy divider BAWAH — dari slate-900 ke white */}
       <div className="absolute -bottom-[2px] left-0 right-0 w-full overflow-hidden leading-none z-20">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[70px] fill-white block">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[80px] fill-white block">
           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z" />
         </svg>
       </div>
