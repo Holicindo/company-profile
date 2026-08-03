@@ -11,21 +11,16 @@ const features = [
 
 export function WhyChooseUsSection() {
   return (
-    <section className="pt-32 pb-32 md:pt-40 md:pb-40 bg-slate-900 relative overflow-hidden">
-      {/* Wavy Divider ATAS */}
-      <div className="absolute -top-[2px] left-0 right-0 w-full overflow-hidden leading-none z-20" style={{ transform: 'rotate(180deg)' }}>
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[80px] fill-white block">
-          <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"></path>
-        </svg>
-      </div>
+    <section className="pt-16 pb-16 md:pt-24 md:pb-24 bg-slate-900 relative overflow-hidden" style={{ marginTop: '-4px' }}>
+      {/* Tidak ada wave atas — transisi sudah ditangani oleh wave bawah FeaturedProductsSection */}
 
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       <div className="relative z-10 container-wide">
-        <div className="text-center mb-10 md:mb-14 px-4">
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-brand-400 uppercase mb-4">
+        <div className="text-center mb-10 md:mb-14 px-2">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight text-brand-400 uppercase mb-4">
             Mengapa Memilih Kami
           </h2>
-          <p className="text-neutral-400 text-base md:text-lg max-w-xl mx-auto">
+          <p className="text-neutral-400 text-sm md:text-lg max-w-xl mx-auto">
             Dedikasi lebih dari dua dekade sebagai pionir solusi dapur komersial Indonesia.
           </p>
         </div>
@@ -44,7 +39,7 @@ export function WhyChooseUsSection() {
 
       {/* Wavy Divider BAWAH */}
       <div className="absolute -bottom-[2px] left-0 right-0 w-full overflow-hidden leading-none z-20">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[80px] fill-white block">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[40px] md:h-[70px] fill-white block">
           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"></path>
         </svg>
       </div>

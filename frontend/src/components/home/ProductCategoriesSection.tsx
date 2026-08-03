@@ -37,12 +37,12 @@ export function ProductCategoriesSection({ categories }: { categories: ProductCa
   const display = displayCats.length === 3 ? displayCats : (categories.filter(c => !c.parentId).slice(0, 3));
 
   return (
-    <section className="relative py-28 pb-36 bg-brand-50 overflow-hidden">
+    <section className="relative py-20 pb-28 md:py-28 md:pb-36 bg-brand-50 overflow-hidden" style={{ marginTop: '-4px' }}>
       {/* Wavy Divider ATAS — dari #0d1013 (HeroSection) ke brand-50 */}
       {/* Sudah ditangani oleh wavy bawah HeroSection (fill-brand-50) */}
 
       <div className="relative z-10 container-wide">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-12">
           <div>
             <p className="text-brand-600 font-semibold text-sm uppercase tracking-widest mb-2">Kategori Produk</p>
             <h2 className="section-title text-slate-900">Temukan Unit yang Tepat</h2>

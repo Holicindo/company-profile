@@ -5,7 +5,7 @@ import type { Portfolio } from '@/types';
 
 export function ProjectsSection({ projects }: { projects: Portfolio[] }) {
   return (
-    <section className="py-28 bg-brand-50 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-brand-50 relative overflow-hidden" style={{ marginTop: '-4px' }}>
       {/* Wavy Divider ATAS — putih mengisi dari atas, gelombang mengarah ke bawah */}
       <div className="absolute -top-[2px] left-0 right-0 w-full overflow-hidden leading-none z-20" style={{ transform: 'rotate(180deg)' }}>
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[70px] fill-white block">
@@ -14,7 +14,7 @@ export function ProjectsSection({ projects }: { projects: Portfolio[] }) {
       </div>
 
       <div className="container-wide relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-12">
           <div>
             <p className="text-brand-600 font-semibold text-sm uppercase tracking-widest mb-2">Portfolio</p>
             <h2 className="section-title text-slate-900">Project Experiences</h2>

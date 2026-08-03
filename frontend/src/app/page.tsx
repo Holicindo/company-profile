@@ -5,7 +5,6 @@ import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { LatestNewsSection } from '@/components/home/LatestNewsSection';
 import { CTASection } from '@/components/home/CTASection';
-import { ClientsMarquee } from '@/components/home/ClientsMarquee';
 import { getProductCategories, getFeaturedProducts, getFeaturedPortfolio, getLatestBlogPosts } from '@/lib/api';
 
 export const revalidate = 3600;
@@ -29,7 +28,6 @@ export default async function HomePage() {
       <ProductCategoriesSection categories={categories} />
       <FeaturedProductsSection products={featuredProducts} />
       <WhyChooseUsSection />
-      <ClientsMarquee />
       <ProjectsSection projects={portfolio} />
       <LatestNewsSection posts={latestNews} />
       <CTASection />

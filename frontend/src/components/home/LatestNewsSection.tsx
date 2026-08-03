@@ -8,9 +8,9 @@ const fmt = (d: string) => new Date(d).toLocaleDateString('id-ID', { day: 'numer
 export function LatestNewsSection({ posts }: { posts: BlogPost[] }) {
   if (!posts.length) return null;
   return (
-    <section className="py-20 bg-white">
+    <section className="py-16 md:py-20 bg-white">
       <div className="container-wide">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-12">
           <div>
             <p className="text-brand-600 font-semibold text-sm uppercase tracking-widest mb-2">Holic Insights</p>
             <h2 className="section-title text-slate-900">Artikel Terbaru</h2>
