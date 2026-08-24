@@ -29,136 +29,143 @@ export default async function ProductDetailPage({ params }: Props) {
   const waText = `Halo Holicindo, saya tertarik dengan produk *${product.name}*. Boleh minta informasi lebih lanjut?`;
 
   return (
-    <div className="min-h-screen bg-white">
-
-      {/* Breadcrumb bar */}
-      <div className="bg-[#0d1013] border-b border-white/5">
-        <div className="container-wide py-3">
-          <nav className="text-xs text-neutral-500 flex flex-wrap gap-1 items-center">
-            <Link href="/" className="hover:text-brand-400 transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/products" className="hover:text-brand-400 transition-colors">Produk</Link>
+    <div className="min-h-screen bg-white font-sans text-neutral-900">
+      {/* Breadcrumb bar - B2B minimalist */}
+      <div className="border-b border-neutral-200">
+        <div className="container-wide py-4">
+          <nav className="text-[10px] uppercase tracking-widest text-neutral-500 flex flex-wrap gap-3 items-center">
+            <Link href="/" className="hover:text-black transition-colors">Home</Link>
+            <span className="text-neutral-300">/</span>
+            <Link href="/products" className="hover:text-black transition-colors">Produk</Link>
             {product.category && (
               <>
-                <span>/</span>
-                <Link href={`/products/category/${product.category.slug}`} className="hover:text-brand-400 transition-colors">
+                <span className="text-neutral-300">/</span>
+                <Link href={`/products/category/${product.category.slug}`} className="hover:text-black transition-colors">
                   {product.category.name}
                 </Link>
               </>
             )}
-            <span>/</span>
-            <span className="text-neutral-300 line-clamp-1">{product.name}</span>
+            <span className="text-neutral-300">/</span>
+            <span className="text-black font-semibold line-clamp-1">{product.name}</span>
           </nav>
         </div>
       </div>
 
-      <div className="container-wide py-12">
-        <Link href="/products" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-brand-600 mb-8 transition-colors">
-          <ArrowLeft size={16} /> Kembali ke Produk
-        </Link>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Galeri gambar */}
-          <div>
-            <div className="relative bg-neutral-50 rounded-2xl overflow-hidden border border-neutral-100 aspect-square">
+      <div className="container-wide py-12 lg:py-20">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
+          
+          {/* KIRI - Galeri Gambar (Minimalist, White Background) */}
+          <div className="w-full lg:w-1/2">
+            <div className="relative bg-white w-full aspect-square border border-neutral-200">
               {gallery[0] ? (
                 <Image
                   src={gallery[0]}
                   alt={product.name}
                   fill
-                  className="object-contain p-4"
+                  className="object-contain p-8"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   unoptimized
                   priority
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-neutral-300 text-sm">Belum ada gambar</span>
+                  <span className="text-neutral-300 text-xs uppercase tracking-[0.2em]">No Image Available</span>
                 </div>
               )}
             </div>
 
             {/* Thumbnail gallery */}
             {gallery.length > 1 && (
-              <div className="flex gap-3 mt-4 overflow-x-auto pb-2">
+              <div className="flex gap-4 mt-6 overflow-x-auto pb-2 scrollbar-hide">
                 {gallery.map((url: string, i: number) => (
-                  <div key={i} className="relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 border-neutral-200 hover:border-brand-400 transition-colors cursor-pointer">
-                    <Image src={url} alt={`Gambar ${i + 1}`} fill className="object-cover" sizes="80px" unoptimized />
+                  <div key={i} className="relative flex-shrink-0 w-24 h-24 border border-neutral-200 hover:border-black transition-colors cursor-pointer bg-white">
+                    <Image src={url} alt={`Gambar ${i + 1}`} fill className="object-contain p-2" sizes="96px" unoptimized />
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Detail produk */}
-          <div>
+          {/* KANAN - Tipografi & Spesifikasi */}
+          <div className="w-full lg:w-1/2 flex flex-col justify-start">
+            
             {product.category && (
               <Link
                 href={`/products/category/${product.category.slug}`}
-                className="inline-block text-xs font-bold uppercase tracking-widest text-brand-600 bg-brand-50 px-3 py-1.5 rounded-full mb-4 hover:bg-brand-100 transition-colors"
+                className="inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-6 hover:text-black transition-colors"
               >
                 {product.category.name}
               </Link>
             )}
 
-            <h1 className="text-2xl md:text-3xl font-extrabold text-neutral-900 leading-tight mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-black leading-tight mb-4 tracking-tight">
               {product.name}
             </h1>
 
             {product.sku && (
-              <p className="text-xs text-neutral-400 mb-4">
-                SKU: <span className="font-medium text-neutral-600 font-mono">{product.sku}</span>
+              <p className="text-xs uppercase tracking-widest text-neutral-400 mb-8 pb-8 border-b border-neutral-100">
+                Ref. <span className="font-medium text-black">{product.sku}</span>
               </p>
             )}
 
             {product.shortDescription && (
               <div
-                className="prose-content text-neutral-600 leading-relaxed mb-6 text-sm border-l-4 border-brand-500/30 pl-4"
+                className="prose-content text-neutral-600 font-light leading-relaxed mb-10 text-sm md:text-base"
                 dangerouslySetInnerHTML={{ __html: parseHtmlContent(product.shortDescription) }}
               />
             )}
 
-            {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
-              <Link href="/contact" className="btn-primary flex-1 justify-center">
-                <Phone size={16} /> Minta Penawaran
-              </Link>
+            {/* CTA Buttons - Sharp & Industrial */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-16">
               <a
                 href={`https://wa.me/6281111825718?text=${encodeURIComponent(waText)}`}
                 target="_blank"
                 rel="noreferrer"
-                className="btn-secondary flex-1 justify-center"
+                className="flex items-center justify-center gap-3 bg-black text-white px-8 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors w-full sm:w-auto rounded-none"
               >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-                </svg>
-                WhatsApp
+                Minta Penawaran
               </a>
+              <Link 
+                href="/contact" 
+                className="flex items-center justify-center gap-3 border border-black text-black bg-white px-8 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-neutral-50 transition-colors w-full sm:w-auto rounded-none"
+              >
+                <Mail size={16} strokeWidth={1.5} /> Hubungi Sales
+              </Link>
             </div>
 
-            {/* Value props */}
-            <div className="border border-neutral-100 rounded-xl divide-y divide-neutral-100">
-              {[
-                { icon: ShieldCheck, text: 'Garansi resmi produk tersedia' },
-                { icon: Truck, text: 'Pengiriman ke seluruh Indonesia' },
-                { icon: Wrench, text: 'Instalasi & after-sales oleh teknisi kami' },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-3 px-4 py-3">
-                  <Icon size={16} className="text-brand-500 flex-shrink-0" />
-                  <span className="text-sm text-neutral-600">{text}</span>
+            {/* Accordion Specs (Native Details HTML for Server Component) */}
+            <div className="border-t border-black divide-y divide-neutral-200">
+              
+              {product.description && (
+                <details className="group" open>
+                  <summary className="flex justify-between items-center font-medium cursor-pointer list-none py-6 text-[11px] uppercase tracking-[0.2em] hover:text-neutral-500 transition-colors outline-none">
+                    <span>Technical Details</span>
+                    <span className="transition duration-300 group-open:rotate-180">
+                      <svg fill="none" height="20" shape-rendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+                    </span>
+                  </summary>
+                  <div className="text-neutral-600 text-sm font-light leading-relaxed pb-8 prose-content" dangerouslySetInnerHTML={{ __html: parseHtmlContent(product.description) }} />
+                </details>
+              )}
+
+              <details className="group">
+                <summary className="flex justify-between items-center font-medium cursor-pointer list-none py-6 text-[11px] uppercase tracking-[0.2em] hover:text-neutral-500 transition-colors outline-none">
+                  <span>Services & Support</span>
+                  <span className="transition duration-300 group-open:rotate-180">
+                    <svg fill="none" height="20" shape-rendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+                  </span>
+                </summary>
+                <div className="text-neutral-600 pb-8 flex flex-col gap-5">
+                  <div className="flex items-center gap-4"><ShieldCheck size={20} strokeWidth={1} className="text-neutral-400" /> <span className="uppercase text-[11px] tracking-widest">Garansi Resmi Produk Tersedia</span></div>
+                  <div className="flex items-center gap-4"><Truck size={20} strokeWidth={1} className="text-neutral-400" /> <span className="uppercase text-[11px] tracking-widest">Pengiriman Ke Seluruh Indonesia</span></div>
+                  <div className="flex items-center gap-4"><Wrench size={20} strokeWidth={1} className="text-neutral-400" /> <span className="uppercase text-[11px] tracking-widest">Instalasi & After-Sales Profesional</span></div>
                 </div>
-              ))}
+              </details>
+              
             </div>
+
           </div>
         </div>
-
-        {/* Deskripsi lengkap */}
-        {product.description && (
-          <div className="border-t border-neutral-100 pt-12">
-            <h2 className="text-2xl font-extrabold text-neutral-900 mb-6">Deskripsi Produk</h2>
-            <div className="prose-content max-w-3xl" dangerouslySetInnerHTML={{ __html: parseHtmlContent(product.description) }} />
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,48 +1,49 @@
-import { Shield, Wrench, Clock, Award, Users, Headphones } from 'lucide-react';
+﻿'use client';
 
-const features = [
-  { icon: Award, title: 'Kualitas Terjamin', desc: 'Seluruh produk memenuhi standar kualitas internasional dengan bahan baku pilihan.' },
-  { icon: Shield, title: 'Garansi Resmi', desc: 'Setiap produk dilengkapi garansi resmi dan dukungan purna jual terpercaya.' },
-  { icon: Wrench, title: 'Teknisi Berpengalaman', desc: 'Tim teknisi kami berpengalaman lebih dari 20 tahun di industri mesin makanan.' },
-  { icon: Users, title: '500+ Klien', desc: 'Dipercaya lebih dari 500 pelanggan dari berbagai segmen industri food & beverage.' },
-  { icon: Clock, title: 'Pengiriman Tepat Waktu', desc: 'Komitmen ketepatan waktu pengiriman dan instalasi di seluruh Indonesia.' },
-  { icon: Headphones, title: 'Support 24/7', desc: 'Tim support siap membantu Anda kapan saja untuk memastikan operasional lancar.' },
-];
+import { useLanguage } from '@/context/LanguageContext';
 
 export function WhyChooseUsSection() {
-  return (
-    <section className="pt-16 pb-16 md:pt-24 md:pb-24 bg-slate-900 relative overflow-hidden" style={{ marginTop: '-4px' }}>
-      {/* Tidak ada wave atas — transisi sudah ditangani oleh wave bawah FeaturedProductsSection */}
+  const { t } = useLanguage();
 
-      <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-      <div className="relative z-10 container-wide">
-        <div className="text-center mb-10 md:mb-14 px-2">
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight text-brand-400 uppercase mb-4">
-            Mengapa Memilih Kami
-          </h2>
-          <p className="text-neutral-400 text-sm md:text-lg max-w-xl mx-auto">
-            Dedikasi lebih dari dua dekade sebagai pionir solusi dapur komersial Indonesia.
-          </p>
+  const features = [
+    { title: t('Kualitas Terjamin', 'Guaranteed Quality'), desc: t('Seluruh produk memenuhi standar kualitas internasional dengan bahan baku pilihan.', 'All products meet international quality standards with selected raw materials.') },
+    { title: t('Garansi Resmi', 'Official Warranty'), desc: t('Setiap produk dilengkapi garansi resmi dan dukungan purna jual terpercaya.', 'Every product comes with an official warranty and reliable after-sales support.') },
+    { title: t('Teknisi Berpengalaman', 'Experienced Technicians'), desc: t('Tim teknisi kami berpengalaman lebih dari 20 tahun di industri mesin makanan.', 'Our technician team has over 20 years of experience in the food machinery industry.') },
+    { title: t('500+ Klien', '500+ Clients'), desc: t('Dipercaya lebih dari 500 pelanggan dari berbagai segmen industri food & beverage.', 'Trusted by over 500 customers from various segments of the food & beverage industry.') },
+    { title: t('Pengiriman Tepat Waktu', 'On-Time Delivery'), desc: t('Komitmen ketepatan waktu pengiriman dan instalasi di seluruh Indonesia.', 'Commitment to timely delivery and installation across Indonesia.') },
+    { title: t('Support 24/7', '24/7 Support'), desc: t('Tim support siap membantu Anda kapan saja untuk memastikan operasional lancar.', 'Our support team is ready to help you anytime to ensure smooth operations.') },
+  ];
+
+  return (
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden border-b border-neutral-200">
+      <div className="container-wide">
+        <div className="flex flex-col md:flex-row gap-12 mb-20">
+          <div className="md:w-1/3">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black mb-6">
+              {t('Mengapa Memilih Kami', 'Why Choose Us')}
+            </h2>
+          </div>
+          <div className="md:w-2/3 border-l-2 border-neutral-900 pl-8 md:pl-12 flex items-center">
+            <p className="text-neutral-800 font-medium text-lg md:text-xl leading-relaxed max-w-2xl">
+              {t(
+                'Berpengalaman lebih dari 20 tahun sebagai pionir penyedia peralatan dapur komersial dan mesin F&B di Indonesia. Kami menghadirkan presisi, kualitas, dan keandalan pada setiap instalasi bisnis Anda.',
+                'Over 20 years of experience as a pioneer provider of commercial kitchen equipment and F&B machinery in Indonesia. We deliver precision, quality, and reliability in every installation for your business.'
+              )}
+            </p>
+          </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {features.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-5 md:p-6 hover:bg-slate-800 transition-colors shadow-lg">
-              <div className="w-12 h-12 bg-brand-500/10 border border-brand-500/20 rounded-xl flex items-center justify-center mb-4">
-                <Icon size={22} className="text-brand-400" />
-              </div>
-              <h3 className="text-white font-semibold font-display mb-2">{title}</h3>
-              <p className="text-neutral-400 text-sm leading-relaxed">{desc}</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+          {features.map(({ title, desc }, idx) => (
+            <div key={title} className="border-t-2 border-neutral-900 pt-6">
+              <span className="text-xs font-black text-neutral-900 block mb-4 uppercase tracking-[0.2em]">0{idx + 1}</span>
+              <h3 className="text-black font-bold text-xl mb-3 tracking-tight">{title}</h3>
+              <p className="text-neutral-700 text-sm font-normal leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
       </div>
-
-      {/* Wavy Divider BAWAH */}
-      <div className="absolute -bottom-[2px] left-0 right-0 w-full overflow-hidden leading-none z-20">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[40px] md:h-[70px] fill-white block">
-          <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"></path>
-        </svg>
-      </div>
     </section>
   );
 }
+

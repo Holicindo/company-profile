@@ -22,6 +22,9 @@ import { UploadModule } from './modules/upload/upload.module';
         database: cfg.get('DB_DATABASE', 'holicindo_web'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: cfg.get('NODE_ENV') !== 'production',
+        ssl: cfg.get('DB_SSL') === 'true' || (cfg.get('DB_HOST') && cfg.get('DB_HOST') !== 'localhost' && cfg.get('DB_HOST') !== '127.0.0.1')
+          ? { rejectUnauthorized: false }
+          : false,
       }),
       inject: [ConfigService],
     }),

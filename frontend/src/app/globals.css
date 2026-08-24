@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -13,31 +13,30 @@
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brand-600 to-brand-400 text-white font-semibold rounded-lg
-           hover:from-brand-500 hover:to-brand-300 transition-all duration-300 shadow-md hover:shadow-lg
-           focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 border border-brand-400/50;
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4 bg-black text-white text-[11px] font-bold uppercase tracking-widest rounded-none
+           hover:bg-neutral-800 transition-colors duration-300 border border-black focus:outline-none focus:ring-1 focus:ring-black;
   }
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-6 py-3 border border-brand-500 text-brand-600 font-semibold rounded-lg
-           hover:bg-brand-50 transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4 border border-black text-black bg-white text-[11px] font-bold uppercase tracking-widest rounded-none
+           hover:bg-neutral-50 transition-colors duration-300;
   }
   .btn-outline-white {
-    @apply inline-flex items-center gap-2 px-6 py-3 border border-white text-white font-semibold rounded-lg
-           hover:bg-white hover:text-slate-900 transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4 border border-white text-white bg-transparent text-[11px] font-bold uppercase tracking-widest rounded-none
+           hover:bg-white hover:text-black transition-colors duration-300;
   }
-  .section-title { @apply text-3xl md:text-4xl font-bold font-display text-neutral-900; }
-  .section-subtitle { @apply text-lg text-neutral-500 mt-3 max-w-2xl; }
+  .section-title { @apply text-3xl md:text-4xl lg:text-5xl font-light tracking-tight text-black; }
+  .section-subtitle { @apply text-sm md:text-base text-neutral-600 font-light mt-4 max-w-2xl; }
   .card {
-    @apply bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden
-           hover:shadow-md transition-shadow duration-200;
+    @apply bg-white rounded-none border border-neutral-200 overflow-hidden
+           hover:border-black transition-colors duration-300;
   }
-  .container-wide { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
-  .prose-content h2 { @apply text-2xl font-bold text-neutral-900 mt-8 mb-4; }
-  .prose-content h3 { @apply text-xl font-semibold text-neutral-800 mt-6 mb-3; }
-  .prose-content p { @apply text-neutral-600 leading-relaxed mb-4; }
-  .prose-content ul { @apply list-disc list-inside text-neutral-600 space-y-2 mb-4; }
-  .prose-content a { @apply text-brand-600 hover:underline; }
-  .prose-content img { @apply rounded-xl max-w-full my-4; }
+  .container-wide { @apply max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 xl:px-20; }
+  .prose-content h2 { @apply text-2xl font-light tracking-tight text-black mt-12 mb-6; }
+  .prose-content h3 { @apply text-xl font-light tracking-tight text-black mt-8 mb-4; }
+  .prose-content p { @apply text-neutral-600 font-light leading-relaxed mb-6 text-sm md:text-base; }
+  .prose-content ul { @apply list-disc list-outside ml-4 text-neutral-600 font-light space-y-3 mb-8 text-sm md:text-base; }
+  .prose-content a { @apply text-black border-b border-black pb-0.5 hover:text-neutral-500 hover:border-neutral-500 transition-colors; }
+  .prose-content img { @apply rounded-none border border-neutral-200 max-w-full my-8; }
 }
 
 /* ── Marquee animations for clients ticker ── */
@@ -77,3 +76,4 @@
   height: 0;
   pointer-events: none;
 }
+

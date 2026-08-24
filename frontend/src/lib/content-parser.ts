@@ -35,5 +35,44 @@ export function parseHtmlContent(html: string | null | undefined): string {
     </div>`;
   });
 
+  // Remove WordPress Gutenberg block comments <!-- wp:... -->
+  cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '');
+
   return cleaned;
+}
+
+/**
+ * Strips WordPress Gutenberg block comments, image HTML tags, and raw markup
+ * returning clean, human-readable Indonesian text for project descriptions.
+ */
+export function sanitizeProjectDescription(desc: string | null | undefined, title?: string, clientName?: string): string {
+  if (!desc) {
+    return `Proyek pengadaan dan instalasi peralatan mesin industri F&B oleh Holicindo${clientName ? ` untuk ${clientName}` : ''}. Dirancang untuk meningkatkan efisiensi operasional dan standar kualitas produk.`;
+  }
+
+  // Remove Gutenberg block comments <!-- wp:... -->
+  let text = desc.replace(/<!--[\s\S]*?-->/g, '');
+
+  // Remove WP image figure blocks <figure...>...</figure>
+  text = text.replace(/<figure[\s\S]*?<\/figure>/gi, '');
+
+  // Strip HTML tags
+  text = text.replace(/<[^>]+>/g, ' ');
+
+  // Clean HTML entities & whitespace
+  text = text
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#039;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!text || text.length < 15 || text.includes('wp-block')) {
+    return `Proyek pengadaan dan instalasi unit mesin komersial profesional oleh Holicindo${clientName ? ` untuk ${clientName}` : ''}${title ? ` (${title})` : ''}. Membantu optimalisasi kapasitas produksi dan efisiensi operasional industri kuliner.`;
+  }
+
+  return text;
 }

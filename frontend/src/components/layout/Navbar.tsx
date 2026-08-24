@@ -1,38 +1,24 @@
-'use client';
+﻿'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Phone, Mail, ChevronDown, Facebook, Instagram, Youtube } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe } from 'lucide-react';
 import { clsx } from 'clsx';
-
-const navLinks = [
-  { label: 'About Us', href: '/about' },
-  {
-    label: 'Products', href: '/products',
-    children: [
-      { label: 'Semua Produk', href: '/products' },
-      { label: 'Machinery', href: '/products/category/machinery' },
-      { label: 'Mixer', href: '/products/category/mixer' },
-      { label: 'Refrigerator', href: '/products/category/refrigerator' },
-      { label: 'Blast Freezer', href: '/products/category/blastfreezer' },
-      { label: 'Showcase', href: '/products/category/showcase' },
-      { label: 'Ice Maker', href: '/products/category/icemaker' },
-    ],
-  },
-  { label: 'Project Experiences', href: '/projects' },
-  { label: 'Holic Insights', href: '/news' },
-];
-
-const socialLinks = [
-  { name: 'Facebook', href: 'https://facebook.com/holicindo', icon: Facebook },
-  { name: 'Instagram', href: 'https://instagram.com/holicindo', icon: Instagram },
-  { name: 'YouTube', href: 'https://youtube.com/@holicindodasaanugerah', icon: Youtube },
-];
+import { useLanguage } from '@/context/LanguageContext';
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
+  const { lang, setLang, t } = useLanguage();
+
+  const navLinks = [
+    { label: t('Beranda', 'Home'), href: '/' },
+    { label: t('Tentang Kami', 'About Us'), href: '/about' },
+    { label: t('Produk', 'Products'), href: '/products' },
+    { label: t('Pengalaman Proyek', 'Project Experiences'), href: '/projects' },
+    { label: t('Holic Insights', 'Holic Insights'), href: '/news' },
+  ];
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -42,42 +28,68 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50">
-      <nav className={clsx("border-b transition-all duration-300", scrolled ? "bg-slate-950/95 backdrop-blur-md shadow-lg py-3 border-white/10" : "bg-slate-950 py-4 border-transparent")}>
+      <nav className={clsx("transition-all duration-300 border-b border-white/10", scrolled ? "bg-[#404F68]/90 backdrop-blur-md shadow-md py-3" : "bg-[#404F68] py-4")}>
         <div className="container-wide">
           <div className="flex items-center justify-between h-16 md:h-20">
+            
+            {/* Logo - Left */}
             <Link href="/" className="flex items-center">
               <Image src="/logo.png" alt="Holicindo Logo" width={160} height={50} className="object-contain brightness-0 invert" priority />
             </Link>
 
-            {/* Desktop */}
-            <div className="hidden md:flex items-center gap-1">
+            {/* Navigation & Language Switcher - Right (Desktop) */}
+            <div className="hidden md:flex items-center gap-8">
               {navLinks.map(link => (
                 <div key={link.href} className="relative"
-                  onMouseEnter={() => link.children && setDropdown(link.href)}
+                  onMouseEnter={() => (link as any).children && setDropdown(link.href)}
                   onMouseLeave={() => setDropdown(null)}>
                   <Link href={link.href}
-                    className="px-4 py-2 text-sm font-medium text-neutral-300 hover:text-brand-400 flex items-center gap-1 transition-colors">
-                    {link.label} {link.children && <ChevronDown size={14} />}
+                    className="text-xs font-bold uppercase tracking-widest text-neutral-100 hover:text-white flex items-center gap-1 transition-colors py-2">
+                    {link.label} {(link as any).children && <ChevronDown size={14} strokeWidth={2} />}
                   </Link>
-                  {link.children && dropdown === link.href && (
-                    <div className="absolute top-full left-0 mt-1 w-56 bg-slate-900 border border-slate-700/50 rounded-xl shadow-xl py-2 z-50">
-                      {link.children.map(child => (
-                        <Link key={child.href} href={child.href}
-
-                          className="block px-4 py-2.5 text-sm text-neutral-300 hover:bg-slate-800 hover:text-brand-400 transition-colors">
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
                 </div>
               ))}
+
+              {/* Language Switcher Pill (ID | EN) */}
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs text-white shadow-inner ml-2">
+                <Globe size={13} className="text-white/80" />
+                <button
+                  onClick={() => setLang('ID')}
+                  className={clsx("px-2 py-0.5 rounded-full font-extrabold text-[10px] transition-all", lang === 'ID' ? "bg-white text-[#2D3E50] shadow" : "text-neutral-300 hover:text-white")}
+                >
+                  ID
+                </button>
+                <span className="text-white/30 text-[10px]">|</span>
+                <button
+                  onClick={() => setLang('EN')}
+                  className={clsx("px-2 py-0.5 rounded-full font-extrabold text-[10px] transition-all", lang === 'EN' ? "bg-white text-[#2D3E50] shadow" : "text-neutral-300 hover:text-white")}
+                >
+                  EN
+                </button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Link href="/contact" className="btn-primary hidden md:inline-flex text-sm">Hubungi Kami</Link>
-              <button className="md:hidden p-2 text-white hover:text-brand-400" onClick={() => setOpen(!open)} aria-label="Menu">
-                {open ? <X size={24} /> : <Menu size={24} />}
+            {/* Mobile Menu Toggle + Lang Switcher (Mobile) */}
+            <div className="flex items-center gap-3 md:hidden">
+              {/* Mobile Language Switcher */}
+              <div className="flex items-center gap-1 px-2.5 py-1 bg-white/10 border border-white/20 rounded-full text-xs text-white">
+                <button
+                  onClick={() => setLang('ID')}
+                  className={clsx("px-1.5 py-0.5 rounded-full font-extrabold text-[9px]", lang === 'ID' ? "bg-white text-[#2D3E50]" : "text-neutral-300")}
+                >
+                  ID
+                </button>
+                <span className="text-white/30 text-[9px]">|</span>
+                <button
+                  onClick={() => setLang('EN')}
+                  className={clsx("px-1.5 py-0.5 rounded-full font-extrabold text-[9px]", lang === 'EN' ? "bg-white text-[#2D3E50]" : "text-neutral-300")}
+                >
+                  EN
+                </button>
+              </div>
+
+              <button className="p-2 text-white hover:text-neutral-300" onClick={() => setOpen(!open)} aria-label="Menu">
+                {open ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
               </button>
             </div>
           </div>
@@ -85,35 +97,13 @@ export function Navbar() {
 
         {/* Mobile Menu */}
         {open && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-slate-950 border-b border-slate-800 shadow-xl py-4 flex flex-col z-50">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-[#404F68] border-b border-white/10 shadow-lg py-4 flex flex-col z-50">
             {navLinks.map(link => (
-              <div key={link.href}>
-                {link.children ? (
-                  <div className="px-4 py-2">
-                    <div className="text-sm font-medium text-brand-400 mb-2">{link.label}</div>
-                    <div className="pl-4 border-l border-slate-800 flex flex-col gap-2">
-                      {link.children.map(c => (
-                        <Link key={c.href} href={c.href} onClick={() => setOpen(false)}
-                          className="text-sm text-neutral-400 hover:text-brand-400">
-                          {c.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <Link href={link.href} onClick={() => setOpen(false)}
-                    className="block px-4 py-3 text-sm font-medium text-neutral-300 hover:text-brand-400">
-                    {link.label}
-                  </Link>
-                )}
-              </div>
-            ))}
-            <div className="px-4 pt-4 mt-2 border-t border-slate-800">
-              <Link href="/contact" onClick={() => setOpen(false)}
-                className="btn-primary w-full justify-center">
-                Hubungi Kami
+              <Link key={link.href} href={link.href} onClick={() => setOpen(false)}
+                className="block px-6 py-3.5 text-xs font-bold uppercase tracking-widest text-neutral-100 hover:text-white border-b border-white/5">
+                {link.label}
               </Link>
-            </div>
+            ))}
           </div>
         )}
       </nav>

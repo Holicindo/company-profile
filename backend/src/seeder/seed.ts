@@ -32,6 +32,9 @@ const ds = new DataSource({
   entities: [Product, ProductCategory, Portfolio, BlogPost, ContactInquiry, Admin],
   synchronize: true,
   logging: false,
+  ssl: process.env.DB_SSL === 'true' || (process.env.DB_HOST && process.env.DB_HOST !== 'localhost' && process.env.DB_HOST !== '127.0.0.1')
+    ? { rejectUnauthorized: false }
+    : false,
 });
 
 const slug = (t: string) => slugify(t || 'untitled', { lower: true, strict: true });

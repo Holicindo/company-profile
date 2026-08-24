@@ -19,8 +19,9 @@ export interface Portfolio {
 export interface BlogPost {
   id: number; slug: string; title: string;
   excerpt?: string; content: string; featuredImage?: string;
-  status: 'draft' | 'published'; author?: string;
-  tags?: string[]; publishedAt: string; createdAt: string;
+  status: 'draft' | 'published' | 'PUBLISHED'; author?: string;
+  category?: string;
+  tags?: string[]; publishedAt: string; createdAt?: string;
 }
 export interface PaginatedResponse<T> {
   items: T[]; total: number; page: number; limit: number; totalPages: number;

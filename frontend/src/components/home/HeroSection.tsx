@@ -1,101 +1,83 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Play, ShieldCheck, Wrench, Truck, X } from 'lucide-react';
+import { Play, X } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function HeroSection() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <>
-      <section className="relative bg-[#0d1013] min-h-[95vh] flex items-center pt-24 pb-32 overflow-hidden">
-
-        {/* Wavy Divider di ATAS — transisi smooth dari navbar ke hero */}
-        <div className="absolute -top-[2px] left-0 right-0 w-full overflow-hidden leading-none" style={{ zIndex: 1 }}>
-          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[50px] md:h-[70px] fill-slate-950 block rotate-180">
-            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"></path>
-          </svg>
-        </div>
-
-        {/* ── Gambar mesin — desktop: absolute overlay, mobile: dalam flow ── */}
-        {/* Desktop */}
-        <div className="absolute inset-0 pointer-events-none hidden md:block" style={{ zIndex: 10 }}>
-          <div className="absolute top-1/2 right-[15%] -translate-y-1/2 w-[40%] h-[70%] bg-brand-500/10 blur-[120px] rounded-full" />
-          <div className="relative w-full h-full">
-            <img
-              src="/hero_section_1.png"
-              alt="Kitchen Equipment Showcase"
-              className="absolute top-1/2 right-0 -translate-y-1/2 w-[65%] h-[90%] object-contain object-right brightness-100"
-              style={{ filter: 'drop-shadow(0 20px 60px rgba(212,175,55,0.15))' }}
-            />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #0d1013 0%, #0d1013 42%, rgba(13,16,19,0.95) 52%, rgba(13,16,19,0.75) 60%, rgba(13,16,19,0.3) 70%, transparent 82%)', zIndex: 2 }} />
-            <div className="absolute inset-x-0 bottom-0 h-[28%] bg-gradient-to-t from-[#0d1013] to-transparent" style={{ zIndex: 2 }} />
-            <div className="absolute inset-x-0 top-0 h-[12%] bg-gradient-to-b from-[#0d1013] to-transparent" style={{ zIndex: 2 }} />
-          </div>
-        </div>
-
-        {/* ── Foto mobile sebagai background overlay (di belakang teks) ── */}
-        <div className="absolute inset-0 pointer-events-none block md:hidden" style={{ zIndex: 5 }}>
+      <section className="relative bg-white min-h-[90vh] lg:min-h-screen flex flex-col justify-center border-b border-neutral-200 overflow-hidden pt-20">
+        
+        {/* Absolute Right Side Background (Full Bleed) */}
+        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[60%] bg-neutral-100 flex items-center justify-center p-8 lg:p-24 overflow-hidden z-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-neutral-100/50 to-transparent pointer-events-none z-10" />
           <img
             src="/hero_section_1.png"
-            alt=""
-            className="absolute bottom-16 right-0 w-[75%] object-contain object-right-bottom opacity-30"
-            style={{ filter: 'drop-shadow(0 10px 30px rgba(212,175,55,0.15))' }}
+            alt="Kitchen Equipment Showcase"
+            className="relative z-0 w-full h-full object-contain object-right scale-110 md:scale-[1.15] mix-blend-multiply opacity-90 transition-transform duration-1000 hover:scale-[1.2]"
           />
-          {/* Fade dari kiri agar teks tetap terbaca */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #0d1013 40%, rgba(13,16,19,0.7) 70%, rgba(13,16,19,0.2) 100%)' }} />
-          {/* Fade dari bawah */}
-          <div className="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-[#0d1013] to-transparent" />
         </div>
 
-        {/* ── Konten ── */}
-        <div className="relative container-wide w-full" style={{ zIndex: 20 }}>
-          <div className="flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-8 items-center">
-
-            {/* Teks */}
-            <div className="md:col-span-6 xl:col-span-5 relative md:-ml-4" style={{ zIndex: 30 }}>
-              <h1 className="text-4xl sm:text-5xl lg:text-[4.2rem] font-extrabold tracking-tight text-white leading-[1.08] mb-4 md:mb-5">
-                Distributor Resmi<br />
-                <span className="text-neutral-400">Mesin Food &amp; Beverage<br />Indonesia</span>
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg text-neutral-400 font-medium leading-relaxed mb-6 md:mb-8 max-w-md">
-                Holicindo menyediakan 400+ mesin produksi, pendingin komersial, siap kirim ke seluruh Indonesia.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 md:mb-9">
-                <Link href="/products" className="btn-primary px-8 shadow-[0_0_24px_rgba(212,175,55,0.25)] font-bold">
-                  Jelajahi Produk
-                </Link>
-                <button
-                  onClick={() => setIsVideoOpen(true)}
-                  className="inline-flex items-center justify-center gap-3 px-7 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-lg transition-all duration-300 group">
-                  <div className="w-8 h-8 rounded-full bg-brand-500 text-slate-900 flex items-center justify-center pl-0.5 group-hover:scale-110 transition-transform flex-shrink-0">
-                    <Play size={14} fill="currentColor" />
-                  </div>
-                  Tonton Video
-                </button>
-              </div>
+        {/* Content Container */}
+        <div className="container-wide relative z-20 w-full">
+          <div className="w-full lg:w-1/2 flex flex-col justify-center py-12 lg:py-16 bg-white/80 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none p-6 lg:p-0">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-6 block flex items-center gap-3">
+              <span className="w-8 h-px bg-neutral-400"></span> Industrial Equipment
+            </span>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light text-black leading-[1.05] mb-8 tracking-tighter">
+              {t('Distributor Resmi', 'Official Distributor')} <br />
+              <span className="font-bold">Showcase &amp; Machinery.</span>
+            </h1>
+            <p className="text-base text-neutral-600 font-normal leading-relaxed mb-12 max-w-md">
+              {t(
+                'Temukan 282+ pilihan mesin produksi makanan dan showcase pendingin untuk bisnis F&B Anda. Peralatan dapur komersial bergaransi resmi, siap kirim ke seluruh Indonesia.',
+                'Discover 282+ selections of food processing machinery and commercial showcases for your F&B business. Official warranty commercial kitchen equipment, ready for nationwide delivery.'
+              )}
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <button
+                onClick={() => setIsVideoOpen(true)}
+                className="flex items-center justify-center gap-3 bg-[#2D3E50] text-white border border-[#2D3E50] px-8 py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-all w-full sm:w-auto shadow-md group">
+                <Play size={14} className="fill-white group-hover:scale-110 transition-transform" />
+                {t('Tonton Video', 'Watch Video')}
+              </button>
             </div>
 
-            <div className="md:col-span-6 xl:col-span-7 hidden md:block" />
+            {/* B2B Trust Indicators */}
+            <div className="flex items-center gap-8 pt-8 border-t border-neutral-200 max-w-md">
+               <div>
+                 <div className="text-2xl font-light text-black tracking-tighter">282+</div>
+                 <div className="text-[9px] uppercase tracking-widest font-bold text-neutral-400 mt-1">{t('Jenis Produk', 'Product Lines')}</div>
+               </div>
+               <div className="w-px h-10 bg-neutral-200"></div>
+               <div>
+                 <div className="text-2xl font-light text-black tracking-tighter">100%</div>
+                 <div className="text-[9px] uppercase tracking-widest font-bold text-neutral-400 mt-1">{t('Garansi Resmi', 'Official Warranty')}</div>
+               </div>
+               <div className="w-px h-10 bg-neutral-200"></div>
+               <div>
+                 <div className="text-2xl font-light text-black tracking-tighter">24/7</div>
+                 <div className="text-[9px] uppercase tracking-widest font-bold text-neutral-400 mt-1">{t('Technical Support', 'Technical Support')}</div>
+               </div>
+            </div>
           </div>
         </div>
 
-        {/* Wavy Divider bottom */}
-        <div className="absolute -bottom-[2px] left-0 right-0 w-full overflow-hidden leading-none z-30">
-          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[60px] md:h-[90px] fill-brand-50 block">
-            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"></path>
-          </svg>
-        </div>
       </section>
 
       {/* Video Modal */}
       {isVideoOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md">
-          <div className="relative w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-lg">
+          <div className="relative w-full max-w-5xl aspect-video bg-black rounded-none border border-neutral-800 overflow-hidden shadow-2xl">
             <button 
               onClick={() => setIsVideoOpen(false)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-brand-500 rounded-full flex items-center justify-center text-white hover:text-slate-900 transition-colors"
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white hover:bg-neutral-200 rounded-none flex items-center justify-center text-black transition-colors"
             >
               <X size={20} />
             </button>
@@ -112,4 +94,6 @@ export function HeroSection() {
     </>
   );
 }
+
+
 

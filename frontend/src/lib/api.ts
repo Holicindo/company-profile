@@ -9,8 +9,14 @@ export const api = axios.create({ baseURL: API_BASE, timeout: 60000 });
 export const getProducts = (p?: any) => api.get('/products', { params: p }).then(r => r.data);
 export const getProductBySlug = (slug: string) => api.get(`/products/${slug}`).then(r => r.data);
 export const getFeaturedProducts = (limit = 8) => api.get('/products/featured', { params: { limit } }).then(r => r.data);
-export const getProductCategories = () => api.get('/products/categories').then(r => r.data);
-export const getProductCategoryBySlug = (slug: string) => api.get(`/products/categories/${slug}`).then(r => r.data);
+const sanitizeCategory = (c: any) => {
+  if (c && c.name) c.name = c.name.replace('PLEER &AMP; SLICER', 'PEELER & SLICER').replace(/&AMP;/gi, '&');
+  if (c && c.parent) c.parent = sanitizeCategory(c.parent);
+  return c;
+};
+
+export const getProductCategories = () => api.get('/products/categories').then(r => r.data.map(sanitizeCategory));
+export const getProductCategoryBySlug = (slug: string) => api.get(`/products/categories/${slug}`).then(r => sanitizeCategory(r.data));
 
 export const getPortfolio = (p?: any) => api.get('/portfolio', { params: p }).then(r => r.data);
 export const getFeaturedPortfolio = (limit = 6) => api.get('/portfolio/featured', { params: { limit } }).then(r => r.data);

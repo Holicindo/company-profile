@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ArrowLeft, Building2, Calendar, MapPin, ArrowRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { getPortfolioBySlug } from '@/lib/api';
-import { parseHtmlContent } from '@/lib/content-parser';
+import { parseHtmlContent, sanitizeProjectDescription } from '@/lib/content-parser';
 
 interface Props { params: { slug: string } }
 
@@ -73,12 +73,11 @@ export default async function ProjectDetailPage({ params }: Props) {
               {project.title}
             </h1>
 
-            {project.description && (
-              <div
-                className="prose-content text-neutral-700 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: parseHtmlContent(project.description) }}
-              />
-            )}
+            <div className="space-y-4 text-neutral-700 leading-relaxed text-base">
+              <p>
+                {sanitizeProjectDescription(project.description, project.title, project.clientName)}
+              </p>
+            </div>
 
             {/* Gallery tambahan */}
             {gallery.length > 1 && (
