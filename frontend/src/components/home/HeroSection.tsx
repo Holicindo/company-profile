@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -11,10 +11,10 @@ export function HeroSection() {
 
   return (
     <>
-      <section className="relative bg-white min-h-[90vh] lg:min-h-screen flex flex-col justify-center border-b border-neutral-200 overflow-hidden pt-20">
+      <section id="industrial-equipment" className="relative bg-white min-h-[70vh] flex flex-col justify-center border-b border-neutral-200 overflow-hidden">
         
         {/* Absolute Right Side Background (Full Bleed) */}
-        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[60%] bg-neutral-100 flex items-center justify-center p-8 lg:p-24 overflow-hidden z-0">
+        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[50%] bg-neutral-100 flex items-center justify-center p-8 lg:p-24 overflow-hidden z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-neutral-100/50 to-transparent pointer-events-none z-10" />
           <img
             src="/hero_section_1.png"
@@ -25,14 +25,13 @@ export function HeroSection() {
 
         {/* Content Container */}
         <div className="container-wide relative z-20 w-full">
-          <div className="w-full lg:w-1/2 flex flex-col justify-center py-12 lg:py-16 bg-white/80 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none p-6 lg:p-0">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-6 block flex items-center gap-3">
-              <span className="w-8 h-px bg-neutral-400"></span> Industrial Equipment
+          <div className="w-full lg:w-1/2 flex flex-col justify-center py-12 lg:py-16 bg-white/80 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none p-6 lg:p-0 lg:pr-8">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-4 block flex items-center gap-3">
+              <span className="w-8 h-px bg-neutral-400"></span> {t('PERALATAN INDUSTRIAL', 'INDUSTRIAL EQUIPMENT')}
             </span>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light text-black leading-[1.05] mb-8 tracking-tighter">
-              {t('Distributor Resmi', 'Official Distributor')} <br />
-              <span className="font-bold">Showcase &amp; Machinery.</span>
-            </h1>
+            <h2 className="text-3xl sm:text-4xl font-bold text-black leading-[1.2] mb-6 tracking-tight max-w-md">
+              {t('Pilihan Peralatan Dapur Komersial Terlengkap.', 'Complete Selection of Commercial Kitchen Equipment.')}
+            </h2>
             <p className="text-base text-neutral-600 font-normal leading-relaxed mb-12 max-w-md">
               {t(
                 'Temukan 282+ pilihan mesin produksi makanan dan showcase pendingin untuk bisnis F&B Anda. Peralatan dapur komersial bergaransi resmi, siap kirim ke seluruh Indonesia.',

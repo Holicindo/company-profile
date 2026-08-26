@@ -67,11 +67,30 @@ export function sanitizeProjectDescription(desc: string | null | undefined, titl
     .replace(/&#039;/gi, "'")
     .replace(/&lt;/gi, '<')
     .replace(/&gt;/gi, '>')
+    .replace(/Bagaimana apakah anda juga tertarik[\s\S]*?www\.holicindo\.com/gi, '')
+    .replace(/Contact Us\s*:[\s\S]*?www\.holicindo\.com/gi, '')
     .replace(/\s+/g, ' ')
     .trim();
 
   if (!text || text.length < 15 || text.includes('wp-block')) {
-    return `Proyek pengadaan dan instalasi unit mesin komersial profesional oleh Holicindo${clientName ? ` untuk ${clientName}` : ''}${title ? ` (${title})` : ''}. Membantu optimalisasi kapasitas produksi dan efisiensi operasional industri kuliner.`;
+    return `Proyek pengadaan dan instalasi unit mesin komersial profesional oleh Holicindo${clientName ? ` untuk ${clientName}` : ''}${title && !clientName ? ` (${title})` : ''}. Membantu optimalisasi kapasitas produksi dan efisiensi operasional industri kuliner.`;
+  }
+
+  // 1. Direct translation for known English text (Maxx Coffee)
+  if (text.toLowerCase().includes('holic showcase is especially suitable')) {
+    text = text.replace(
+      /Holic showcase is especially suitable for those who have high standards for their product displays\.? Maxx Coffee is one of those\.? Having various products in need of different storage conditions, Holic multi-temperature showcase offer the best solution\.?/gi,
+      'Showcase Holic sangat cocok bagi mereka yang memiliki standar tinggi untuk tampilan produknya, salah satunya adalah Maxx Coffee. Dengan berbagai produk yang membutuhkan kondisi penyimpanan berbeda, showcase multi-temperatur Holic menawarkan solusi pendinginan terbaik.'
+    );
+  }
+
+  // 2. Heuristic check for other English descriptions
+  // If the text contains 3 or more common English stopwords, replace it with a professional Indonesian fallback.
+  const englishStopwords = [' the ', ' is ', ' of ', ' and ', ' to ', ' for ', ' with ', ' this ', ' showcase '];
+  const englishWordCount = englishStopwords.filter(word => text.toLowerCase().includes(word)).length;
+  
+  if (englishWordCount >= 3 && !text.toLowerCase().includes('yang')) {
+    return `Proyek pengadaan dan instalasi unit mesin komersial profesional oleh Holicindo${clientName ? ` untuk ${clientName}` : ''}${title && !clientName ? ` (${title})` : ''}. Dirancang khusus untuk mengoptimalkan kapasitas penyimpanan, menjaga kualitas produk, dan meningkatkan efisiensi operasional bisnis.`;
   }
 
   return text;

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
@@ -11,10 +11,18 @@ import { useLanguage } from '@/context/LanguageContext';
 interface BlogGalleryProps { initialPosts?: BlogPost[]; }
 
 export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
-  const { lang, t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [activeCategory, setActiveCategory] = useState('Semua Topik');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const translateCategoryName = (cat: string) => {
+    if (lang !== 'EN') return cat;
+    if (cat === 'Pencahayaan & Suasana') return 'Lighting & Ambience';
+    if (cat === 'Suhu & Kenyamanan Termal') return 'Temperature & Thermal Comfort';
+    if (cat === 'Detail Pelayanan & Service') return 'Service & Hospitality Details';
+    return cat;
+  };
 
   const allArticles = useMemo(() => {
     const combined = [...initialPosts];
@@ -78,7 +86,7 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white/10 border border-white/20 text-[10px] font-bold uppercase tracking-widest text-neutral-200 mb-6">
             <Sparkles size={13} className="text-white/80" /> {t('Pusat Wawasan & Edukasi F&B', 'F&B Insights & Education Hub')}
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">Holic Insights</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text mb-6 leading-tight">Holic Insights</h1>
           <p className="text-neutral-300 font-normal text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
             {t('Temukan panduan praktis pencahayaan, standar suhu ruangan, dan strategi pelayanan terbaik untuk tingkatkan kenyamanan serta kepuasan pelanggan F&B Anda.', 'Discover practical guides on lighting, room temperature standards, and service strategies to elevate customer experience & satisfaction in F&B.')}
           </p>
@@ -110,7 +118,7 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-black/20" />
                   <div className="relative z-10 p-6 sm:p-8 flex items-center gap-3">
                     <span className="px-4 py-1.5 bg-white/95 text-[#2D3E50] text-xs font-extrabold uppercase tracking-widest rounded-full shadow-md">★ FEATURED INSIGHT</span>
-                    <span className="px-3.5 py-1.5 bg-black/40 text-white/90 text-xs font-bold uppercase tracking-wider rounded-full border border-white/20">{(article as any).category || 'Insights'}</span>
+                    <span className="px-3.5 py-1.5 bg-black/40 text-white/90 text-xs font-bold uppercase tracking-wider rounded-full border border-white/20">{translateCategoryName((article as any).category || 'Insights')}</span>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 z-10 p-6 sm:p-10 lg:p-12">
                     <div className="flex items-center gap-3 text-xs text-amber-300 font-semibold uppercase tracking-wider mb-3">
@@ -173,7 +181,7 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-black/20 group-hover:from-slate-950/95 transition-all duration-500" />
                 <div className="relative z-10 p-5">
-                  <span className="inline-block px-3 py-1 bg-white/95 text-[#2D3E50] text-[10px] font-extrabold uppercase tracking-widest rounded-full shadow-md">{(post as any).category || 'INSIGHTS'}</span>
+                  <span className="inline-block px-3 py-1 bg-white/95 text-[#2D3E50] text-[10px] font-extrabold uppercase tracking-widest rounded-full shadow-md">{translateCategoryName((post as any).category || 'INSIGHTS')}</span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
                   <div className="flex items-center gap-2 text-[10px] text-neutral-300 uppercase tracking-wider mb-2">

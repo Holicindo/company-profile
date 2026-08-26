@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { MainHero } from '@/components/home/MainHero';
 import { HeroSection } from '@/components/home/HeroSection';
 import { ProductCategoriesSection } from '@/components/home/ProductCategoriesSection';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
@@ -28,6 +29,7 @@ export default async function HomePage() {
   const { categories, featuredProducts, portfolio } = await getData();
   return (
     <>
+      <MainHero />
       <HeroSection />
       <ProductCategoriesSection categories={categories} />
       <FeaturedProductsSection products={featuredProducts} />

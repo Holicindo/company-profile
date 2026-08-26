@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Building2, 
-  ExternalLink, 
-  X, 
-  Calendar, 
-  User, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Building2,
+  ExternalLink,
+  Calendar,
+  User,
   MapPin,
-  FileText
+  FileText,
+  ArrowRight,
 } from 'lucide-react';
 import type { Portfolio } from '@/types';
 import { sanitizeProjectDescription } from '@/lib/content-parser';
@@ -24,12 +24,10 @@ interface ProjectGalleryProps {
 
 export function ProjectGallery({ projects }: ProjectGalleryProps) {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
-  const [lightboxProject, setLightboxProject] = useState<Portfolio | null>(null);
   const { t } = useLanguage();
 
   const featuredProjects = projects.slice(0, 5);
 
-  // Auto slide feature
   useEffect(() => {
     if (featuredProjects.length <= 1) return;
     const timer = setInterval(() => {
@@ -38,30 +36,26 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
     return () => clearInterval(timer);
   }, [featuredProjects.length]);
 
-  const nextSlide = () => {
-    setActiveSlideIndex((prev) => (prev + 1) % featuredProjects.length);
-  };
+  const nextSlide = () => setActiveSlideIndex((prev) => (prev + 1) % featuredProjects.length);
+  const prevSlide = () => setActiveSlideIndex((prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length);
 
-  const prevSlide = () => {
-    setActiveSlideIndex((prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length);
-  };
+  const active = featuredProjects[activeSlideIndex];
 
   return (
-    <div className="space-y-16">
-      
-      {/* ── 1. SPOTLIGHT ALBUM CAROUSEL ── */}
+    <div className="space-y-20">
+
+      {/* ── 1. SPOTLIGHT CAROUSEL ── */}
       {featuredProjects.length > 0 && (
-        <div className="relative bg-[#2D3E50] rounded-none overflow-hidden text-white shadow-xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[420px] lg:min-h-[480px]">
-            
-            {/* Image Slider Container (Left/Main) */}
-            <div className="lg:col-span-7 relative min-h-[300px] lg:min-h-full bg-neutral-900 overflow-hidden">
+        <div className="bg-[#2D3E50] overflow-hidden shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12" style={{ minHeight: '460px' }}>
+
+            {/* Image Side */}
+            <div className="lg:col-span-7 relative min-h-[280px] lg:min-h-full bg-neutral-900 overflow-hidden">
               {featuredProjects.map((p, idx) => (
                 <div
                   key={p.id}
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                    idx === activeSlideIndex ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
-                  }`}
+                  className="absolute inset-0 transition-opacity duration-700"
+                  style={{ opacity: idx === activeSlideIndex ? 1 : 0, zIndex: idx === activeSlideIndex ? 1 : 0 }}
                 >
                   {p.imageUrl ? (
                     <Image
@@ -69,103 +63,96 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
                       alt={p.title}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      sizes="(max-width: 1024px) 100vw, 58vw"
                       unoptimized
                       priority={idx === 0}
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-[#2D3E50]/80 flex items-center justify-center">
-                      <Building2 size={64} className="text-white/20" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Building2 size={64} className="text-white/10" />
                     </div>
                   )}
-                  {/* Subtle Gradient Overlay */}
+                  {/* Mobile bottom gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#2D3E50] via-transparent to-transparent lg:hidden" />
                 </div>
               ))}
 
-              {/* Navigation Arrows */}
-              <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2">
-                <button
-                  onClick={prevSlide}
-                  aria-label="Proyek Sebelumnya"
-                  className="w-10 h-10 bg-[#2D3E50]/90 hover:bg-white hover:text-[#2D3E50] text-white flex items-center justify-center transition-colors border border-white/20"
-                >
-                  <ChevronLeft size={18} />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  aria-label="Proyek Selanjutnya"
-                  className="w-10 h-10 bg-[#2D3E50]/90 hover:bg-white hover:text-[#2D3E50] text-white flex items-center justify-center transition-colors border border-white/20"
-                >
-                  <ChevronRight size={18} />
-                </button>
+              {/* Counter */}
+              <div className="absolute top-5 left-5 z-10 px-3 py-1.5 bg-black/50 backdrop-blur-sm text-[11px] font-bold tracking-widest text-white border border-white/15">
+                0{activeSlideIndex + 1} / 0{featuredProjects.length}
               </div>
 
-              {/* Slide Counter Indicator */}
-              <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-[#2D3E50]/80 backdrop-blur-sm border border-white/20 text-[11px] font-bold tracking-widest text-white">
-                0{activeSlideIndex + 1} / 0{featuredProjects.length}
+              {/* Nav Arrows */}
+              <div className="absolute bottom-5 right-5 z-10 flex gap-2">
+                <button onClick={prevSlide} aria-label="Sebelumnya"
+                  className="w-9 h-9 bg-black/50 hover:bg-white hover:text-[#2D3E50] text-white flex items-center justify-center transition-all border border-white/20 backdrop-blur-sm">
+                  <ChevronLeft size={16} />
+                </button>
+                <button onClick={nextSlide} aria-label="Selanjutnya"
+                  className="w-9 h-9 bg-black/50 hover:bg-white hover:text-[#2D3E50] text-white flex items-center justify-center transition-all border border-white/20 backdrop-blur-sm">
+                  <ChevronRight size={16} />
+                </button>
               </div>
             </div>
 
-            {/* Project Content Info (Right Side) */}
-            <div className="lg:col-span-5 p-8 lg:p-12 flex flex-col justify-between bg-[#2D3E50] text-white">
+            {/* Info Side */}
+            <div className="lg:col-span-5 p-8 lg:p-10 xl:p-12 flex flex-col justify-between text-white">
               <div>
-                <div className="inline-block px-3 py-1 bg-white/10 border border-white/20 text-[10px] font-bold uppercase tracking-widest text-neutral-200 mb-6">
+                <span className="inline-block px-3 py-1 bg-white/10 border border-white/15 text-[9px] font-bold uppercase tracking-[0.2em] text-white/80 mb-5">
                   {t('Proyek Unggulan', 'Featured Project')}
-                </div>
+                </span>
 
-                <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-white mb-4 leading-snug">
-                  {featuredProjects[activeSlideIndex]?.title}
+                <h2 className="text-xl lg:text-2xl xl:text-3xl font-bold tracking-tight text-white mb-5 leading-snug">
+                  {active?.title}
                 </h2>
 
-                <div className="space-y-3 mb-6 text-xs text-neutral-300">
-                  {featuredProjects[activeSlideIndex]?.clientName && (
-                    <div className="flex items-center gap-2">
-                      <User size={14} className="text-white/70" />
-                      <span>{t('Klien:', 'Client:')} <strong className="text-white font-bold">{featuredProjects[activeSlideIndex]?.clientName}</strong></span>
+                <div className="space-y-2.5 mb-5">
+                  {active?.clientName && (
+                    <div className="flex items-center gap-2.5 text-xs text-neutral-300">
+                      <User size={13} className="text-white/50 flex-shrink-0" />
+                      <span>{t('Klien', 'Client')}: <strong className="text-white">{active.clientName}</strong></span>
                     </div>
                   )}
-                  {featuredProjects[activeSlideIndex]?.location && (
-                    <div className="flex items-center gap-2">
-                      <MapPin size={14} className="text-white/70" />
-                      <span>{t('Lokasi:', 'Location:')} {featuredProjects[activeSlideIndex]?.location}</span>
+                  {active?.location && (
+                    <div className="flex items-center gap-2.5 text-xs text-neutral-300">
+                      <MapPin size={13} className="text-white/50 flex-shrink-0" />
+                      <span>{active.location}</span>
                     </div>
                   )}
-                  {featuredProjects[activeSlideIndex]?.projectDate && (
-                    <div className="flex items-center gap-2">
-                      <Calendar size={14} className="text-white/70" />
-                      <span>{t('Tahun:', 'Year:')} {new Date(featuredProjects[activeSlideIndex].projectDate!).getFullYear()}</span>
+                  {active?.projectDate && (
+                    <div className="flex items-center gap-2.5 text-xs text-neutral-300">
+                      <Calendar size={13} className="text-white/50 flex-shrink-0" />
+                      <span>{new Date(active.projectDate).getFullYear()}</span>
                     </div>
                   )}
                 </div>
 
-                <p className="text-neutral-300 text-sm font-normal leading-relaxed line-clamp-3 mb-6">
-                  {sanitizeProjectDescription(
-                    featuredProjects[activeSlideIndex]?.description,
-                    featuredProjects[activeSlideIndex]?.title,
-                    featuredProjects[activeSlideIndex]?.clientName
-                  )}
+                <div className="w-8 h-px bg-white/20 mb-4" />
+
+                <p className="text-neutral-300 text-sm leading-relaxed line-clamp-4 text-justify">
+                  {sanitizeProjectDescription(active?.description, active?.title, active?.clientName)}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-6 border-t border-white/15">
-                <button
-                  onClick={() => setLightboxProject(featuredProjects[activeSlideIndex])}
-                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-neutral-300 transition-colors"
+              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
+                <Link
+                  href={`/projects/${active?.slug}`}
+                  className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-white/80 hover:text-white transition-colors"
                 >
-                  {t('Lihat Album Singkat', 'Quick View Album')} <ExternalLink size={14} />
-                </button>
-                
-                {/* Dots indicator */}
-                <div className="flex items-center gap-1.5">
+                  {t('Lihat Proyek Lengkap', 'View Full Project')} <ExternalLink size={13} />
+                </Link>
+
+                <div className="flex gap-1.5">
                   {featuredProjects.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setActiveSlideIndex(i)}
                       aria-label={`Slide ${i + 1}`}
-                      className={`h-1.5 transition-all ${
-                        i === activeSlideIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/40'
-                      }`}
+                      className="h-1.5 rounded-full transition-all duration-300"
+                      style={{
+                        width: i === activeSlideIndex ? '20px' : '6px',
+                        backgroundColor: i === activeSlideIndex ? 'white' : 'rgba(255,255,255,0.3)',
+                      }}
                     />
                   ))}
                 </div>
@@ -176,101 +163,112 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
         </div>
       )}
 
-      {/* ── 2. ALBUM GALLERY GRID ── */}
+      {/* ── 2. GALLERY GRID ── */}
       <div>
-        <div className="mb-10 pb-6 border-b border-neutral-200">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#2D3E50] tracking-tight">{t('Galeri Portofolio Instalasi', 'Installation Portfolio Gallery')}</h2>
-          <p className="text-neutral-500 text-sm mt-1">{t('Jelajahi album foto hasil instalasi dan pengerjaan proyek Holicindo di seluruh Indonesia.', 'Explore photo albums of Holicindo\'s installation projects across Indonesia.')}</p>
+        <div className="mb-10 pb-5 border-b border-neutral-200 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">
+              {t('Portofolio Lengkap', 'Full Portfolio')}
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#2D3E50] tracking-tight">
+              {t('Galeri Instalasi', 'Installation Gallery')}
+            </h2>
+          </div>
+          <p className="text-neutral-400 text-sm max-w-md leading-relaxed">
+            {t('Album foto hasil instalasi Holicindo di seluruh Indonesia.', 'Photo albums of Holicindo installation projects across Indonesia.')}
+          </p>
         </div>
 
-        {/* Project Card Grid */}
         {projects.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((p) => (
               <div
                 key={p.id}
-                className="bg-white border border-neutral-200 hover:border-[#2D3E50] transition-all duration-300 group flex flex-col justify-between overflow-hidden"
+                className="group bg-white border border-neutral-200 hover:border-[#2D3E50] hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden"
               >
-                <div>
-                  {/* Image container */}
-                  <div className="relative h-64 bg-neutral-100 overflow-hidden cursor-pointer" onClick={() => setLightboxProject(p)}>
-                    {p.imageUrl ? (
-                      <Image
-                        src={p.imageUrl}
-                        alt={p.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center">
-                        <Building2 size={40} className="text-neutral-300" />
-                      </div>
-                    )}
-                    
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-[#2D3E50]/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
-                      <span className="px-4 py-2 bg-white text-[#2D3E50] text-xs font-bold tracking-wider uppercase">
-                        {t('Lihat Album', 'View Album')}
-                      </span>
+                {/* Thumbnail */}
+                <Link
+                  href={`/projects/${p.slug}`}
+                  className="relative overflow-hidden block"
+                  style={{ height: '220px' }}
+                >
+                  {p.imageUrl ? (
+                    <Image
+                      src={p.imageUrl}
+                      alt={p.title}
+                      fill
+                      className="object-cover group-hover:scale-103 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center">
+                      <Building2 size={36} className="text-neutral-300" />
                     </div>
+                  )}
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-[#2D3E50]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="px-5 py-2 bg-white text-[#2D3E50] text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
+                      {t('Lihat Proyek', 'View Project')} <ArrowRight size={14} />
+                    </span>
                   </div>
+                </Link>
 
-                  {/* Body text */}
-                  <div className="p-6">
-                    <h3 className="font-bold text-lg text-[#2D3E50] mb-2 leading-snug line-clamp-2">
-                      {p.title}
-                    </h3>
-                    
+                {/* Card body */}
+                <div className="p-5 flex-1 flex flex-col justify-between">
+                  <div>
                     {p.clientName && (
-                      <p className="text-[11px] font-bold text-neutral-500 mt-2 uppercase tracking-widest">
-                        {t('Klien:', 'Client:')} <span className="text-[#2D3E50] font-bold">{p.clientName}</span>
+                      <p className="text-[9px] font-bold text-neutral-400 uppercase tracking-[0.2em] mb-2">
+                        {p.clientName}
                       </p>
                     )}
+                    <h3 className="font-semibold text-base text-[#2D3E50] leading-snug line-clamp-2 mb-3">
+                      {p.title}
+                    </h3>
                   </div>
-                </div>
 
-                {/* Footer link */}
-                <div className="px-6 py-4 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between text-xs">
-                  <span className="text-neutral-400 font-bold tracking-widest text-[10px] uppercase">
-                    {p.projectDate ? new Date(p.projectDate).getFullYear() : 'Holicindo'}
-                  </span>
-                  <Link
-                    href={`/projects/${p.slug}`}
-                    className="font-bold text-[#2D3E50] hover:underline inline-flex items-center gap-1"
-                  >
-                    {t('Detail Proyek', 'Project Details')} <ChevronRight size={14} />
-                  </Link>
+                  <div className="flex items-center justify-between pt-4 border-t border-neutral-100 mt-2">
+                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                      {p.projectDate ? new Date(p.projectDate).getFullYear() : 'Holicindo'}
+                    </span>
+                    <Link
+                      href={`/projects/${p.slug}`}
+                      className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#2D3E50] hover:text-black uppercase tracking-widest transition-colors"
+                    >
+                      {t('Detail', 'Details')} <ArrowRight size={12} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-[#F4F8F9] border border-neutral-200">
-            <Building2 size={36} className="text-neutral-400 mx-auto mb-3" />
-            <p className="text-neutral-600 font-medium text-base">{t('Belum ada proyek yang dapat ditampilkan.', 'No projects available to display.')}</p>
+          <div className="text-center py-20 bg-neutral-50 border border-neutral-200">
+            <Building2 size={36} className="text-neutral-300 mx-auto mb-3" />
+            <p className="text-neutral-500 font-light text-base">
+              {t('Belum ada proyek yang dapat ditampilkan.', 'No projects available to display.')}
+            </p>
           </div>
         )}
       </div>
 
-      {/* ── 3. E-KATALOG PDF BANNER ── */}
-      <div className="bg-[#F4F8F9] border border-neutral-200 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+      {/* ── 3. E-KATALOG BANNER ── */}
+      <div className="bg-[#2D3E50] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="flex items-start gap-5">
-          <div className="w-14 h-14 bg-[#2D3E50] text-white flex items-center justify-center shrink-0">
-            <FileText size={28} />
+          <div className="w-12 h-12 bg-white/10 border border-white/15 text-white flex items-center justify-center shrink-0">
+            <FileText size={22} />
           </div>
           <div>
-            <span className="text-[10px] font-bold text-[#2D3E50] uppercase tracking-widest block mb-1">
-              {t('Dokumen Katalog Resmi', 'Official Catalog Document')}
-            </span>
-            <h3 className="text-xl md:text-2xl font-bold text-[#2D3E50] mb-2 tracking-tight">
-              {t('Unduh E-Katalog Proyek & Showcase Mesin 2026 (PDF)', 'Download 2026 Project E-Catalog & Machine Showcase (PDF)')}
+            <p className="text-[9px] font-bold text-white/60 uppercase tracking-[0.2em] mb-1">
+              {t('Dokumen Resmi', 'Official Document')}
+            </p>
+            <h3 className="text-lg md:text-xl font-bold text-white mb-2 tracking-tight leading-snug">
+              {t('E-Katalog Proyek & Showcase Mesin 2026', '2026 Project E-Catalog & Machine Showcase')}
             </h3>
-            <p className="text-neutral-600 text-sm max-w-2xl font-normal leading-relaxed">
+            <p className="text-white/60 text-sm max-w-xl leading-relaxed">
               {t(
-                'Dapatkan dokumentasi lengkap seluruh spesifikasi unit mesin makanan, peralatan F&B, serta galeri album pengerjaan proyek instalasi Holicindo.',
-                'Get complete documentation of all food machine specifications, F&B equipment, and Holicindo installation project gallery.'
+                'Dokumentasi lengkap spesifikasi unit mesin makanan, peralatan F&B, dan galeri instalasi Holicindo.',
+                'Complete documentation of food machine specs, F&B equipment, and Holicindo installation gallery.'
               )}
             </p>
           </div>
@@ -281,89 +279,12 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
             href="/catalogue-showcase-2026.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full md:w-auto px-8 py-3.5 bg-[#2D3E50] text-white hover:bg-black text-xs font-bold uppercase tracking-widest transition-colors inline-flex items-center justify-center gap-2 border border-[#2D3E50]"
+            className="w-full md:w-auto px-7 py-3 bg-white text-[#2D3E50] hover:bg-white/90 text-[10px] font-bold uppercase tracking-widest transition-colors inline-flex items-center justify-center gap-2"
           >
-            <ExternalLink size={16} /> {t('Buka PDF', 'Open PDF')}
+            <ExternalLink size={14} /> {t('Buka PDF', 'Open PDF')}
           </a>
         </div>
       </div>
-
-      {/* ── 3. LIGHTBOX ALBUM MODAL ── */}
-      {lightboxProject && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 lg:p-8">
-          <div className="bg-white max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-neutral-300 relative shadow-2xl">
-            
-            {/* Close button */}
-            <button
-              onClick={() => setLightboxProject(null)}
-              className="absolute top-4 right-4 z-10 p-2 bg-[#2D3E50] text-white hover:bg-black transition-colors"
-              aria-label="Tutup Album"
-            >
-              <X size={20} />
-            </button>
-
-            {/* Modal Content */}
-            <div className="grid grid-cols-1 md:grid-cols-12">
-              <div className="md:col-span-7 bg-neutral-900 min-h-[350px] relative">
-                {lightboxProject.imageUrl ? (
-                  <Image
-                    src={lightboxProject.imageUrl}
-                    alt={lightboxProject.title}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-neutral-500">
-                    <Building2 size={48} />
-                  </div>
-                )}
-              </div>
-
-              <div className="md:col-span-5 p-8 flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-bold text-[#2D3E50] uppercase tracking-widest block mb-2">
-                    {t('Detail Album Proyek', 'Project Album Details')}
-                  </span>
-                  <h3 className="text-2xl font-bold text-[#2D3E50] mb-4 leading-snug">
-                    {lightboxProject.title}
-                  </h3>
-
-                  <div className="space-y-2 text-xs text-neutral-600 mb-6">
-                    {lightboxProject.clientName && (
-                      <p><strong className="text-[#2D3E50]">{t('Klien:', 'Client:')}</strong> {lightboxProject.clientName}</p>
-                    )}
-                    {lightboxProject.location && (
-                      <p><strong className="text-[#2D3E50]">{t('Lokasi:', 'Location:')}</strong> {lightboxProject.location}</p>
-                    )}
-                    {lightboxProject.projectDate && (
-                      <p><strong className="text-[#2D3E50]">{t('Tahun:', 'Year:')}</strong> {new Date(lightboxProject.projectDate).getFullYear()}</p>
-                    )}
-                  </div>
-
-                  <p className="text-neutral-600 text-sm font-normal leading-relaxed mb-6">
-                    {sanitizeProjectDescription(
-                      lightboxProject.description,
-                      lightboxProject.title,
-                      lightboxProject.clientName
-                    )}
-                  </p>
-                </div>
-
-                <div className="pt-6 border-t border-neutral-200 flex items-center justify-between">
-                  <Link
-                    href={`/projects/${lightboxProject.slug}`}
-                    className="w-full text-center py-3 bg-[#2D3E50] text-white hover:bg-black font-bold text-xs uppercase tracking-widest transition-colors"
-                  >
-                    {t('Halaman Lengkap Proyek', 'Full Project Page')}
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      )}
 
     </div>
   );

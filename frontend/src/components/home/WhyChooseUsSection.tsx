@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -15,16 +15,16 @@ export function WhyChooseUsSection() {
   ];
 
   return (
-    <section className="py-12 md:py-16 bg-white relative overflow-hidden border-b border-neutral-200">
+    <section className="py-10 sm:py-16 bg-white relative overflow-hidden border-b border-neutral-200">
       <div className="container-wide">
-        <div className="flex flex-col md:flex-row gap-12 mb-20">
+        <div className="flex flex-col md:flex-row gap-6 sm:gap-12 mb-10 sm:mb-20">
           <div className="md:w-1/3">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black mb-6">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black mb-2 sm:mb-6">
               {t('Mengapa Memilih Kami', 'Why Choose Us')}
             </h2>
           </div>
-          <div className="md:w-2/3 border-l-2 border-neutral-900 pl-8 md:pl-12 flex items-center">
-            <p className="text-neutral-800 font-medium text-lg md:text-xl leading-relaxed max-w-2xl">
+          <div className="md:w-2/3 border-l-2 border-neutral-900 pl-4 sm:pl-8 md:pl-12 flex items-center">
+            <p className="text-neutral-800 font-medium text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl">
               {t(
                 'Berpengalaman lebih dari 20 tahun sebagai pionir penyedia peralatan dapur komersial dan mesin F&B di Indonesia. Kami menghadirkan presisi, kualitas, dan keandalan pada setiap instalasi bisnis Anda.',
                 'Over 20 years of experience as a pioneer provider of commercial kitchen equipment and F&B machinery in Indonesia. We deliver precision, quality, and reliability in every installation for your business.'
@@ -33,12 +33,12 @@ export function WhyChooseUsSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-12 gap-y-8 sm:gap-y-16">
           {features.map(({ title, desc }, idx) => (
-            <div key={title} className="border-t-2 border-neutral-900 pt-6">
-              <span className="text-xs font-black text-neutral-900 block mb-4 uppercase tracking-[0.2em]">0{idx + 1}</span>
-              <h3 className="text-black font-bold text-xl mb-3 tracking-tight">{title}</h3>
-              <p className="text-neutral-700 text-sm font-normal leading-relaxed">{desc}</p>
+            <div key={title} className="border-t-2 border-neutral-900 pt-4 sm:pt-6">
+              <span className="text-[10px] sm:text-xs font-black text-neutral-900 block mb-2 sm:mb-4 uppercase tracking-[0.2em]">0{idx + 1}</span>
+              <h3 className="text-black font-bold text-lg sm:text-xl mb-2 sm:mb-3 tracking-tight">{title}</h3>
+              <p className="text-neutral-700 text-xs sm:text-sm font-normal leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
@@ -46,4 +46,3 @@ export function WhyChooseUsSection() {
     </section>
   );
 }
-
