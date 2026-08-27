@@ -112,30 +112,30 @@ export function AboutView() {
                 </div>
               </div>
 
-              <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div className="bg-white border-2 border-neutral-200 rounded-xl p-5 sm:p-6 hover:border-[#2D3E50] transition-all">
-                  <h3 className="font-bold text-[#2D3E50] text-base sm:text-lg mb-2 sm:mb-3">{t('Dimensi', 'Dimensions')}</h3>
-                  <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Fleksibilitas untuk mengatur panjang, lebar, dan tinggi mesin secara presisi mengikuti kapasitas ruang komersial Anda.', 'Flexibility to precisely customize length, width, and height according to your commercial space capacity.')}</p>
+              <div className="lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-6">
+                <div className="bg-white border-2 border-neutral-200 rounded-xl p-3 sm:p-6 hover:border-[#2D3E50] transition-all">
+                  <h3 className="font-bold text-[#2D3E50] text-[11px] sm:text-lg mb-1 sm:mb-3">{t('Dimensi', 'Dimensions')}</h3>
+                  <p className="text-neutral-600 text-[10px] sm:text-base leading-snug sm:leading-relaxed">{t('Fleksibilitas untuk mengatur panjang, lebar, dan tinggi mesin secara presisi mengikuti kapasitas ruang komersial Anda.', 'Flexibility to precisely customize length, width, and height according to your commercial space capacity.')}</p>
                 </div>
 
-                <div className="bg-white border-2 border-neutral-200 rounded-xl p-5 sm:p-6 hover:border-[#2D3E50] transition-all">
-                  <h3 className="font-bold text-[#2D3E50] text-base sm:text-lg mb-2 sm:mb-3">{t('Bentuk', 'Shape & Form')}</h3>
-                  <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Bentuk dan lekukan yang dirancang khusus agar menyatu sempurna dengan tata letak serta desain interior toko Anda.', 'Custom shapes and curves designed to seamlessly integrate with your store layout and interior design.')}</p>
+                <div className="bg-white border-2 border-neutral-200 rounded-xl p-3 sm:p-6 hover:border-[#2D3E50] transition-all">
+                  <h3 className="font-bold text-[#2D3E50] text-[11px] sm:text-lg mb-1 sm:mb-3">{t('Bentuk', 'Shape & Form')}</h3>
+                  <p className="text-neutral-600 text-[10px] sm:text-base leading-snug sm:leading-relaxed">{t('Bentuk dan lekukan yang dirancang khusus agar menyatu sempurna dengan tata letak serta desain interior toko Anda.', 'Custom shapes and curves designed to seamlessly integrate with your store layout and interior design.')}</p>
                 </div>
 
-                <div className="bg-white border-2 border-neutral-200 rounded-xl p-5 sm:p-6 hover:border-[#2D3E50] transition-all">
-                  <h3 className="font-bold text-[#2D3E50] text-base sm:text-lg mb-2 sm:mb-3">{t('Warna', 'Color Palette')}</h3>
-                  <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Pilihan warna yang beragam untuk mendukung estetika dan memperkuat identitas visual (branding) bisnis Anda.', 'Diverse color choices to enhance aesthetics and reinforce your visual brand identity.')}</p>
+                <div className="bg-white border-2 border-neutral-200 rounded-xl p-3 sm:p-6 hover:border-[#2D3E50] transition-all">
+                  <h3 className="font-bold text-[#2D3E50] text-[11px] sm:text-lg mb-1 sm:mb-3">{t('Warna', 'Color Palette')}</h3>
+                  <p className="text-neutral-600 text-[10px] sm:text-base leading-snug sm:leading-relaxed">{t('Pilihan warna yang beragam untuk mendukung estetika dan memperkuat identitas visual (branding) bisnis Anda.', 'Diverse color choices to enhance aesthetics and reinforce your visual brand identity.')}</p>
                 </div>
 
-                <div className="bg-white border-2 border-neutral-200 rounded-xl p-5 sm:p-6 hover:border-[#2D3E50] transition-all">
-                  <h3 className="font-bold text-[#2D3E50] text-lg mb-3">{t('Material', 'Materials')}</h3>
-                  <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Pemilihan material grade industri berkualitas tinggi yang dapat disesuaikan dengan standar operasional dan keawetan produk.', 'High-grade industrial material selection customized for operational standards and long-lasting durability.')}</p>
+                <div className="bg-white border-2 border-neutral-200 rounded-xl p-3 sm:p-6 hover:border-[#2D3E50] transition-all">
+                  <h3 className="font-bold text-[#2D3E50] text-[11px] sm:text-lg mb-1 sm:mb-3">{t('Material', 'Materials')}</h3>
+                  <p className="text-neutral-600 text-[10px] sm:text-base leading-snug sm:leading-relaxed">{t('Pemilihan material grade industri berkualitas tinggi yang dapat disesuaikan dengan standar operasional dan keawetan produk.', 'High-grade industrial material selection customized for operational standards and long-lasting durability.')}</p>
                 </div>
 
-                <div className="bg-white border-2 border-neutral-200 rounded-xl p-5 sm:p-6 hover:border-[#2D3E50] transition-all md:col-span-2">
-                  <h3 className="font-bold text-[#2D3E50] text-base sm:text-lg mb-2 sm:mb-3">{t('Fungsi', 'Functionality')}</h3>
-                  <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Sistem pengaturan suhu dan tingkat kelembapan yang dikustomisasi spesifik untuk menjaga kualitas serta kesegaran optimal produk Anda.', 'Customized temperature and humidity control systems designed to preserve optimal quality and freshness.')}</p>
+                <div className="bg-white border-2 border-neutral-200 rounded-xl p-3 sm:p-6 hover:border-[#2D3E50] transition-all col-span-2">
+                  <h3 className="font-bold text-[#2D3E50] text-[11px] sm:text-lg mb-1 sm:mb-3">{t('Fungsi', 'Functionality')}</h3>
+                  <p className="text-neutral-600 text-[10px] sm:text-base leading-snug sm:leading-relaxed">{t('Sistem pengaturan suhu dan tingkat kelembapan yang dikustomisasi spesifik untuk menjaga kualitas serta kesegaran optimal produk Anda.', 'Customized temperature and humidity control systems designed to preserve optimal quality and freshness.')}</p>
                 </div>
               </div>
             </div>

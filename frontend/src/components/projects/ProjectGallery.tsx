@@ -180,7 +180,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
         </div>
 
         {projects.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {projects.map((p) => (
               <div
                 key={p.id}
@@ -189,8 +189,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
                 {/* Thumbnail */}
                 <Link
                   href={`/projects/${p.slug}`}
-                  className="relative overflow-hidden block"
-                  style={{ height: '220px' }}
+                  className="relative overflow-hidden block h-32 sm:h-[220px]"
                 >
                   {p.imageUrl ? (
                     <Image
@@ -198,7 +197,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
                       alt={p.title}
                       fill
                       className="object-cover group-hover:scale-103 transition-transform duration-500"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                       unoptimized
                     />
                   ) : (
@@ -215,25 +214,25 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
                 </Link>
 
                 {/* Card body */}
-                <div className="p-5 flex-1 flex flex-col justify-between">
+                <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between">
                   <div>
                     {p.clientName && (
-                      <p className="text-[9px] font-bold text-neutral-400 uppercase tracking-[0.2em] mb-2">
+                      <p className="text-[8px] sm:text-[9px] font-bold text-neutral-400 uppercase tracking-[0.2em] mb-1 sm:mb-2 line-clamp-1">
                         {p.clientName}
                       </p>
                     )}
-                    <h3 className="font-semibold text-base text-[#2D3E50] leading-snug line-clamp-2 mb-3">
+                    <h3 className="font-semibold text-xs sm:text-base text-[#2D3E50] leading-snug line-clamp-2 mb-2 sm:mb-3">
                       {p.title}
                     </h3>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-neutral-100 mt-2">
-                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                  <div className="flex items-center justify-between pt-2 sm:pt-4 border-t border-neutral-100 mt-1 sm:mt-2">
+                    <span className="text-[8px] sm:text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
                       {p.projectDate ? new Date(p.projectDate).getFullYear() : 'Holicindo'}
                     </span>
                     <Link
                       href={`/projects/${p.slug}`}
-                      className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#2D3E50] hover:text-black uppercase tracking-widest transition-colors"
+                      className="inline-flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] font-bold text-[#2D3E50] hover:text-black uppercase tracking-widest transition-colors"
                     >
                       {t('Detail', 'Details')} <ArrowRight size={12} />
                     </Link>

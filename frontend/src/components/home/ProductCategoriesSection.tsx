@@ -59,9 +59,9 @@ export function ProductCategoriesSection({ categories }: { categories: ProductCa
             {t('Lihat Semua', 'View All')} <ArrowRight size={14} strokeWidth={1.75} />
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory md:grid md:grid-cols-3 gap-4 sm:gap-6 pb-4 md:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
           {display.map((cat: any) => (
-            <Link key={cat.slug} href={`/products/category/${cat.slug}`} className="group relative overflow-hidden h-72 sm:h-96 bg-neutral-100 transition-all duration-500 border border-neutral-200 active:scale-[0.99]">
+            <Link key={cat.slug} href={`/products/category/${cat.slug}`} className="group relative flex-shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center overflow-hidden h-72 sm:h-96 bg-neutral-100 transition-all duration-500 border border-neutral-200 active:scale-[0.99]">
               {cat.imageUrl
                 ? <Image src={cat.imageUrl} alt={cat.name} fill className="object-cover opacity-85 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700" sizes="(max-width: 768px) 100vw, 33vw" unoptimized />
                 : <div className="absolute inset-0 bg-neutral-200" />}

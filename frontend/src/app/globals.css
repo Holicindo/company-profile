@@ -49,9 +49,15 @@
   100% { transform: translateX(0); }
 }
 .animate-marquee,
-.animate-marquee-left  { animation: marquee-left  30s linear infinite; }
+.animate-marquee-left  { animation: marquee-left 25s linear infinite; }
 .animate-marquee-reverse,
-.animate-marquee-right { animation: marquee-right 35s linear infinite; }
+.animate-marquee-right { animation: marquee-right 28s linear infinite; }
+@media (max-width: 640px) {
+  .animate-marquee,
+  .animate-marquee-left  { animation: marquee-left 12s linear infinite; }
+  .animate-marquee-reverse,
+  .animate-marquee-right { animation: marquee-right 14s linear infinite; }
+}
 .animate-marquee:hover,
 .animate-marquee-reverse:hover,
 .animate-marquee-left:hover,

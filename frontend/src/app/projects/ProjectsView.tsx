@@ -34,19 +34,20 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900">
 
-      {/* ── Hero Slideshow — natural image height, no crop ── */}
-      <div className="relative text-white overflow-hidden">
+      {/* ── Hero Slideshow — min-h on mobile, natural on desktop ── */}
+      <div className="relative text-white overflow-hidden min-h-[360px] sm:min-h-0 bg-neutral-900">
 
-        {/* Ghost spacer: renders image[0] in normal flow to give container its natural height */}
+        {/* Ghost spacer: hidden on mobile, normal flow on desktop to give natural height */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={heroSlides[0]}
           alt=""
           aria-hidden
-          style={{ width: '100%', display: 'block', visibility: 'hidden' }}
+          className="hidden sm:block"
+          style={{ width: '100%', visibility: 'hidden' }}
         />
 
-        {/* Slides — absolutely fill the ghost-sized container, full image, no crop */}
+        {/* Slides — absolutely fill the container */}
         <div className="absolute inset-0">
           {heroSlides.map((slide, index) => (
             <div
@@ -64,7 +65,7 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
                   width: '100%',
                   height: '100%',
                   display: 'block',
-                  objectFit: 'fill',
+                  objectFit: 'cover',
                   imageRendering: 'auto',
                 }}
               />
