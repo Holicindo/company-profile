@@ -36,17 +36,7 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      <div className="bg-white border-b border-neutral-200 py-4">
-        <div className="container-wide">
-          <nav className="text-xs text-neutral-400 font-medium flex items-center gap-2" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-[#2D3E50] transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/news" className="hover:text-[#2D3E50] transition-colors">Holic Insights</Link>
-            <span>/</span>
-            <span className="text-[#2D3E50] font-bold line-clamp-1">{post.title}</span>
-          </nav>
-        </div>
-      </div>
+
 
       <article className="container-wide py-10 lg:py-16">
         <Link href="/news" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-[#2D3E50] mb-8 transition-colors">

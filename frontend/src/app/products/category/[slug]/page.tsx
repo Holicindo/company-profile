@@ -50,22 +50,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         </div>
 
         <div className="relative z-10 container-wide">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-500 mb-6 flex-wrap">
-            <Link href="/" className="hover:text-black transition-colors">Home</Link>
-            <span className="text-neutral-300">/</span>
-            <Link href="/products" className="hover:text-black transition-colors">Produk</Link>
-            {category.parent && (
-              <>
-                <span className="text-neutral-300">/</span>
-                <Link href={`/products/category/${category.parent.slug}`} className="hover:text-black transition-colors">
-                  {category.parent.name}
-                </Link>
-              </>
-            )}
-            <span className="text-neutral-300">/</span>
-            <span className="text-black">{category.name}</span>
-          </nav>
 
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-black mb-3">
             {getCategorySeo(params.slug).h1}

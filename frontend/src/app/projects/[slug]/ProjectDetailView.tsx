@@ -16,18 +16,7 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
-      <div className="bg-[#0d1013] border-b border-white/5">
-        <div className="container-wide py-3">
-          <nav className="text-xs text-neutral-500 flex flex-wrap gap-1 items-center">
-            <Link href="/" className="hover:text-brand-400 transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/projects" className="hover:text-brand-400 transition-colors">{t('Pengalaman Proyek', 'Project Experiences')}</Link>
-            <span>/</span>
-            <span className="text-neutral-300 line-clamp-1">{project.title}</span>
-          </nav>
-        </div>
-      </div>
+
 
       <div className="container-wide py-12">
         <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-brand-600 mb-8 transition-colors">

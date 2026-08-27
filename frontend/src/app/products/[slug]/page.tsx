@@ -30,26 +30,6 @@ export default async function ProductDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900">
-      {/* Breadcrumb bar - B2B minimalist */}
-      <div className="border-b border-neutral-200">
-        <div className="container-wide py-4">
-          <nav className="text-[10px] uppercase tracking-widest text-neutral-500 flex flex-wrap gap-3 items-center">
-            <Link href="/" className="hover:text-black transition-colors">Home</Link>
-            <span className="text-neutral-300">/</span>
-            <Link href="/products" className="hover:text-black transition-colors">Produk</Link>
-            {product.category && (
-              <>
-                <span className="text-neutral-300">/</span>
-                <Link href={`/products/category/${product.category.slug}`} className="hover:text-black transition-colors">
-                  {product.category.name}
-                </Link>
-              </>
-            )}
-            <span className="text-neutral-300">/</span>
-            <span className="text-black font-semibold line-clamp-1">{product.name}</span>
-          </nav>
-        </div>
-      </div>
 
       <div className="container-wide py-12 lg:py-20">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">

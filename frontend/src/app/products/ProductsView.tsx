@@ -36,22 +36,6 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
       {/* ── Hero Collage Slideshow ── */}
       <div className="relative text-white overflow-hidden h-[320px] sm:h-[420px]">
 
-        {/* ── Breadcrumb — above all panels ── */}
-        <div className="absolute top-4 sm:top-7 left-0 right-0 z-30 px-4 sm:px-8">
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] uppercase tracking-widest text-white/80 font-bold drop-shadow overflow-x-auto whitespace-nowrap scrollbar-none">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight size={10} strokeWidth={2.5} />
-            <Link href="/products" className="hover:text-white transition-colors">
-              {t('Katalog Produk', 'Product Catalog')}
-            </Link>
-            {category && (
-              <>
-                <ChevronRight size={10} strokeWidth={2.5} />
-                <span className="text-white uppercase truncate max-w-[120px]">{category}</span>
-              </>
-            )}
-          </div>
-        </div>
 
         {/* ── 3-Panel Collage (Full-width Center Panel on Mobile) ── */}
         <div className="absolute inset-0 flex gap-0 sm:gap-[2px]">

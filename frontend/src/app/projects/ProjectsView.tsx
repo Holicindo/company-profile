@@ -93,14 +93,6 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
             </div>
           </div>
 
-          {/* Breadcrumb */}
-          <div className="absolute top-7 left-0 right-0 z-10 px-8">
-            <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-white/70 font-bold drop-shadow">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-              <ChevronRight size={11} strokeWidth={2.5} />
-              <span className="text-white/90">{t('Pengalaman Proyek', 'Project Experiences')}</span>
-            </div>
-          </div>
 
           {/* Slide dots */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
