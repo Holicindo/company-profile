@@ -48,8 +48,12 @@
   0%   { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
+.animate-marquee,
 .animate-marquee-left  { animation: marquee-left  30s linear infinite; }
+.animate-marquee-reverse,
 .animate-marquee-right { animation: marquee-right 35s linear infinite; }
+.animate-marquee:hover,
+.animate-marquee-reverse:hover,
 .animate-marquee-left:hover,
 .animate-marquee-right:hover { animation-play-state: paused; }
 

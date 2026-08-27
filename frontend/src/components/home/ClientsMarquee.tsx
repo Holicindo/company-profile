@@ -55,7 +55,7 @@ export function ClientsMarquee() {
         <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 md:w-48 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 md:w-48 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
         
-        <div className="flex gap-3 sm:gap-6 animate-marquee whitespace-nowrap">
+        <div className="flex gap-3 sm:gap-6 animate-marquee-left whitespace-nowrap">
           {row1.map((item, idx) => (
             <div
               key={`r1-${idx}`}
@@ -74,7 +74,7 @@ export function ClientsMarquee() {
         <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 md:w-48 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 md:w-48 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
         
-        <div className="flex gap-3 sm:gap-6 animate-marquee-reverse whitespace-nowrap">
+        <div className="flex gap-3 sm:gap-6 animate-marquee-right whitespace-nowrap">
           {row2.map((item, idx) => (
             <div
               key={`r2-${idx}`}

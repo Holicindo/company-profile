@@ -33,12 +33,12 @@ export function WhyChooseUsSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-12 gap-y-8 sm:gap-y-16">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 sm:gap-x-12 gap-y-4 sm:gap-y-16">
           {features.map(({ title, desc }, idx) => (
-            <div key={title} className="border-t-2 border-neutral-900 pt-4 sm:pt-6">
-              <span className="text-[10px] sm:text-xs font-black text-neutral-900 block mb-2 sm:mb-4 uppercase tracking-[0.2em]">0{idx + 1}</span>
-              <h3 className="text-black font-bold text-lg sm:text-xl mb-2 sm:mb-3 tracking-tight">{title}</h3>
-              <p className="text-neutral-700 text-xs sm:text-sm font-normal leading-relaxed">{desc}</p>
+            <div key={title} className="border-t-2 border-neutral-900 pt-3 sm:pt-6">
+              <span className="text-[9px] sm:text-xs font-black text-neutral-900 block mb-1 sm:mb-4 uppercase tracking-[0.2em]">0{idx + 1}</span>
+              <h3 className="text-black font-bold text-xs sm:text-xl mb-1 sm:mb-3 tracking-tight">{title}</h3>
+              <p className="text-neutral-700 text-[11px] sm:text-sm font-normal leading-snug sm:leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>

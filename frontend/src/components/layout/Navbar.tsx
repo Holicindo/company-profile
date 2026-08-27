@@ -150,9 +150,9 @@ export function Navbar() {
                 href="https://wa.me/6281111825718" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-[#128C7E] text-white py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm active:scale-[0.98] transition-transform"
+                className="flex items-center justify-center gap-2 bg-[#128C7E] text-white py-3.5 px-4 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm active:scale-[0.98] transition-transform"
               >
-                Chat WhatsApp (+62 811-1182-5718)
+                Chat WhatsApp
               </a>
             </div>
           </div>

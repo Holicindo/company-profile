@@ -29,18 +29,18 @@ export function ProjectsSection({ projects }: { projects: Portfolio[] }) {
         </div>
         
         {projects.length ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             {projects.slice(0, 6).map(p => (
               <Link key={p.id} href={`/projects/${p.slug}`} className="group block border border-neutral-200 hover:border-black transition-colors duration-300 active:scale-[0.99]">
-                <div className="relative h-48 sm:h-64 bg-neutral-100 overflow-hidden">
+                <div className="relative h-32 sm:h-64 bg-neutral-100 overflow-hidden">
                   {p.imageUrl
-                    ? <Image src={p.imageUrl} alt={p.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" sizes="(max-width: 640px) 100vw, 33vw" unoptimized />
-                    : <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center"><Building2 size={36} strokeWidth={1} className="text-neutral-300" /></div>}
+                    ? <Image src={p.imageUrl} alt={p.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" sizes="(max-width: 640px) 50vw, 33vw" unoptimized />
+                    : <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center"><Building2 size={28} strokeWidth={1} className="text-neutral-300" /></div>}
                 </div>
-                <div className="p-4 sm:p-6 bg-white">
-                  <h3 className="font-light text-lg sm:text-xl text-black mb-1.5 sm:mb-2 line-clamp-2 tracking-tight group-hover:text-neutral-600 transition-colors">{p.title}</h3>
-                  {p.clientName && <p className="text-neutral-500 font-light text-xs sm:text-sm mb-1 uppercase tracking-widest text-[9px] sm:text-[10px]">{t('Klien:', 'Client:')} {p.clientName}</p>}
-                  {p.projectDate && <p className="text-neutral-400 font-bold text-[9px] sm:text-[10px] uppercase tracking-widest mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-neutral-100">{new Date(p.projectDate).getFullYear()}</p>}
+                <div className="p-3 sm:p-6 bg-white">
+                  <h3 className="font-medium sm:font-light text-xs sm:text-xl text-black mb-1 sm:mb-2 line-clamp-2 tracking-tight group-hover:text-neutral-600 transition-colors">{p.title}</h3>
+                  {p.clientName && <p className="text-neutral-500 font-light text-[9px] sm:text-sm mb-1 uppercase tracking-widest line-clamp-1">{t('Klien:', 'Client:')} {p.clientName}</p>}
+                  {p.projectDate && <p className="text-neutral-400 font-bold text-[8px] sm:text-[10px] uppercase tracking-widest mt-2 sm:mt-4 pt-2 sm:pt-4 border-t border-neutral-100">{new Date(p.projectDate).getFullYear()}</p>}
                 </div>
               </Link>
             ))}
