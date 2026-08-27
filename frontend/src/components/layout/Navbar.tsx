@@ -43,7 +43,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50">
-      <nav className={clsx("transition-all duration-300 border-b border-white/10", scrolled ? "bg-[#404F68]/95 backdrop-blur-md shadow-md py-2" : "bg-[#404F68] py-2.5")}>
+      <nav className={clsx("relative transition-all duration-300 border-b border-white/10 bg-[#404F68]", scrolled ? "shadow-md py-2" : "py-2.5")}>
         <div className="container-wide">
           <div className="flex items-center justify-between h-14 md:h-16">
             
@@ -120,10 +120,10 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu Drawer with Smooth Backdrop & Glassmorphism */}
+        {/* Mobile Menu Drawer */}
         {open && (
-          <div className="md:hidden fixed inset-x-0 top-[57px] bottom-0 bg-[#404F68]/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-50 flex flex-col justify-between overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
-            <div className="py-2 flex flex-col divide-y divide-white/5">
+          <div className="md:hidden absolute top-full left-0 right-0 w-full bg-[#404F68] border-t border-white/10 shadow-2xl z-50 flex flex-col justify-between overflow-y-auto max-h-[calc(100vh-60px)]">
+            <div className="py-2 flex flex-col divide-y divide-white/10">
               {navLinks.map(link => {
                 const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href));
                 return (
@@ -133,7 +133,7 @@ export function Navbar() {
                     onClick={() => setOpen(false)}
                     className={clsx(
                       "px-6 py-4 text-xs font-bold uppercase tracking-widest flex items-center justify-between transition-all active:bg-white/10",
-                      isActive ? "text-white bg-white/10 border-l-4 border-white pl-5" : "text-neutral-200 hover:text-white"
+                      isActive ? "text-white bg-white/15 border-l-4 border-white pl-5" : "text-neutral-200 hover:text-white"
                     )}
                   >
                     <span>{link.label}</span>
