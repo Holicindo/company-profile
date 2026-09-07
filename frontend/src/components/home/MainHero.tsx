@@ -59,8 +59,8 @@ export function MainHero() {
             {t('Est. 2001', 'Est. 2001')}
           </span>
           <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.2] sm:leading-[1.15] tracking-tight mb-4 drop-shadow-xl text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
-            {t('Pusat Mesin & Showcase', 'Trusted F&B Machine &')} <br className="hidden sm:inline" />
-            {t('Kustom F&B Terpercaya.', 'Custom Showcase Center.')}
+            {t('Spesialis Showcase & Pendingin', 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
+            {t('Komersial Terpercaya Indonesia.', '& Refrigeration Solutions.')}
           </h1>
         </div>
       </div>

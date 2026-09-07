@@ -25,6 +25,15 @@ import { UploadModule } from './modules/upload/upload.module';
         ssl: cfg.get('DB_SSL') === 'true' || (cfg.get('DB_HOST') && cfg.get('DB_HOST') !== 'localhost' && cfg.get('DB_HOST') !== '127.0.0.1')
           ? { rejectUnauthorized: false }
           : false,
+        // Retry koneksi otomatis saat DNS / network belum siap saat startup
+        retryAttempts: 10,
+        retryDelay: 5000, // 5 detik antar retry
+        connectTimeoutMS: 15000, // timeout per koneksi 15 detik
+        extra: {
+          connectionTimeoutMillis: 15000,
+          idleTimeoutMillis: 30000,
+          max: 10, // max pool connections
+        },
       }),
       inject: [ConfigService],
     }),

@@ -27,22 +27,22 @@ export function HeroSection() {
         <div className="container-wide relative z-20 w-full">
           <div className="w-full lg:w-1/2 flex flex-col justify-center py-12 lg:py-16 bg-white/80 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none p-6 lg:p-0 lg:pr-8">
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-4 block flex items-center gap-3">
-              <span className="w-8 h-px bg-neutral-400"></span> {t('PERALATAN INDUSTRIAL', 'INDUSTRIAL EQUIPMENT')}
+              <span className="w-8 h-px bg-neutral-400"></span> {t('SHOWCASE & PENDINGIN KOMERSIAL', 'COMMERCIAL SHOWCASE & REFRIGERATION')}
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-black leading-[1.2] mb-6 tracking-tight max-w-md">
-              {t('Pilihan Peralatan Dapur Komersial Terlengkap.', 'Complete Selection of Commercial Kitchen Equipment.')}
+              {t('Tingkatkan Daya Jual dengan Showcase & Chiller Premium.', 'Boost Your Sales with Premium Showcase & Commercial Chiller.')}
             </h2>
             <p className="text-base text-neutral-600 font-normal leading-relaxed mb-12 max-w-md">
               {t(
-                'Temukan 282+ pilihan mesin produksi makanan dan showcase pendingin untuk bisnis F&B Anda. Peralatan dapur komersial bergaransi resmi, siap kirim ke seluruh Indonesia.',
-                'Discover 282+ selections of food processing machinery and commercial showcases for your F&B business. Official warranty commercial kitchen equipment, ready for nationwide delivery.'
+                'Dari cake showcase berlampu LED hingga blast freezer industri — Holicindo menghadirkan solusi pendingin dan display spesifikasi HORECA dengan garansi resmi, siap kirim ke seluruh Indonesia.',
+                'From LED-lit cake showcases to industrial blast freezers — Holicindo delivers HORECA-grade refrigeration and display solutions with official warranty, ready for nationwide delivery.'
               )}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <button
                 onClick={() => setIsVideoOpen(true)}
-                className="flex items-center justify-center gap-3 bg-[#2D3E50] text-white border border-[#2D3E50] px-8 py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-all w-full sm:w-auto shadow-md group">
+                className="flex items-center justify-center gap-3 bg-[#2C1810] text-white border border-[#2C1810] px-8 py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-all w-full sm:w-auto shadow-md group">
                 <Play size={14} className="fill-white group-hover:scale-110 transition-transform" />
                 {t('Tonton Video', 'Watch Video')}
               </button>

@@ -98,3 +98,20 @@
   pointer-events: none;
 }
 
+/* ── Premium Dark Metallic Background (Catalog-inspired) ── */
+.bg-dark-metallic {
+  background:
+    linear-gradient(108deg, transparent 30%, rgba(201,168,76,0.07) 48%, rgba(212,175,55,0.12) 52%, rgba(201,168,76,0.07) 65%, transparent 75%),
+    linear-gradient(160deg, #080301 0%, #160806 22%, #2C1810 50%, #160806 78%, #080301 100%);
+}
+
+/* ── Gold Accent Utilities ── */
+.text-gold { color: #C9A84C; }
+.border-gold-subtle { border-color: rgba(201, 168, 76, 0.35); }
+.bg-gold { background-color: #C9A84C; }
+.gold-line {
+  display: inline-block;
+  width: 1rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201,168,76,0.3), rgba(201,168,76,0.9), rgba(201,168,76,0.3));
+}

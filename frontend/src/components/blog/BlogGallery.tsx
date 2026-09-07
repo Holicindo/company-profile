@@ -78,7 +78,7 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
     <div className="space-y-16">
 
       {/* HEADER BANNER */}
-      <div className="relative bg-[#2D3E50] text-white py-16 lg:py-24 overflow-hidden shadow-xl">
+      <div className="relative bg-[#2C1810] text-white py-16 lg:py-24 overflow-hidden shadow-xl">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden" aria-hidden="true">
           <span className="font-black tracking-tighter leading-none text-white/[0.04]" style={{ fontSize: 'clamp(60px, 16vw, 240px)', whiteSpace: 'nowrap' }}>JOURNAL</span>
         </div>
@@ -86,14 +86,14 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white/10 border border-white/20 text-[10px] font-bold uppercase tracking-widest text-neutral-200 mb-6">
             <Sparkles size={13} className="text-white/80" /> {t('Pusat Wawasan & Edukasi F&B', 'F&B Insights & Education Hub')}
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text mb-6 leading-tight">Holic Insights</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text mb-6 pb-2 leading-tight">Holic Insights</h1>
           <p className="text-neutral-300 font-normal text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
             {t('Temukan panduan praktis pencahayaan, standar suhu ruangan, dan strategi pelayanan terbaik untuk tingkatkan kenyamanan serta kepuasan pelanggan F&B Anda.', 'Discover practical guides on lighting, room temperature standards, and service strategies to elevate customer experience & satisfaction in F&B.')}
           </p>
           <div className="max-w-md mx-auto">
             <div className="relative">
               <Search size={18} strokeWidth={2} className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" />
-              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder={t('Cari topik atau nama mesin...', 'Search topics or machinery...')} className="w-full pl-12 pr-4 py-4 bg-white text-[#2D3E50] placeholder-neutral-400 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-white border border-transparent shadow-lg transition-all rounded-none" />
+              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder={t('Cari topik atau nama mesin...', 'Search topics or machinery...')} className="w-full pl-12 pr-4 py-4 bg-white text-[#2C1810] placeholder-neutral-400 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-white border border-transparent shadow-lg transition-all rounded-none" />
               {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-black font-bold uppercase">Clear</button>}
             </div>
           </div>
@@ -112,12 +112,12 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
                   <div className="absolute inset-0 overflow-hidden">
                     {article.featuredImage
                       ? <Image src={article.featuredImage} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-95" sizes="100vw" unoptimized priority={index === 0} />
-                      : <div className="absolute inset-0 bg-gradient-to-br from-[#2D3E50] to-slate-900 flex items-center justify-center"><BookOpen size={64} className="text-white/20" /></div>
+                      : <div className="absolute inset-0 bg-gradient-to-br from-[#2C1810] to-slate-900 flex items-center justify-center"><BookOpen size={64} className="text-white/20" /></div>
                     }
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-black/20" />
                   <div className="relative z-10 p-6 sm:p-8 flex items-center gap-3">
-                    <span className="px-4 py-1.5 bg-white/95 text-[#2D3E50] text-xs font-extrabold uppercase tracking-widest rounded-full shadow-md">★ FEATURED INSIGHT</span>
+                    <span className="px-4 py-1.5 bg-white/95 text-[#2C1810] text-xs font-extrabold uppercase tracking-widest rounded-full shadow-md">★ FEATURED INSIGHT</span>
                     <span className="px-3.5 py-1.5 bg-black/40 text-white/90 text-xs font-bold uppercase tracking-wider rounded-full border border-white/20">{translateCategoryName((article as any).category || 'Insights')}</span>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 z-10 p-6 sm:p-10 lg:p-12">
@@ -154,13 +154,13 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
         {/* KOLEKSI ARTIKEL & FILTER */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 py-6 border-b border-neutral-200">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#2D3E50] tracking-tight">{t('Koleksi Artikel & Panduan', 'Articles & Guides Collection')}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#2C1810] tracking-tight">{t('Koleksi Artikel & Panduan', 'Articles & Guides Collection')}</h2>
             <p className="text-neutral-500 text-sm mt-1">{t('Temukan wawasan praktis untuk meningkatkan standar layanan dan kenyamanan pelanggan Anda.', 'Find practical insights to elevate your service standards and customer comfort.')}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
               <button key={cat.id} onClick={() => setActiveCategory(cat.id)}
-                className={['px-4 py-2.5 text-xs font-bold tracking-wider transition-all rounded-full border', activeCategory === cat.id ? 'bg-[#2D3E50] text-white border-[#2D3E50] shadow-md' : 'bg-white text-neutral-600 border-neutral-200 hover:border-[#2D3E50] hover:text-[#2D3E50]'].join(' ')}>
+                className={['px-4 py-2.5 text-xs font-bold tracking-wider transition-all rounded-full border', activeCategory === cat.id ? 'bg-[#2C1810] text-white border-[#2C1810] shadow-md' : 'bg-white text-neutral-600 border-neutral-200 hover:border-[#2C1810] hover:text-[#2C1810]'].join(' ')}>
                 {cat.label}
               </button>
             ))}
@@ -176,12 +176,12 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
                 <div className="absolute inset-0 overflow-hidden">
                   {post.featuredImage
                     ? <Image src={post.featuredImage} alt={post.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-90" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" unoptimized />
-                    : <div className="absolute inset-0 bg-gradient-to-br from-[#2D3E50] to-slate-900 flex items-center justify-center"><BookOpen size={48} className="text-white/20" /></div>
+                    : <div className="absolute inset-0 bg-gradient-to-br from-[#2C1810] to-slate-900 flex items-center justify-center"><BookOpen size={48} className="text-white/20" /></div>
                   }
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-black/20 group-hover:from-slate-950/95 transition-all duration-500" />
                 <div className="relative z-10 p-5">
-                  <span className="inline-block px-3 py-1 bg-white/95 text-[#2D3E50] text-[10px] font-extrabold uppercase tracking-widest rounded-full shadow-md">{translateCategoryName((post as any).category || 'INSIGHTS')}</span>
+                  <span className="inline-block px-3 py-1 bg-white/95 text-[#2C1810] text-[10px] font-extrabold uppercase tracking-widest rounded-full shadow-md">{translateCategoryName((post as any).category || 'INSIGHTS')}</span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
                   <div className="flex items-center gap-2 text-[10px] text-neutral-300 uppercase tracking-wider mb-2">

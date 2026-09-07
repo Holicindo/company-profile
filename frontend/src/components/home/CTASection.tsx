@@ -8,8 +8,9 @@ export function CTASection() {
   const { t } = useLanguage();
 
   return (
-    <section className="py-10 sm:py-16 bg-[#404F68] relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+    <section className="py-10 sm:py-16 bg-dark-metallic relative overflow-hidden">
+      {/* Gold accent top line */}
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.6) 30%, rgba(212,175,55,0.9) 50%, rgba(201,168,76,0.6) 70%, transparent 100%)' }} />
       <div className="relative z-10 container-wide">
         <div className="max-w-3xl mx-auto text-center px-2">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-light tracking-wide text-white mb-3 sm:mb-4">

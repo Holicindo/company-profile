@@ -33,7 +33,7 @@ export function ProductCategoriesSection({ categories }: { categories: ProductCa
     },
   ];
 
-  const displayCats = ['machinery', 'refrigerator', 'showcase'].map(slug => {
+  const displayCats = ['showcase', 'refrigerator', 'machinery'].map(slug => {
     const found = categories.find(c => c.slug === slug);
     const fall = fallback.find(f => f.slug === slug);
     return found ? { ...found, imageUrl: fall?.imageUrl || null, description: fall?.description || '' } : fall;
@@ -46,12 +46,12 @@ export function ProductCategoriesSection({ categories }: { categories: ProductCa
       <div className="container-wide">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6 mb-8 sm:mb-16 border-b border-neutral-200 pb-6 sm:pb-8">
           <div>
-            <p className="text-neutral-400 font-bold text-[10px] uppercase tracking-[0.2em] mb-2 sm:mb-4">{t('Kategori Produk', 'Product Categories')}</p>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-black">{t('Temukan Mesin yang Tepat', 'Find the Right Machine')}</h2>
+            <p className="text-[#C9A84C] font-black text-xs sm:text-sm uppercase tracking-[0.25em] mb-2 sm:mb-4">{t('Kategori Produk', 'Product Categories')}</p>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-black">{t('Display & Pendingin untuk Bisnis Anda', 'Display & Cooling for Your Business')}</h2>
             <p className="text-xs sm:text-base text-neutral-600 font-light mt-2 sm:mt-4 max-w-2xl leading-relaxed">
               {t(
-                'Jelajahi berbagai pilihan produk unggulan kami, mulai dari mesin produksi, mesin pendingin, hingga showcase untuk bisnis kuliner Anda.',
-                'Explore our selection of featured products, from production machines to refrigeration and showcases for your culinary business.'
+                'Jika Anda sedang mencari unit showcase untuk kebutuhan restoran, toko roti, hotel, atau pabrik makanan yang memerlukan spesifikasi khusus (bukan ukuran standar rumah tangga), produk dari PT Holicindo bisa menjadi salah satu opsi yang tepat.',
+                'If you are looking for showcase units for restaurant, bakery, hotel, or food factory needs that require special specifications (not standard household sizes), PT Holicindo products could be the right choice.'
               )}
             </p>
           </div>

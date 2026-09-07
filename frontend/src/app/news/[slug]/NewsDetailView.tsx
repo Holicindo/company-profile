@@ -39,28 +39,28 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
 
 
       <article className="container-wide py-10 lg:py-16">
-        <Link href="/news" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-[#2D3E50] mb-8 transition-colors">
+        <Link href="/news" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-[#2C1810] mb-8 transition-colors">
           <ArrowLeft size={16} /> {t('Kembali ke Holic Insights', 'Back to Holic Insights')}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           <div className="lg:col-span-8 bg-white p-6 sm:p-10 lg:p-12 rounded-2xl shadow-sm border border-neutral-200/80">
             <div className="flex items-center gap-3 mb-6">
-              <span className="px-3.5 py-1 bg-[#2D3E50] text-white text-[10px] font-extrabold uppercase tracking-widest rounded-full">
+              <span className="px-3.5 py-1 bg-[#2C1810] text-white text-[10px] font-extrabold uppercase tracking-widest rounded-full">
                 {translateCategory(post.category || 'Holic Insights')}
               </span>
               <span className="text-xs text-neutral-400 font-bold uppercase tracking-wider">• 5 min read</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2D3E50] leading-tight tracking-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2C1810] leading-tight tracking-tight mb-6">
               {post.title}
             </h1>
 
             <div className="flex items-center justify-between border-y border-neutral-100 py-4 mb-8 text-xs text-neutral-500">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#2D3E50] text-white flex items-center justify-center font-bold text-sm">H</div>
+                <div className="w-10 h-10 rounded-full bg-[#2C1810] text-white flex items-center justify-center font-bold text-sm">H</div>
                 <div>
-                  <div className="font-bold text-[#2D3E50]">
+                  <div className="font-bold text-[#2C1810]">
                     {post.author === 'Tim Holicindo' ? t('Tim Holicindo', 'Holicindo Team') : post.author || t('Tim Holicindo', 'Holicindo Team')}
                   </div>
                   <div className="text-[11px] text-neutral-400">{fmt(post.publishedAt)}</div>
@@ -79,7 +79,7 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
             {post.tags?.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-12 pt-6 border-t border-neutral-100">
                 {post.tags.map((tTag: string) => (
-                  <span key={tTag} className="px-3 py-1 bg-neutral-100 text-[#2D3E50] text-xs font-semibold rounded-full">#{tTag}</span>
+                  <span key={tTag} className="px-3 py-1 bg-neutral-100 text-[#2C1810] text-xs font-semibold rounded-full">#{tTag}</span>
                 ))}
               </div>
             )}
@@ -91,7 +91,7 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
                     <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <h3 className="font-bold text-[#2D3E50] text-lg mb-1">
+                <h3 className="font-bold text-[#2C1810] text-lg mb-1">
                   {t('Bagikan Pengalaman Anda Bersama Holicindo', 'Share Your Experience with Holicindo')}
                 </h3>
                 <p className="text-neutral-600 text-xs leading-relaxed max-w-md">
@@ -101,7 +101,7 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
                   )}
                 </p>
               </div>
-              <a href="https://share.google/jGfkjgTA4pnIYECZu" target="_blank" rel="noopener noreferrer" className="px-6 py-3.5 bg-[#2D3E50] text-white hover:bg-black text-xs font-bold uppercase tracking-widest transition-all shrink-0 inline-flex items-center gap-2 rounded-xl shadow-md hover:shadow-lg">
+              <a href="https://share.google/jGfkjgTA4pnIYECZu" target="_blank" rel="noopener noreferrer" className="px-6 py-3.5 bg-[#2C1810] text-white hover:bg-black text-xs font-bold uppercase tracking-widest transition-all shrink-0 inline-flex items-center gap-2 rounded-xl shadow-md hover:shadow-lg">
                 <MessageSquare size={16} /> {t('Tulis Google Review', 'Write a Google Review')}
               </a>
             </div>
@@ -110,14 +110,14 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
           <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
             {toc.length > 0 && (
               <div className="bg-white p-6 rounded-2xl border border-neutral-200/80 shadow-sm">
-                <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#2D3E50] mb-4 pb-3 border-b border-neutral-100 flex items-center justify-between">
+                <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#2C1810] mb-4 pb-3 border-b border-neutral-100 flex items-center justify-between">
                   <span>{t('Daftar Isi', 'Table of Contents')}</span>
                   <span className="text-[10px] text-neutral-400 font-normal">{toc.length} {t('Poin', 'Points')}</span>
                 </h3>
                 <ul className="space-y-3 text-xs">
                   {toc.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-neutral-600 hover:text-[#2D3E50] transition-colors leading-snug">
-                      <span className="text-[#2D3E50] font-bold text-[10px] mt-0.5">{idx + 1}.</span>
+                    <li key={idx} className="flex items-start gap-2 text-neutral-600 hover:text-[#2C1810] transition-colors leading-snug">
+                      <span className="text-[#2C1810] font-bold text-[10px] mt-0.5">{idx + 1}.</span>
                       <span className="font-medium line-clamp-2">{item.text}</span>
                     </li>
                   ))}
@@ -125,7 +125,7 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
               </div>
             )}
 
-            <div className="bg-[#2D3E50] text-white p-6 rounded-2xl shadow-md relative overflow-hidden">
+            <div className="bg-[#2C1810] text-white p-6 rounded-2xl shadow-md relative overflow-hidden">
               <div className="relative z-10">
                 <div className="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 mb-2">Holicindo Insights</div>
                 <h4 className="font-bold text-base mb-2 leading-snug">
@@ -134,7 +134,7 @@ export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
                 <p className="text-neutral-300 text-xs leading-relaxed mb-5">
                   {t('Tim ahli kami siap membantu memilihkan tipe peralatan terbaik untuk usaha Anda.', 'Our team of experts is ready to assist you in selecting the best equipment for your business.')}
                 </p>
-                <a href="https://wa.me/6281111825718?text=Halo%20Holicindo,%20saya%20tertarik%20konsultasi%20peralatan%20F%26B" target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-white text-[#2D3E50] hover:bg-amber-400 hover:text-black transition-all text-xs font-extrabold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 shadow">
+                <a href="https://wa.me/6281111825718?text=Halo%20Holicindo,%20saya%20tertarik%20konsultasi%20peralatan%20F%26B" target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-white text-[#2C1810] hover:bg-amber-400 hover:text-black transition-all text-xs font-extrabold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 shadow">
                   {t('Hubungi Tim Holicindo', 'Contact Holicindo Team')}
                 </a>
               </div>

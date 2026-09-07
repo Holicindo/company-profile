@@ -41,7 +41,7 @@ export function FeaturedProductsSection({ products }: { products: Product[] }) {
       <div className="container-wide">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6 mb-8 sm:mb-16 border-b border-neutral-200 pb-6 sm:pb-8">
           <div>
-            <p className="text-neutral-400 font-bold text-[10px] uppercase tracking-[0.2em] mb-2 sm:mb-4">{t('Pilihan Kami', 'Our Selection')}</p>
+            <p className="text-[#C9A84C] font-black text-xs sm:text-sm uppercase tracking-[0.25em] mb-2 sm:mb-4">{t('Pilihan Kami', 'Our Selection')}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-black">{t('Produk Unggulan', 'Featured Products')}</h2>
           </div>
           <Link href="/products" className="inline-flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] text-black font-bold uppercase tracking-widest hover:gap-4 transition-all self-start md:self-auto pt-1">

@@ -36,7 +36,7 @@ export function ClientsMarquee() {
       
       {/* Heading */}
       <div className="relative z-10 container-wide mb-6 sm:mb-8 text-center px-4">
-        <p className="text-neutral-400 font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] mb-2 sm:mb-4">
+        <p className="text-[#C9A84C] font-black text-xs sm:text-sm uppercase tracking-[0.25em] mb-2 sm:mb-4">
           {t('Dipercaya Oleh', 'Trusted By')}
         </p>
         <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-black tracking-tight mb-2 sm:mb-4">
@@ -59,9 +59,10 @@ export function ClientsMarquee() {
           {row1.map((item, idx) => (
             <div
               key={`r1-${idx}`}
-              className="flex-shrink-0 flex items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 border border-neutral-200 bg-white shadow-xs rounded-none min-w-[130px] sm:min-w-[180px] md:min-w-[200px]"
+              className="flex-shrink-0 flex items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 bg-white shadow-xs rounded-none min-w-[130px] sm:min-w-[180px] md:min-w-[200px]"
+              style={{ border: '1px solid rgba(201,168,76,0.5)' }}
             >
-              <span className="font-bold text-[#2D3E50] text-xs sm:text-sm md:text-base tracking-tight select-none">
+              <span className="font-bold text-[#2C1810] text-xs sm:text-sm md:text-base tracking-tight select-none">
                 {item.name}
               </span>
             </div>
@@ -78,9 +79,10 @@ export function ClientsMarquee() {
           {row2.map((item, idx) => (
             <div
               key={`r2-${idx}`}
-              className="flex-shrink-0 flex items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 border border-neutral-200 bg-white shadow-xs rounded-none min-w-[130px] sm:min-w-[180px] md:min-w-[200px]"
+              className="flex-shrink-0 flex items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 bg-white shadow-xs rounded-none min-w-[130px] sm:min-w-[180px] md:min-w-[200px]"
+              style={{ border: '1px solid rgba(201,168,76,0.5)' }}
             >
-              <span className="font-bold text-[#2D3E50] text-xs sm:text-sm md:text-base tracking-tight select-none">
+              <span className="font-bold text-[#2C1810] text-xs sm:text-sm md:text-base tracking-tight select-none">
                 {item.name}
               </span>
             </div>

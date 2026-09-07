@@ -19,6 +19,7 @@ export function Navbar() {
     { label: t('Beranda', 'Home'), href: '/' },
     { label: t('Tentang Kami', 'About Us'), href: '/about' },
     { label: t('Produk', 'Products'), href: '/products' },
+    { label: t('Layanan', 'Services'), href: '/services' },
     { label: t('Pengalaman Proyek', 'Project Experiences'), href: '/projects' },
     { label: t('Holic Insights', 'Holic Insights'), href: '/news' },
   ];
@@ -43,7 +44,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50">
-      <nav className={clsx("relative transition-all duration-300 border-b border-white/10 bg-[#404F68]", scrolled ? "shadow-md py-2" : "py-2.5")}>
+      <nav className={clsx("relative transition-all duration-300 border-b border-gold-subtle bg-dark-metallic", scrolled ? "shadow-md py-2" : "py-2.5")}>
         <div className="container-wide">
           <div className="flex items-center justify-between h-14 md:h-16">
             
@@ -63,7 +64,7 @@ export function Navbar() {
                     <Link href={link.href}
                       className={clsx(
                         "text-xs sm:text-[13px] md:text-sm font-bold uppercase tracking-wider transition-colors py-1.5 flex items-center gap-1 relative",
-                        isActive ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-white" : "text-neutral-200 hover:text-white"
+                        isActive ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#C9A84C]" : "text-neutral-300 hover:text-white"
                       )}>
                       {link.label} {(link as any).children && <ChevronDown size={14} strokeWidth={2} />}
                     </Link>
@@ -71,19 +72,24 @@ export function Navbar() {
                 );
               })}
 
+              {/* Hubungi Kami Button */}
+              <Link href="/contact" className="ml-2 px-4 py-1.5 rounded-full border-2 border-white/40 text-xs font-bold text-white hover:bg-white hover:text-[#3D2010] transition-all tracking-wider uppercase">
+                {t('Hubungi Kami', 'Contact Us')}
+              </Link>
+
               {/* Language Switcher Pill (ID | EN) */}
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs text-white shadow-inner ml-2">
                 <Globe size={13} className="text-white/80" />
                 <button
                   onClick={() => setLang('ID')}
-                  className={clsx("px-2 py-0.5 rounded-full font-extrabold text-[10px] transition-all", lang === 'ID' ? "bg-white text-[#2D3E50] shadow" : "text-neutral-300 hover:text-white")}
+                  className={clsx("px-2 py-0.5 rounded-full font-extrabold text-[10px] transition-all", lang === 'ID' ? "bg-white text-[#2C1810] shadow" : "text-neutral-300 hover:text-white")}
                 >
                   ID
                 </button>
                 <span className="text-white/30 text-[10px]">|</span>
                 <button
                   onClick={() => setLang('EN')}
-                  className={clsx("px-2 py-0.5 rounded-full font-extrabold text-[10px] transition-all", lang === 'EN' ? "bg-white text-[#2D3E50] shadow" : "text-neutral-300 hover:text-white")}
+                  className={clsx("px-2 py-0.5 rounded-full font-extrabold text-[10px] transition-all", lang === 'EN' ? "bg-white text-[#2C1810] shadow" : "text-neutral-300 hover:text-white")}
                 >
                   EN
                 </button>
@@ -96,14 +102,14 @@ export function Navbar() {
               <div className="flex items-center gap-1 px-2.5 py-1 bg-white/10 border border-white/20 rounded-full text-xs text-white">
                 <button
                   onClick={() => setLang('ID')}
-                  className={clsx("px-2 py-1 rounded-full font-extrabold text-[10px] min-w-[28px] text-center transition-all", lang === 'ID' ? "bg-white text-[#2D3E50]" : "text-neutral-300")}
+                  className={clsx("px-2 py-1 rounded-full font-extrabold text-[10px] min-w-[28px] text-center transition-all", lang === 'ID' ? "bg-white text-[#2C1810]" : "text-neutral-300")}
                 >
                   ID
                 </button>
                 <span className="text-white/30 text-[10px]">|</span>
                 <button
                   onClick={() => setLang('EN')}
-                  className={clsx("px-2 py-1 rounded-full font-extrabold text-[10px] min-w-[28px] text-center transition-all", lang === 'EN' ? "bg-white text-[#2D3E50]" : "text-neutral-300")}
+                  className={clsx("px-2 py-1 rounded-full font-extrabold text-[10px] min-w-[28px] text-center transition-all", lang === 'EN' ? "bg-white text-[#2C1810]" : "text-neutral-300")}
                 >
                   EN
                 </button>
@@ -122,7 +128,7 @@ export function Navbar() {
 
         {/* Mobile Menu Drawer */}
         {open && (
-          <div className="md:hidden absolute top-full left-0 right-0 w-full bg-[#404F68] border-t border-white/10 shadow-2xl z-50 flex flex-col justify-between overflow-y-auto max-h-[calc(100vh-60px)]">
+          <div className="md:hidden absolute top-full left-0 right-0 w-full bg-dark-metallic border-t border-gold-subtle shadow-2xl z-50 flex flex-col justify-between overflow-y-auto max-h-[calc(100vh-60px)]">
             <div className="py-2 flex flex-col divide-y divide-white/10">
               {navLinks.map(link => {
                 const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href));
@@ -133,7 +139,7 @@ export function Navbar() {
                     onClick={() => setOpen(false)}
                     className={clsx(
                       "px-6 py-4 text-xs font-bold uppercase tracking-widest flex items-center justify-between transition-all active:bg-white/10",
-                      isActive ? "text-white bg-white/15 border-l-4 border-white pl-5" : "text-neutral-200 hover:text-white"
+                      isActive ? "text-white bg-white/10 border-l-[3px] border-[#C9A84C] pl-5" : "text-neutral-300 hover:text-white"
                     )}
                   >
                     <span>{link.label}</span>
