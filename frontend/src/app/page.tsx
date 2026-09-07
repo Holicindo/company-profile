@@ -4,12 +4,13 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { ProductCategoriesSection } from '@/components/home/ProductCategoriesSection';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
 import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
+import { ClientsMarquee } from '@/components/home/ClientsMarquee';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { getProductCategories, getFeaturedProducts, getFeaturedPortfolio } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Holic | Penyedia Peralatan Dapur Komersial & Mesin F&B Terpercaya',
-  description: 'Holic adalah penyedia peralatan dapur komersial terpercaya di Indonesia. Berpengalaman 20+ tahun menghadirkan mesin F&B berkualitas dengan garansi resmi.',
+  title: 'Holicindo | Spesialis Showcase & Pendingin Komersial untuk HORECA Indonesia',
+  description: 'Holicindo adalah spesialis showcase kue, chiller komersial, dan refrigerator industri terpercaya di Indonesia. Solusi pendingin & display premium untuk restoran, hotel, bakery, dan kafe.',
 };
 
 export const revalidate = 3600;
@@ -31,6 +32,7 @@ export default async function HomePage() {
     <>
       <MainHero />
       <HeroSection />
+
       <ProductCategoriesSection categories={categories} />
       <FeaturedProductsSection products={featuredProducts} />
       <WhyChooseUsSection />

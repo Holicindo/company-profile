@@ -14,7 +14,7 @@ export function ProjectsSection({ projects }: { projects: Portfolio[] }) {
       <div className="container-wide relative z-10">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6 mb-8 sm:mb-16">
           <div>
-            <p className="text-neutral-400 font-bold text-[10px] uppercase tracking-[0.2em] mb-2 sm:mb-4">Portfolio</p>
+            <p className="text-[#C9A84C] font-black text-xs sm:text-sm uppercase tracking-[0.25em] mb-2 sm:mb-4">Portfolio</p>
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-light text-black tracking-tight mb-2 sm:mb-4">Project Experiences</h2>
             <p className="text-neutral-500 font-light text-sm sm:text-lg">
               {t(
@@ -31,16 +31,14 @@ export function ProjectsSection({ projects }: { projects: Portfolio[] }) {
         {projects.length ? (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             {projects.slice(0, 6).map(p => (
-              <Link key={p.id} href={`/projects/${p.slug}`} className="group block border border-neutral-200 hover:border-black transition-colors duration-300 active:scale-[0.99]">
+              <Link key={p.id} href={`/projects/${p.slug}`} className="group block border-2 border-[#C9A84C] hover:border-[#C9A84C] transition-colors duration-300 active:scale-[0.99]">
                 <div className="relative h-32 sm:h-64 bg-neutral-100 overflow-hidden">
                   {p.imageUrl
-                    ? <Image src={p.imageUrl} alt={p.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" sizes="(max-width: 640px) 50vw, 33vw" unoptimized />
+                    ? <Image src={p.imageUrl} alt={p.title} fill className="object-cover group-hover:scale-105 transition-all duration-500" sizes="(max-width: 640px) 50vw, 33vw" unoptimized />
                     : <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center"><Building2 size={28} strokeWidth={1} className="text-neutral-300" /></div>}
                 </div>
                 <div className="p-3 sm:p-6 bg-white">
                   <h3 className="font-medium sm:font-light text-xs sm:text-xl text-black mb-1 sm:mb-2 line-clamp-2 tracking-tight group-hover:text-neutral-600 transition-colors">{p.title}</h3>
-                  {p.clientName && <p className="text-neutral-500 font-light text-[9px] sm:text-sm mb-1 uppercase tracking-widest line-clamp-1">{t('Klien:', 'Client:')} {p.clientName}</p>}
-                  {p.projectDate && <p className="text-neutral-400 font-bold text-[8px] sm:text-[10px] uppercase tracking-widest mt-2 sm:mt-4 pt-2 sm:pt-4 border-t border-neutral-100">{new Date(p.projectDate).getFullYear()}</p>}
                 </div>
               </Link>
             ))}

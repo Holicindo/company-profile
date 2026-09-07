@@ -46,7 +46,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
 
       {/* ── 1. SPOTLIGHT CAROUSEL ── */}
       {featuredProjects.length > 0 && (
-        <div className="bg-[#2D3E50] overflow-hidden shadow-2xl">
+        <div className="bg-[#2C1810] overflow-hidden shadow-2xl">
           <div className="grid grid-cols-1 lg:grid-cols-12" style={{ minHeight: '460px' }}>
 
             {/* Image Side */}
@@ -73,7 +73,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
                     </div>
                   )}
                   {/* Mobile bottom gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2D3E50] via-transparent to-transparent lg:hidden" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2C1810] via-transparent to-transparent lg:hidden" />
                 </div>
               ))}
 
@@ -85,11 +85,11 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
               {/* Nav Arrows */}
               <div className="absolute bottom-5 right-5 z-10 flex gap-2">
                 <button onClick={prevSlide} aria-label="Sebelumnya"
-                  className="w-9 h-9 bg-black/50 hover:bg-white hover:text-[#2D3E50] text-white flex items-center justify-center transition-all border border-white/20 backdrop-blur-sm">
+                  className="w-9 h-9 bg-black/50 hover:bg-white hover:text-[#2C1810] text-white flex items-center justify-center transition-all border border-white/20 backdrop-blur-sm">
                   <ChevronLeft size={16} />
                 </button>
                 <button onClick={nextSlide} aria-label="Selanjutnya"
-                  className="w-9 h-9 bg-black/50 hover:bg-white hover:text-[#2D3E50] text-white flex items-center justify-center transition-all border border-white/20 backdrop-blur-sm">
+                  className="w-9 h-9 bg-black/50 hover:bg-white hover:text-[#2C1810] text-white flex items-center justify-center transition-all border border-white/20 backdrop-blur-sm">
                   <ChevronRight size={16} />
                 </button>
               </div>
@@ -163,96 +163,8 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
         </div>
       )}
 
-      {/* ── 2. GALLERY GRID ── */}
-      <div>
-        <div className="mb-10 pb-5 border-b border-neutral-200 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">
-              {t('Portofolio Lengkap', 'Full Portfolio')}
-            </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#2D3E50] tracking-tight">
-              {t('Galeri Instalasi', 'Installation Gallery')}
-            </h2>
-          </div>
-          <p className="text-neutral-400 text-sm max-w-md leading-relaxed">
-            {t('Album foto hasil instalasi Holicindo di seluruh Indonesia.', 'Photo albums of Holicindo installation projects across Indonesia.')}
-          </p>
-        </div>
-
-        {projects.length > 0 ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-            {projects.map((p) => (
-              <div
-                key={p.id}
-                className="group bg-white border border-neutral-200 hover:border-[#2D3E50] hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden"
-              >
-                {/* Thumbnail */}
-                <Link
-                  href={`/projects/${p.slug}`}
-                  className="relative overflow-hidden block h-32 sm:h-[220px]"
-                >
-                  {p.imageUrl ? (
-                    <Image
-                      src={p.imageUrl}
-                      alt={p.title}
-                      fill
-                      className="object-cover group-hover:scale-103 transition-transform duration-500"
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                      unoptimized
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center">
-                      <Building2 size={36} className="text-neutral-300" />
-                    </div>
-                  )}
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-[#2D3E50]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="px-5 py-2 bg-white text-[#2D3E50] text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
-                      {t('Lihat Proyek', 'View Project')} <ArrowRight size={14} />
-                    </span>
-                  </div>
-                </Link>
-
-                {/* Card body */}
-                <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between">
-                  <div>
-                    {p.clientName && (
-                      <p className="text-[8px] sm:text-[9px] font-bold text-neutral-400 uppercase tracking-[0.2em] mb-1 sm:mb-2 line-clamp-1">
-                        {p.clientName}
-                      </p>
-                    )}
-                    <h3 className="font-semibold text-xs sm:text-base text-[#2D3E50] leading-snug line-clamp-2 mb-2 sm:mb-3">
-                      {p.title}
-                    </h3>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2 sm:pt-4 border-t border-neutral-100 mt-1 sm:mt-2">
-                    <span className="text-[8px] sm:text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
-                      {p.projectDate ? new Date(p.projectDate).getFullYear() : 'Holicindo'}
-                    </span>
-                    <Link
-                      href={`/projects/${p.slug}`}
-                      className="inline-flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] font-bold text-[#2D3E50] hover:text-black uppercase tracking-widest transition-colors"
-                    >
-                      {t('Detail', 'Details')} <ArrowRight size={12} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20 bg-neutral-50 border border-neutral-200">
-            <Building2 size={36} className="text-neutral-300 mx-auto mb-3" />
-            <p className="text-neutral-500 font-light text-base">
-              {t('Belum ada proyek yang dapat ditampilkan.', 'No projects available to display.')}
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* ── 3. E-KATALOG BANNER ── */}
-      <div className="bg-[#2D3E50] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+      {/* ── 2. E-KATALOG BANNER ── */}
+      <div className="bg-[#2C1810] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="flex items-start gap-5">
           <div className="w-12 h-12 bg-white/10 border border-white/15 text-white flex items-center justify-center shrink-0">
             <FileText size={22} />
@@ -278,12 +190,98 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
             href="/catalogue-showcase-2026.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full md:w-auto px-7 py-3 bg-white text-[#2D3E50] hover:bg-white/90 text-[10px] font-bold uppercase tracking-widest transition-colors inline-flex items-center justify-center gap-2"
+            className="w-full md:w-auto px-7 py-3 bg-white text-[#2C1810] hover:bg-white/90 text-[10px] font-bold uppercase tracking-widest transition-colors inline-flex items-center justify-center gap-2"
           >
             <ExternalLink size={14} /> {t('Buka PDF', 'Open PDF')}
           </a>
         </div>
       </div>
+
+      {/* ── 3. GALLERY GRID ── */}
+      <div>
+        <div className="mb-10 pb-5 border-b border-neutral-200 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">
+              {t('Portofolio Lengkap', 'Full Portfolio')}
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#2C1810] tracking-tight">
+              {t('Galeri Instalasi', 'Installation Gallery')}
+            </h2>
+          </div>
+          <p className="text-neutral-400 text-sm max-w-md leading-relaxed">
+            {t('Album foto hasil instalasi Holicindo di seluruh Indonesia.', 'Photo albums of Holicindo installation projects across Indonesia.')}
+          </p>
+        </div>
+
+        {projects.length > 0 ? (
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+            {projects.map((p) => (
+              <div
+                key={p.id}
+                className="group bg-white border border-[#C9A84C] hover:border-[#C9A84C] hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden"
+              >
+                {/* Thumbnail */}
+                <Link
+                  href={`/projects/${p.slug}`}
+                  className="relative overflow-hidden block h-32 sm:h-[220px]"
+                >
+                  {p.imageUrl ? (
+                    <Image
+                      src={p.imageUrl}
+                      alt={p.title}
+                      fill
+                      className="object-cover group-hover:scale-103 transition-transform duration-500"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center">
+                      <Building2 size={36} className="text-neutral-300" />
+                    </div>
+                  )}
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-[#2C1810]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="px-5 py-2 bg-white text-[#2C1810] text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
+                      {t('Lihat Proyek', 'View Project')} <ArrowRight size={14} />
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Card body */}
+                <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    {p.clientName && (
+                      <p className="text-[8px] sm:text-[9px] font-bold text-neutral-400 uppercase tracking-[0.2em] mb-1 sm:mb-2 line-clamp-1">
+                        {p.clientName}
+                      </p>
+                    )}
+                    <h3 className="font-semibold text-xs sm:text-base text-[#2C1810] leading-snug line-clamp-2 mb-2 sm:mb-3">
+                      {p.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center justify-end pt-2 sm:pt-4 border-t border-neutral-100 mt-1 sm:mt-2">
+                    <Link
+                      href={`/projects/${p.slug}`}
+                      className="inline-flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] font-bold text-[#2C1810] hover:text-black uppercase tracking-widest transition-colors"
+                    >
+                      {t('Detail', 'Details')} <ArrowRight size={12} />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-neutral-50 border border-neutral-200">
+            <Building2 size={36} className="text-neutral-300 mx-auto mb-3" />
+            <p className="text-neutral-500 font-light text-base">
+              {t('Belum ada proyek yang dapat ditampilkan.', 'No projects available to display.')}
+            </p>
+          </div>
+        )}
+      </div>
+
 
     </div>
   );

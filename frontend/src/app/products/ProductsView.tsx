@@ -94,31 +94,16 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
             {/* Centered Text Content */}
             <div className="absolute inset-0 flex items-center justify-center z-10 pt-6 sm:pt-0">
               <div className="text-center px-4 sm:px-6 max-w-xl">
-                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2 sm:mb-4 leading-[1.15] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
-                  {t('Katalog Produk', 'Product Catalog')}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-2 sm:mb-4 pb-2 leading-[1.15] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-[#C9A84C] to-white animate-shimmer-text">
+                  {t('Solusi & Industri', 'Solutions & Industries')}
                 </h1>
-                <p className="text-white/90 text-xs sm:text-sm md:text-base font-normal leading-relaxed drop-shadow-md mb-4 sm:mb-7 mx-auto line-clamp-2 sm:line-clamp-none">
-                  {category
-                    ? seoInfo.description
-                    : t(
-                        `Temukan lebih dari ${data.total} mesin industrial dan peralatan komersial untuk mendukung operasional bisnis Food & Beverage Anda.`,
-                        `Discover over ${data.total} industrial machines and commercial equipment to support your Food & Beverage business operations.`
-                      )
-                  }
+                <p className="text-white/90 text-sm sm:text-base md:text-lg font-normal leading-relaxed drop-shadow-md mb-4 sm:mb-7 mx-auto line-clamp-2 sm:line-clamp-none">
+                  {t(
+                    'Menghadirkan lini mesin komersial premium yang dirancang khusus untuk mendukung operasional ketat di berbagai sektor industri.',
+                    'Delivering a premium line of commercial machines specially designed to support rigorous operations across various industrial sectors.'
+                  )}
                 </p>
-                <a
-                  href="/catalogue-showcase-2026.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-[#2D3E50] px-5 sm:px-7 py-2.5 sm:py-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest hover:bg-white/90 transition-colors shadow-lg active:scale-95 rounded-sm"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 sm:w-4 sm:h-4">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                  {t('Download E-Katalog (PDF)', 'Download E-Catalog (PDF)')}
-                </a>
+
               </div>
             </div>
 
@@ -167,7 +152,125 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
         </div>
       </div>
 
-      {/* ── Main Content ── */}
+      {/* ── New Solutions / Industries Content ── */}
+      <div id="industri" className="bg-[#1a0b06] border-t border-[#C9A84C]/20 py-16 sm:py-24">
+        <div className="container-wide">
+          <div className="text-center mb-12 sm:mb-20">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4">
+              {t('Fokus Industri Kami', 'Our Industry Focus')}
+            </h2>
+            <p className="text-neutral-400 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
+              {t(
+                'Inovasi teknologi pendingin komersial kami dirancang untuk mendukung berbagai skala industri dengan standar efisiensi, durabilitas, dan estetika tanpa kompromi.',
+                'Our commercial refrigeration technology innovations are designed to support various industrial scales with uncompromising efficiency, durability, and aesthetics.'
+              )}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            {/* Card 1: Bakery */}
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+              <div className="absolute inset-0">
+                <Image src="/images/products/hero_section_product_(1).png" alt="Bakery" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
+              </div>
+              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
+                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+                  Bakery & Pastry
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Estetika Display & Presisi Suhu</h3>
+                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                  {t(
+                    'Curved showcase elegan dengan kontrol kelembapan tinggi (high-humidity) menjaga kualitas kue dan roti tetap segar sambil menarik perhatian pelanggan dari pandangan pertama.',
+                    'Elegant curved showcases with high-humidity control keep cakes and pastries fresh while captivating customers at first sight.'
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2: HORECA */}
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+              <div className="absolute inset-0">
+                <Image src="/images/products/hero_section_product_(2).png" alt="HORECA" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
+              </div>
+              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
+                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+                  HORECA (Hotel & Resto)
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Ketahanan Dapur Komersial</h3>
+                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                  {t(
+                    'Mesin Stainless Steel Undercounter & Upright Chiller tugas berat yang didesain tangguh untuk memfasilitasi alur kerja cepat di dapur komersial.',
+                    'Heavy-duty Stainless Steel Undercounter & Upright Chillers built tough to facilitate fast-paced workflows in commercial kitchens.'
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3: Retail & Supermarket */}
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+              <div className="absolute inset-0">
+                <Image src="/images/products/hero_section_product_(3).png" alt="Retail" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
+              </div>
+              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
+                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+                  Retail & Supermarket
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Visibilitas & Kapasitas Ekstra</h3>
+                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                  {t(
+                    'Multideck Open Chiller dan Island Freezer berkapasitas masif yang memaksimalkan area display produk untuk mendorong penjualan seketika.',
+                    'Massive capacity Multideck Open Chillers and Island Freezers that maximize product display areas to drive impulse purchases.'
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4: Industrial */}
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+              <div className="absolute inset-0">
+                <Image src="/images/products/hero_section_product_(4).png" alt="Industrial" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
+              </div>
+              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
+                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+                  Pengolahan Industri
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Kekuatan Produksi Massal</h3>
+                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                  {t(
+                    'Dari Cold Room hingga Blast Freezer skala pabrik, sistem pendingin kami menjaga integritas bahan baku makanan pada volume produksi raksasa secara stabil.',
+                    'From Cold Rooms to factory-scale Blast Freezers, our cooling systems stably maintain the integrity of raw materials at gigantic production volumes.'
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Bridge CTA to new portal */}
+          <div className="mt-20 sm:mt-32 text-center p-8 sm:p-16 border border-[#C9A84C]/20 rounded-2xl bg-gradient-to-br from-[#1a0b06] to-[#0a0402] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+            <h4 className="text-xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 relative z-10">
+              {t('Cari Katalog Spesifikasi Lengkap?', 'Looking for Complete Specification Catalog?')}
+            </h4>
+            <p className="text-neutral-400 text-sm sm:text-base max-w-2xl mx-auto mb-8 sm:mb-10 relative z-10 leading-relaxed">
+              {t(
+                'Sedang membangun ekosistem digital baru kami! Segera hadir, portal e-katalog terpisah khusus untuk melihat rincian teknis, dimensi, dan ketersediaan stok lebih dari 280 mesin Holicindo.',
+                'Building our new digital ecosystem! Coming soon, a dedicated e-catalog portal to view technical details, dimensions, and stock for over 280 Holicindo machines.'
+              )}
+            </p>
+            <button className="relative z-10 bg-[#C9A84C] text-[#130a05] hover:bg-[#b0903b] px-6 sm:px-10 py-3.5 sm:py-4 text-[10px] sm:text-xs font-bold uppercase tracking-widest rounded-sm transition-colors shadow-lg active:scale-95 flex items-center justify-center gap-2 mx-auto cursor-not-allowed opacity-80" title="Coming Soon">
+              <Settings size={16} className="animate-spin-slow" />
+              {t('Portal E-Katalog (Segera Hadir)', 'E-Catalog Portal (Coming Soon)')}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── HIDDEN Old Main Content (Saved for new web migration) ── */}
+      {false && (
       <div className="container-wide py-8 sm:py-12 lg:py-16">
         <div className="flex flex-col lg:flex-row gap-6 sm:gap-12">
 
@@ -291,6 +394,8 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
           </div>
         </div>
       </div>
+      )}
+
     </div>
   );
 }

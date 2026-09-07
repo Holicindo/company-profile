@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Building2, Calendar, MapPin, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Building2, MapPin, ArrowRight } from 'lucide-react';
 import { sanitizeProjectDescription } from '@/lib/content-parser';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -89,19 +89,7 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
                 </div>
               )}
 
-              {project.projectDate && (
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0">
-                    <Calendar size={15} className="text-brand-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-neutral-400 mb-0.5">{t('Tahun Proyek', 'Project Year')}</p>
-                    <p className="text-sm font-semibold text-neutral-800">
-                      {new Date(project.projectDate).getFullYear()}
-                    </p>
-                  </div>
-                </div>
-              )}
+
 
               {project.location && (
                 <div className="flex items-start gap-3">

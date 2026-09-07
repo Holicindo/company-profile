@@ -18,8 +18,6 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
     '/images/experiences/hero_experiences_(3).png',
     '/images/experiences/hero_experiences_(4).png',
     '/images/experiences/hero_experiences_(5).png',
-    '/images/experiences/hero_experiences_(6).png',
-    '/images/experiences/hero_experiences_(7).png',
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -77,14 +75,14 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
 
           {/* Centered content */}
           <div className="absolute inset-0 flex items-center justify-center z-10">
-            <div className="text-center px-6 max-w-3xl">
-              <p className="text-white/70 font-bold text-[10px] uppercase tracking-[0.25em] mb-4 drop-shadow">
+            <div className="text-center px-6 max-w-5xl">
+              <p className="text-white/70 font-bold text-xs sm:text-sm uppercase tracking-[0.25em] mb-4 drop-shadow">
                 Project Experiences
               </p>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.1] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6 leading-[1.1] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text whitespace-nowrap">
                 {t('Portofolio Instalasi Mesin', 'Machine Installation Portfolio')}
               </h1>
-              <p className="text-white/90 text-base md:text-lg font-normal leading-relaxed drop-shadow-md max-w-2xl mx-auto">
+              <p className="text-white/90 text-lg md:text-xl font-normal leading-relaxed drop-shadow-md max-w-2xl mx-auto">
                 {t(
                   'Jejak keberhasilan instalasi mesin kami yang telah dipercaya oleh ratusan pelaku industri F&B dan HORECA di Indonesia.',
                   'The track record of our successful machine installations, trusted by hundreds of F&B and HORECA industry players in Indonesia.'
@@ -127,8 +125,8 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
                       key={p}
                       href={`/projects?page=${p}`}
                       className={`w-10 h-10 flex items-center justify-center text-xs font-bold transition-colors ${p === page
-                        ? 'bg-[#2D3E50] text-white border border-[#2D3E50]'
-                        : 'bg-white border border-neutral-200 text-neutral-600 hover:border-[#2D3E50] hover:text-[#2D3E50]'
+                        ? 'bg-[#2C1810] text-white border border-[#2C1810]'
+                        : 'bg-white border border-neutral-200 text-neutral-600 hover:border-[#2C1810] hover:text-[#2C1810]'
                         }`}
                     >
                       {p}
