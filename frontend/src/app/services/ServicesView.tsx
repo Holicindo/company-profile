@@ -175,7 +175,7 @@ export function ServicesView() {
               </div>
               
               <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4 leading-tight">
-                {pageData?.smartEcosystem?.title || 'Holic Smart Asset Ecosystem'}
+                {pageData?.smartEcosystem?.title || 'Layanan Khusus untuk Customer'}
               </h2>
               <p className="text-neutral-300 text-sm sm:text-base leading-relaxed mb-8">
                 {pageData?.smartEcosystem?.description || t(
@@ -204,11 +204,11 @@ export function ServicesView() {
                   <>
                     <div className="flex gap-4">
                       <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
-                        <QrCode size={18} />
+                        <Headphones size={18} />
                       </div>
                       <div>
-                        <h4 className="text-white font-bold text-sm mb-1">{t('Akses Instan & VIP', 'Instant & VIP Access')}</h4>
-                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Dapatkan jalur prioritas untuk terhubung langsung dengan tim dukungan teknis kami secara presisi dan efisien hanya dalam hitungan detik.', 'Get priority routing to connect directly with our technical support team precisely and efficiently in just seconds.')}</p>
+                        <h4 className="text-white font-bold text-sm mb-1">{t('Service Prioritas', 'Priority Service')}</h4>
+                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Tim support kami siap melayani Anda dengan respons cepat dan solusi tepat untuk setiap kebutuhan layanan.', 'Our support team is ready to serve you with quick response and precise solutions for every service need.')}</p>
                       </div>
                     </div>
                     
@@ -217,18 +217,18 @@ export function ServicesView() {
                         <Activity size={18} />
                       </div>
                       <div>
-                        <h4 className="text-white font-bold text-sm mb-1">{t('Pemantauan Armada Terpusat', 'Centralized Fleet Monitoring')}</h4>
-                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Kendali penuh atas seluruh aset operasional Anda di berbagai cabang. Dapatkan visibilitas komprehensif untuk memastikan produktivitas tanpa henti.', 'Full control over your entire operational assets across branches. Gain comprehensive visibility to ensure non-stop productivity.')}</p>
+                        <h4 className="text-white font-bold text-sm mb-1">{t('Pantau Semua Unit di Semua Outlet', 'Monitor All Units at All Outlets')}</h4>
+                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Sistem monitoring terpusat membantu Anda mengawasi semua unit peralatan di berbagai lokasi cabang secara real-time.', 'Centralized monitoring system helps you oversee all equipment units across branch locations in real-time.')}</p>
                       </div>
                     </div>
 
                     <div className="flex gap-4">
                       <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
-                        <CheckCircle2 size={18} />
+                        <ShieldCheck size={18} />
                       </div>
                       <div>
-                        <h4 className="text-white font-bold text-sm mb-1">{t('Keamanan & Rekam Jejak Digital', 'Security & Digital Track Record')}</h4>
-                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Validasi keaslian produk dan pelacakan riwayat perawatan terstruktur yang menjamin transparansi serta nilai investasi jangka panjang mesin Anda.', 'Product authenticity validation and structured maintenance history tracking that guarantees transparency and the long-term investment value of your machines.')}</p>
+                        <h4 className="text-white font-bold text-sm mb-1">{t('Garansi & Service History Digital', 'Warranty & Digital Service History')}</h4>
+                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Rekam jejak digital lengkap dari garansi hingga riwayat perawatan untuk transparansi dan keamanan investasi Anda.', 'Complete digital track record from warranty to maintenance history for transparency and security of your investment.')}</p>
                       </div>
                     </div>
                   </>
@@ -262,7 +262,7 @@ export function ServicesView() {
                {/* Showcase — fills entire right panel */}
                <div className="absolute inset-0 z-10 flex items-center justify-center p-4 sm:p-6">
                  <Image 
-                   src={pageData?.smartEcosystem?.showcaseImage || "/images/services/Cold%20case%20FIC%20FIXNB.png"} 
+                   src={pageData?.smartEcosystem?.showcaseImage || "/uploads/1789194555673-571623.png"} 
                    alt="Showcase Unit" 
                    fill 
                    className="object-contain drop-shadow-2xl" 
