@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
@@ -49,7 +49,7 @@ export function AboutView() {
       <div className="container-wide py-8 sm:py-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-12 sm:mb-16">
           <div className="lg:col-span-7 p-6 sm:p-10 lg:p-14 border border-neutral-200 bg-white">
-            <h2 className="text-2xl sm:text-4xl font-bold text-[#2C1810] tracking-tight mb-4 sm:mb-8">{t('Perjalanan Kami', 'Our Journey')}</h2>
+            <h2 className="text-2xl sm:text-4xl font-bold text-[#2C1810] tracking-tight mb-4 sm:mb-8">{t('Sejarah Perusahaan', 'Company History')}</h2>
             <div className="space-y-4 sm:space-y-6 text-neutral-600 text-sm sm:text-lg leading-relaxed text-justify">
               <p>{t('PT. Holicindo Dasa Anugerah telah berdiri sebagai pemasar mesin makanan industri di Indonesia sejak tahun 2001. Perusahaan kami menyediakan berbagai macam mesin makanan, mulai dari sistem pendinginan, peralatan memanggang hingga etalase showcase untuk makanan.', 'PT. Holicindo Dasa Anugerah has been established as an industrial food machinery distributor in Indonesia since 2001. We provide various types of food machinery, from refrigeration systems, baking equipment to food showcases.')}</p>
               <p>{t('Sebagai produsen spesialisasi pembuatan khusus kami dapat memanajemen harga etalase showcase untuk makanan. Sebagai produsen spesialisasi pendingin, kami telah merebut kepercayaan konsumen. Perusahaan kami menyediakan pengiriman, pemasangan produk yang disediakan akurat juga, kami juga memahami harga sales service semua produk kami di seluruh Indonesia.', 'As a specialized manufacturer of custom-made equipment, we can manage showcase prices for food displays. As a specialized refrigeration manufacturer, we have earned customer trust. Our company provides delivery, product installation accurately, and we also provide comprehensive sales service for all our products throughout Indonesia.')}</p>
@@ -71,28 +71,46 @@ export function AboutView() {
         </div>
 
         <div className="mb-12 sm:mb-16">
-          <div className="max-w-3xl mb-6 sm:mb-8">
-            <div className="inline-block px-3.5 py-1 bg-neutral-100 text-[#2C1810] text-[9px] font-bold uppercase tracking-widest mb-4 sm:mb-6 rounded-full border border-neutral-200">{t('VISI', 'VISION')}</div>
-            <h2 className="text-2xl sm:text-5xl font-bold text-[#2C1810] tracking-tight mb-4 sm:mb-6 leading-[1.15]">{t('Menjadi Distributor Terdepan', 'To Become the Leading Distributor')}</h2>
-            <p className="text-neutral-600 text-sm sm:text-lg leading-relaxed font-semibold mb-4 sm:mb-6">{t('Menjadi distributor mesin pengolahan makanan dan pendingin komersial terdepan di Indonesia, dengan komitmen menghadirkan standar kualitas industri terbaik untuk bisnis Anda.', 'To become the leading food processing machine and commercial refrigeration distributor in Indonesia, committed to delivering the best industry quality standards for your business.')}</p>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-start mb-6 sm:mb-8">
 
-          <div className="bg-white border-2 border-neutral-200 rounded-xl p-6 sm:p-10 shadow-sm">
-            <h3 className="font-bold text-[#2C1810] text-lg sm:text-xl mb-4 sm:mb-6">{t('Produk dan Layanan:', 'Products and Services:')}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-              <div>
-                <h4 className="font-bold text-[#2C1810] text-base sm:text-lg mb-2 sm:mb-3">{t('Mesin Pengolahan Makanan', 'Food Processing Machinery')}</h4>
-                <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Peralatan industrial seperti mixer dan slicer komersial yang dirancang khusus untuk memaksimalkan efisiensi dan konsistensi produksi dapur Anda.', 'Industrial equipment such as commercial mixers and slicers specifically engineered to maximize your kitchen production efficiency and consistency.')}</p>
+            {/* Kolom Kiri: Badge + Judul */}
+            <div>
+              <div className="inline-block px-4 py-1.5 bg-[#2C1810] text-white text-xs font-bold uppercase tracking-widest mb-6 sm:mb-8 rounded-sm">
+                {t('VISI', 'VISION')}
               </div>
-              <div>
-                <h4 className="font-bold text-[#2C1810] text-base sm:text-lg mb-2 sm:mb-3">{t('Showcase Kustom', 'Custom Showcase')}</h4>
-                <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Desain dan pembuatan showcase pendingin yang fungsional sekaligus estetis. Sangat ideal untuk display makanan dengan kustomisasi spesifikasi sesuai kebutuhan bisnis.', 'Functional and aesthetic design and manufacturing of custom refrigerated showcases. Ideal for food displays with tailor-made specifications to suit your business needs.')}</p>
-              </div>
-              <div>
-                <h4 className="font-bold text-[#2C1810] text-base sm:text-lg mb-2 sm:mb-3">{t('Etalase Pastry & Chiller', 'Pastry Display & Chiller')}</h4>
-                <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">{t('Sistem pendingin komersial berkualitas tinggi yang dapat disesuaikan dengan kapasitas dan spesifikasi produk kuliner Anda.', 'High-quality commercial cooling systems adaptable to your culinary product capacity and specifications.')}</p>
-              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C1810] tracking-tight leading-[1.2] mb-0">
+                {t('Lebih dari sekadar', 'More than')}<br />
+                {t('distributor mesin', 'a showcase')}<br />
+                <span className="text-[#C9A84C]">{t('pendingin komersial.', 'manufacturer.')}</span>
+              </h2>
             </div>
+
+            {/* Kolom Kanan: Garis + Deskripsi + Tagline */}
+            <div className="flex flex-col gap-5 pt-0 lg:pt-14">
+              <div className="w-12 h-[2px] bg-[#C9A84C]" />
+
+              <p className="text-[#2C1810] text-sm sm:text-base font-bold leading-relaxed">
+                {t(
+                  'Holicindo menghadirkan solusi display kustom yang membantu brand makanan mempresentasikan, menjaga, dan menjual produk mereka dengan lebih baik.',
+                  'Holicindo creates custom display solutions that help food brands present, preserve, and sell their products better.'
+                )}
+              </p>
+
+              <p className="text-neutral-500 text-sm leading-relaxed">
+                {t(
+                  'Di setiap proyek, Holicindo memadukan desain, manufaktur, instalasi, dan dukungan purna jual untuk menciptakan sistem display yang dibangun sesuai produk, ruang, dan kebutuhan bisnis setiap pelanggan.',
+                  'With every project, Holicindo brings together design, manufacturing, installation, and after-sales support to create display systems built around each customer\'s products, space, and business needs.'
+                )}
+              </p>
+
+              <p
+                className="text-[#2C1810] text-2xl sm:text-3xl leading-snug mt-2"
+                style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: 400 }}
+              >
+                {t('Menciptakan Pengalaman Display Makanan Terbaik', 'Creating Better Food Display Experiences')}
+              </p>
+            </div>
+
           </div>
         </div>
 

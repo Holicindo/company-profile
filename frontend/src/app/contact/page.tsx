@@ -131,14 +131,6 @@ export default function ContactPage() {
                       Green Sedayu Bizpark Blok GSB No. 016, Jl. Cakung Cilincing Tim. No. Raya, Cakung Tim., Jakarta Timur 13910
                     </p>
                   </div>
-                  <div>
-                    <p className="text-[9px] font-bold text-[#C9A84C] uppercase tracking-[0.2em] mb-1">
-                      {t('Kantor Cimahi', 'Cimahi Office')}
-                    </p>
-                    <p className="text-white font-bold text-xs leading-relaxed">
-                      Komplek Jersindo, Jl. Raya Cimindi No.115, Cibeureum, Cimahi Selatan, Jawa Barat 40535
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>

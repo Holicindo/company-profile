@@ -242,20 +242,50 @@ async function seedFromXml(ds: DataSource) {
   }
   console.log(`   ✅ ${portCount} portfolio items`);
 
-  // Blog posts
-  const blogItems = items.filter(i => cdata(i['wp:post_type']) === 'post' && cdata(i['wp:status']) === 'publish');
+  // Blog posts (include all statuses, not just publish)
+  const blogItems = items.filter(i => cdata(i['wp:post_type']) === 'post');
   let bCount = 0;
+  let bSkipped = 0;
   for (const item of blogItems) {
     const wpId = parseInt(cdata(item['wp:post_id']));
-    if (await blogRepo.findOne({ where: { wpPostId: wpId } })) continue;
+    const wpStatus = cdata(item['wp:status']);
+    
+    // Skip trash, auto-draft, inherit
+    if (['trash', 'auto-draft', 'inherit'].includes(wpStatus)) continue;
+    
+    if (await blogRepo.findOne({ where: { wpPostId: wpId } })) { bSkipped++; continue; }
     const title = cdata(item['title']);
-    const s = cdata(item['wp:post_name']) || slug(title);
+    let s = cdata(item['wp:post_name']) || slug(title);
+    
+    // Check for duplicate slug and append number if needed
+    let slugExists = await blogRepo.findOne({ where: { slug: s } });
+    let counter = 1;
+    while (slugExists) {
+      s = `${cdata(item['wp:post_name']) || slug(title)}-${counter}`;
+      slugExists = await blogRepo.findOne({ where: { slug: s } });
+      counter++;
+    }
+    
+    // Map WordPress status to our enum
+    const ourStatus = (wpStatus === 'publish' || wpStatus === 'future') ? PostStatus.PUBLISHED : PostStatus.DRAFT;
+    
     try {
-      await blogRepo.save(blogRepo.create({ slug: s, title, content: cdata(item['content:encoded']), excerpt: cdata(item['excerpt:encoded']), author: cdata(item['dc:creator']), status: PostStatus.PUBLISHED, publishedAt: new Date(cdata(item['wp:post_date'])), wpPostId: wpId }));
+      await blogRepo.save(blogRepo.create({ 
+        slug: s, 
+        title, 
+        content: cdata(item['content:encoded']) || '', 
+        excerpt: cdata(item['excerpt:encoded']) || null, 
+        author: cdata(item['dc:creator']) || 'Holicindo', 
+        status: ourStatus, 
+        publishedAt: (wpStatus === 'publish' || wpStatus === 'future') ? new Date(cdata(item['wp:post_date'])) : null, 
+        wpPostId: wpId 
+      }));
       bCount++;
-    } catch { /* duplicate */ }
+    } catch (err: any) { 
+      console.log(`   ⚠️  Blog post "${title}" error: ${err.message}`);
+    }
   }
-  console.log(`   ✅ ${bCount} blog posts`);
+  console.log(`   ✅ ${bCount} blog posts (${bSkipped} skipped as duplicates)`);
 }
 
 async function main() {

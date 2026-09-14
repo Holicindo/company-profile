@@ -46,15 +46,15 @@ export function Navbar() {
     <header className="sticky top-0 z-50">
       <nav className={clsx("relative transition-all duration-300 border-b border-gold-subtle bg-dark-metallic", scrolled ? "shadow-md py-2" : "py-2.5")}>
         <div className="container-wide">
-          <div className="flex items-center justify-between h-14 md:h-16">
+          <div className="flex items-center justify-between h-14 md:h-16 gap-4 lg:gap-8">
             
             {/* Logo - Left */}
-            <Link href="/" className="flex items-center active:scale-95 transition-transform">
+            <Link href="/" className="flex items-center active:scale-95 transition-transform flex-shrink-0">
               <Image src="/logo.png" alt="Holicindo Logo" width={135} height={40} className="object-contain brightness-0 invert" priority />
             </Link>
 
-            {/* Navigation & Language Switcher - Right (Desktop) */}
-            <div className="hidden md:flex items-center gap-7">
+            {/* Navigation - Center with flex-1 to take available space */}
+            <div className="hidden md:flex items-center gap-5 lg:gap-7 justify-center flex-1">
               {navLinks.map(link => {
                 const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href));
                 return (
@@ -63,7 +63,7 @@ export function Navbar() {
                     onMouseLeave={() => setDropdown(null)}>
                     <Link href={link.href}
                       className={clsx(
-                        "text-xs sm:text-[13px] md:text-sm font-bold uppercase tracking-wider transition-colors py-1.5 flex items-center gap-1 relative",
+                        "text-xs sm:text-[13px] md:text-sm font-bold uppercase tracking-wider transition-colors py-1.5 flex items-center gap-1 relative whitespace-nowrap",
                         isActive ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#C9A84C]" : "text-neutral-300 hover:text-white"
                       )}>
                       {link.label} {(link as any).children && <ChevronDown size={14} strokeWidth={2} />}
@@ -71,14 +71,17 @@ export function Navbar() {
                   </div>
                 );
               })}
+            </div>
 
+            {/* Right Side: Hubungi Kami + Language Switcher */}
+            <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
               {/* Hubungi Kami Button */}
-              <Link href="/contact" className="ml-2 px-4 py-1.5 rounded-full border-2 border-white/40 text-xs font-bold text-white hover:bg-white hover:text-[#3D2010] transition-all tracking-wider uppercase">
+              <Link href="/contact" className="px-4 py-1.5 rounded-full border-2 border-white/40 text-xs font-bold text-white hover:bg-white hover:text-[#3D2010] transition-all tracking-wider uppercase whitespace-nowrap">
                 {t('Hubungi Kami', 'Contact Us')}
               </Link>
 
               {/* Language Switcher Pill (ID | EN) */}
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs text-white shadow-inner ml-2">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs text-white shadow-inner">
                 <Globe size={13} className="text-white/80" />
                 <button
                   onClick={() => setLang('ID')}

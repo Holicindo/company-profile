@@ -37,6 +37,9 @@ export class BlogPost {
   @Column({ name: 'wp_post_id', nullable: true })
   wpPostId: number;
 
+  @Column({ default: 0 })
+  views: number;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

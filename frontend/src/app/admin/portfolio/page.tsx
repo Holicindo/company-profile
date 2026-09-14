@@ -59,71 +59,80 @@ export default function AdminPortfolioPage() {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Manajemen Portfolio</h1>
-          <p className="text-slate-500 text-sm">{total} proyek tersimpan</p>
+          <h1 className="text-2xl font-bold text-[#2C1810]">Manajemen Portfolio</h1>
+          <p className="text-[#2C1810]/60 text-sm mt-1">{total} proyek tersimpan</p>
         </div>
-        <Link href="/admin/portfolio/new" className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-brand-600 to-brand-400 text-white text-sm font-semibold rounded-lg hover:from-brand-500 hover:to-brand-300 transition shadow">
-          <Plus className="w-4 h-4" />
+        <Link href="/admin/portfolio/new" className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-[#F5F1E8] to-[#FAF7F0] text-[#2C1810] text-sm font-bold rounded-xl hover:from-[#FAF7F0] hover:to-[#F5F1E8] border-2 border-[#2C1810]/20 transition-all shadow-lg hover:shadow-xl">
+          <Plus className="w-5 h-5" />
           Tambah Portfolio
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-gradient-to-br from-[#FAF7F0] to-[#F5F1E8] rounded-2xl border-2 border-[#2C1810] shadow-2xl overflow-hidden">
         {loading ? (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-6 h-6 animate-spin text-brand-500" />
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-[#2C1810]" />
           </div>
         ) : items.length === 0 ? (
-          <div className="text-center py-16 text-slate-400">
-            <Image className="w-10 h-10 mx-auto mb-3 opacity-30" />
-            <p>Belum ada portfolio.</p>
+          <div className="text-center py-20 text-[#2C1810]/50">
+            <Image className="w-12 h-12 mx-auto mb-4 opacity-30" />
+            <p className="text-base">Belum ada portfolio.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600">
-                  <th className="text-left px-5 py-3 font-medium w-12">Foto</th>
-                  <th className="text-left px-4 py-3 font-medium">Judul Proyek</th>
-                  <th className="text-left px-4 py-3 font-medium hidden md:table-cell">Klien</th>
-                  <th className="text-left px-4 py-3 font-medium hidden lg:table-cell">Lokasi</th>
-                  <th className="text-left px-4 py-3 font-medium hidden sm:table-cell">Status</th>
-                  <th className="text-right px-5 py-3 font-medium">Aksi</th>
+                <tr className="bg-[#3d2817] border-b-2 border-[#2C1810] text-white/80">
+                  <th className="text-center px-4 py-3 font-semibold w-20">Foto</th>
+                  <th className="text-left px-4 py-3 font-semibold">Judul Proyek</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Klien</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden lg:table-cell">Lokasi</th>
+                  <th className="text-center px-4 py-3 font-semibold hidden sm:table-cell w-28">Status</th>
+                  <th className="text-center px-4 py-3 font-semibold w-24">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody>
                 {items.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50 transition">
-                    <td className="px-5 py-3">
-                      {item.imageUrl ? (
-                        <img src={item.imageUrl} alt={item.title} className="w-10 h-10 object-cover rounded-lg border border-slate-200" />
+                  <tr key={item.id} className="border-b border-[#2C1810]/20 hover:bg-[#F5F1E8] transition">
+                    <td className="px-4 py-3">
+                      <div className="flex justify-center">
+                        {item.imageUrl ? (
+                          <img src={item.imageUrl} alt={item.title} className="w-12 h-12 object-cover rounded-lg border-2 border-[#2C1810]/20" />
+                        ) : (
+                          <div className="w-12 h-12 bg-[#2C1810]/5 rounded-lg flex items-center justify-center border-2 border-[#2C1810]/10">
+                            <Image className="w-5 h-5 text-[#2C1810]/30" />
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="font-semibold text-[#2C1810] text-sm">{item.title}</p>
+                      <p className="text-xs text-[#2C1810]/40 mt-0.5">{item.projectDate || '—'}</p>
+                    </td>
+                    <td className="px-4 py-3 hidden md:table-cell text-[#2C1810]/70 text-sm">{item.clientName || '—'}</td>
+                    <td className="px-4 py-3 hidden lg:table-cell text-[#2C1810]/60 text-xs">{item.location || '—'}</td>
+                    <td className="px-4 py-3 hidden sm:table-cell text-center">
+                      {item.isActive ? (
+                        <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-600/30">
+                          <CheckCircle className="w-3 h-3" />
+                          Aktif
+                        </span>
                       ) : (
-                        <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
-                          <Image className="w-4 h-4 text-slate-300" />
-                        </div>
+                        <span className="inline-flex items-center gap-1 text-xs font-bold text-[#2C1810]/50 bg-[#2C1810]/10 px-2.5 py-1 rounded-lg border border-[#2C1810]/20">
+                          <XCircle className="w-3 h-3" />
+                          Non-aktif
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <p className="font-medium text-slate-800">{item.title}</p>
-                      <p className="text-xs text-slate-400">{item.projectDate || '—'}</p>
-                    </td>
-                    <td className="px-4 py-3 hidden md:table-cell text-slate-500">{item.clientName || '—'}</td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-slate-400 text-xs">{item.location || '—'}</td>
-                    <td className="px-4 py-3 hidden sm:table-cell">
-                      {item.isActive
-                        ? <span className="inline-flex items-center gap-1 text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full"><CheckCircle className="w-3 h-3" /> Aktif</span>
-                        : <span className="inline-flex items-center gap-1 text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full"><XCircle className="w-3 h-3" /> Non-aktif</span>
-                      }
-                    </td>
-                    <td className="px-5 py-3">
-                      <div className="flex items-center justify-end gap-2">
-                        <Link href={`/admin/portfolio/${item.id}/edit`} className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition" title="Edit">
+                      <div className="flex items-center justify-center gap-1">
+                        <Link href={`/admin/portfolio/${item.id}/edit`} className="p-2 rounded-lg text-[#2C1810]/70 hover:text-[#2C1810] hover:bg-[#2C1810]/10 transition" title="Edit">
                           <Pencil className="w-4 h-4" />
                         </Link>
-                        <button onClick={() => handleDelete(item.id, item.title)} disabled={deleting === item.id} className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition disabled:opacity-50" title="Hapus">
+                        <button onClick={() => handleDelete(item.id, item.title)} disabled={deleting === item.id} className="p-2 rounded-lg text-[#2C1810]/70 hover:text-red-600 hover:bg-red-100 transition disabled:opacity-50" title="Hapus">
                           {deleting === item.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                         </button>
                       </div>
@@ -136,14 +145,29 @@ export default function AdminPortfolioPage() {
         )}
 
         {!loading && totalPages > 1 && (
-          <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100">
-            <p className="text-xs text-slate-400">Halaman {page} dari {totalPages} ({total} proyek)</p>
-            <div className="flex gap-2">
-              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition">
-                <ChevronLeft className="w-4 h-4" />
+          <div className="px-6 py-4 border-t-2 border-[#2C1810] bg-gradient-to-r from-[#FAF7F0] to-[#F5F1E8] flex items-center justify-between">
+            <p className="text-sm text-[#2C1810]/60">Halaman {page} dari {totalPages} ({total} proyek)</p>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="p-2 rounded-lg text-[#2C1810]/70 hover:text-[#2C1810] hover:bg-[#2C1810]/10 transition disabled:opacity-30 disabled:cursor-not-allowed border border-[#2C1810]/20">
+                <ChevronLeft className="w-5 h-5" />
               </button>
-              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition">
-                <ChevronRight className="w-4 h-4" />
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => (
+                  <button
+                    key={pageNum}
+                    onClick={() => setPage(pageNum)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition border ${
+                      page === pageNum
+                        ? 'bg-gradient-to-r from-[#2C1810] to-[#1a0f0a] text-white border-[#2C1810]'
+                        : 'text-[#2C1810]/70 hover:text-[#2C1810] hover:bg-[#2C1810]/10 border-[#2C1810]/20'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="p-2 rounded-lg text-[#2C1810]/70 hover:text-[#2C1810] hover:bg-[#2C1810]/10 transition disabled:opacity-30 disabled:cursor-not-allowed border border-[#2C1810]/20">
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>

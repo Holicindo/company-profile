@@ -7,8 +7,34 @@ import Image from 'next/image';
 
 export function ServicesView() {
   const { t } = useLanguage();
+  const [pageData, setPageData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const heroSlides = [
+  useEffect(() => {
+    // Fetch page data from backend
+    const fetchPageData = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/slug/layanan`, {
+          cache: 'no-store', // Disable caching
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setPageData(data.sections);
+        }
+      } catch (error) {
+        console.error('Failed to fetch page data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPageData();
+  }, []);
+
+  const heroSlides = pageData?.hero?.slides || [
     '/images/services/hero-services.png',
     '/images/services/hero-services-2.png',
     '/images/services/hero-services-3.png'
@@ -20,7 +46,7 @@ export function ServicesView() {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [heroSlides.length]);
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-900">
@@ -50,13 +76,13 @@ export function ServicesView() {
         <div className="container-wide relative z-10">
           <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
             <div className="inline-block px-3 py-1 bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest mb-4 sm:mb-6 rounded-full border border-white/20">
-              {t('LAYANAN PURNA JUAL', 'AFTER-SALES SERVICE')}
+              {pageData?.hero?.badge || t('LAYANAN PURNA JUAL', 'AFTER-SALES SERVICE')}
             </div>
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4 sm:mb-6 pb-2 leading-[1.15] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-300 to-white">
-              {t('Dukungan Teknis & Servis Mesin Komersial', 'Technical Support & Commercial Machine Servicing')}
+              {pageData?.hero?.title || t('Dukungan Teknis & Servis Mesin Komersial', 'Technical Support & Commercial Machine Servicing')}
             </h1>
             <p className="text-neutral-300 text-sm sm:text-base md:text-lg font-normal leading-relaxed max-w-2xl mx-auto">
-              {t(
+              {pageData?.hero?.description || t(
                 'Kami memastikan peralatan dapur industrial Anda selalu beroperasi maksimal. Nikmati dukungan teknis terpadu, perawatan mesin berkala, dan jaminan purna jual eksklusif dari tim ahli Holicindo.',
                 'We ensure your industrial kitchen equipment always operates at its peak. Enjoy integrated technical support, regular machine maintenance, and exclusive after-sales guarantees from Holicindo experts.'
               )}
@@ -71,10 +97,10 @@ export function ServicesView() {
         <div className="mb-16 sm:mb-24">
           <div className="max-w-3xl mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-4xl font-bold text-[#2C1810] tracking-tight mb-4">
-              {t('Layanan Teknis Profesional', 'Professional Technical Services')}
+              {pageData?.services?.title || t('Layanan Teknis Profesional', 'Professional Technical Services')}
             </h2>
             <p className="text-neutral-600 text-sm sm:text-base leading-relaxed">
-              {t(
+              {pageData?.services?.description || t(
                 'Tim teknisi berpengalaman kami siap memberikan solusi menyeluruh, mulai dari instalasi awal hingga perbaikan darurat untuk memastikan produktivitas dapur komersial Anda tidak terhambat.',
                 'Our experienced technician team is ready to provide comprehensive solutions, from initial installation to emergency repairs to ensure your commercial kitchen productivity remains unhindered.'
               )}
@@ -145,54 +171,73 @@ export function ServicesView() {
             <div className="p-8 sm:p-12 md:p-16 flex flex-col justify-center">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2C1810] text-white text-[10px] font-bold uppercase tracking-widest mb-6 rounded-full w-fit shadow-inner">
                 <Activity size={12} className="text-green-400" />
-                {t('Eksklusif Untuk Klien B2B', 'Exclusive for B2B Clients')}
+                {pageData?.smartEcosystem?.badge || t('Eksklusif Untuk Klien B2B', 'Exclusive for B2B Clients')}
               </div>
               
               <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4 leading-tight">
-                Holic Smart Asset Ecosystem
+                {pageData?.smartEcosystem?.title || 'Holic Smart Asset Ecosystem'}
               </h2>
               <p className="text-neutral-300 text-sm sm:text-base leading-relaxed mb-8">
-                {t(
+                {pageData?.smartEcosystem?.description || t(
                   'Fasilitas premium khusus untuk klien korporasi kami. Nikmati ketenangan pikiran dengan sistem pemantauan aset digital yang dirancang eksklusif untuk menjaga investasi bisnis Anda tetap terpantau dengan standar tertinggi.',
                   'A premium facility exclusively for our corporate clients. Enjoy peace of mind with a digital asset monitoring system exclusively designed to keep your business investments monitored to the highest standards.'
                 )}
               </p>
 
               <div className="space-y-5">
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
-                    <QrCode size={18} />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-sm mb-1">{t('Akses Instan & VIP', 'Instant & VIP Access')}</h4>
-                    <p className="text-neutral-400 text-xs sm:text-sm">{t('Dapatkan jalur prioritas untuk terhubung langsung dengan tim dukungan teknis kami secara presisi dan efisien hanya dalam hitungan detik.', 'Get priority routing to connect directly with our technical support team precisely and efficiently in just seconds.')}</p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
-                    <Activity size={18} />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-sm mb-1">{t('Pemantauan Armada Terpusat', 'Centralized Fleet Monitoring')}</h4>
-                    <p className="text-neutral-400 text-xs sm:text-sm">{t('Kendali penuh atas seluruh aset operasional Anda di berbagai cabang. Dapatkan visibilitas komprehensif untuk memastikan produktivitas tanpa henti.', 'Full control over your entire operational assets across branches. Gain comprehensive visibility to ensure non-stop productivity.')}</p>
-                  </div>
-                </div>
+                {pageData?.smartEcosystem?.features && pageData.smartEcosystem.features.length > 0 ? (
+                  pageData.smartEcosystem.features.map((feature: any, idx: number) => (
+                    <div key={idx} className="flex gap-4">
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
+                        {idx === 0 && <QrCode size={18} />}
+                        {idx === 1 && <Activity size={18} />}
+                        {idx === 2 && <CheckCircle2 size={18} />}
+                        {idx > 2 && <CheckCircle2 size={18} />}
+                      </div>
+                      <div>
+                        <h4 className="text-white font-bold text-sm mb-1">{feature.title}</h4>
+                        <p className="text-neutral-400 text-xs sm:text-sm">{feature.description}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
+                        <QrCode size={18} />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-bold text-sm mb-1">{t('Akses Instan & VIP', 'Instant & VIP Access')}</h4>
+                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Dapatkan jalur prioritas untuk terhubung langsung dengan tim dukungan teknis kami secara presisi dan efisien hanya dalam hitungan detik.', 'Get priority routing to connect directly with our technical support team precisely and efficiently in just seconds.')}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
+                        <Activity size={18} />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-bold text-sm mb-1">{t('Pemantauan Armada Terpusat', 'Centralized Fleet Monitoring')}</h4>
+                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Kendali penuh atas seluruh aset operasional Anda di berbagai cabang. Dapatkan visibilitas komprehensif untuk memastikan produktivitas tanpa henti.', 'Full control over your entire operational assets across branches. Gain comprehensive visibility to ensure non-stop productivity.')}</p>
+                      </div>
+                    </div>
 
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
-                    <CheckCircle2 size={18} />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-sm mb-1">{t('Keamanan & Rekam Jejak Digital', 'Security & Digital Track Record')}</h4>
-                    <p className="text-neutral-400 text-xs sm:text-sm">{t('Validasi keaslian produk dan pelacakan riwayat perawatan terstruktur yang menjamin transparansi serta nilai investasi jangka panjang mesin Anda.', 'Product authenticity validation and structured maintenance history tracking that guarantees transparency and the long-term investment value of your machines.')}</p>
-                  </div>
-                </div>
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white border border-white/20">
+                        <CheckCircle2 size={18} />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-bold text-sm mb-1">{t('Keamanan & Rekam Jejak Digital', 'Security & Digital Track Record')}</h4>
+                        <p className="text-neutral-400 text-xs sm:text-sm">{t('Validasi keaslian produk dan pelacakan riwayat perawatan terstruktur yang menjamin transparansi serta nilai investasi jangka panjang mesin Anda.', 'Product authenticity validation and structured maintenance history tracking that guarantees transparency and the long-term investment value of your machines.')}</p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="mt-10 pt-8 border-t border-white/10">
                 <a 
-                  href="https://wa.me/6281111825718" 
+                  href={pageData?.smartEcosystem?.contactLink || "https://wa.me/6281111825718"}
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 bg-white text-[#2C1810] px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-neutral-200 transition-colors shadow-sm"
@@ -216,7 +261,14 @@ export function ServicesView() {
 
                {/* Showcase — fills entire right panel */}
                <div className="absolute inset-0 z-10 flex items-center justify-center p-4 sm:p-6">
-                 <Image src="/images/services/Cold%20case%20FIC%20FIXNB.png" alt="Showcase Unit" fill className="object-contain drop-shadow-2xl" style={{ padding: '16px' }} unoptimized />
+                 <Image 
+                   src={pageData?.smartEcosystem?.showcaseImage || "/images/services/Cold%20case%20FIC%20FIXNB.png"} 
+                   alt="Showcase Unit" 
+                   fill 
+                   className="object-contain drop-shadow-2xl" 
+                   style={{ padding: '16px' }} 
+                   unoptimized 
+                 />
                </div>
 
                {/* Glowing Digital Node 1 (Cabinet/Temperature) */}

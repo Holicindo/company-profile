@@ -7,11 +7,15 @@ import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
 import { ClientsMarquee } from '@/components/home/ClientsMarquee';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { getProductCategories, getFeaturedProducts, getFeaturedPortfolio } from '@/lib/api';
+import { generatePageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Holicindo | Spesialis Showcase & Pendingin Komersial untuk HORECA Indonesia',
-  description: 'Holicindo adalah spesialis showcase kue, chiller komersial, dan refrigerator industri terpercaya di Indonesia. Solusi pendingin & display premium untuk restoran, hotel, bakery, dan kafe.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return generatePageMetadata('beranda', {
+    title: 'Holicindo | Spesialis Showcase & Pendingin Komersial untuk HORECA Indonesia',
+    description: 'Holicindo adalah spesialis showcase kue, chiller komersial, dan refrigerator industri terpercaya di Indonesia. Solusi pendingin & display premium untuk restoran, hotel, bakery, dan kafe.',
+    keywords: 'showcase komersial, kulkas display, pendingin komersial, display cooler, cake showcase, chiller komersial',
+  });
+}
 
 export const revalidate = 3600;
 

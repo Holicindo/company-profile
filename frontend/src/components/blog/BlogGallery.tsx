@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Search, Clock, Calendar, Sparkles, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Search, Clock, Calendar, Sparkles, BookOpen } from 'lucide-react';
 import type { BlogPost } from '@/types';
 import { INSIGHTS_ARTICLES } from '@/data/insights-articles';
 import { useLanguage } from '@/context/LanguageContext';
@@ -14,7 +14,6 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
   const { t, lang } = useLanguage();
   const [activeCategory, setActiveCategory] = useState('Semua Topik');
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentSlide, setCurrentSlide] = useState(0);
 
   const translateCategoryName = (cat: string) => {
     if (lang !== 'EN') return cat;
@@ -53,20 +52,6 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
     });
   }, [allArticles, activeCategory, searchQuery]);
 
-  const latestArticles = useMemo(() => filteredArticles.slice(0, 5), [filteredArticles]);
-  const gridArticles = filteredArticles.slice(5);
-
-  useEffect(() => {
-    if (latestArticles.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % latestArticles.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [latestArticles.length]);
-
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % latestArticles.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + latestArticles.length) % latestArticles.length);
-
   const fmtDate = (d?: string) => {
     if (!d) return 'Holicindo';
     try {
@@ -102,55 +87,6 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
 
       <div className="container-wide">
 
-        {/* SLIDESHOW BLOG TERBARU */}
-        {latestArticles.length > 0 && !searchQuery && activeCategory === 'Semua Topik' && (
-          <div className="mt-10 mb-16">
-            <div className="relative h-[440px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden shadow-xl bg-slate-900">
-              {latestArticles.map((article, index) => (
-                <Link key={article.id} href={'/news/' + article.slug}
-                  className={['group absolute inset-0 transition-opacity duration-1000', index === currentSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'].join(' ')}>
-                  <div className="absolute inset-0 overflow-hidden">
-                    {article.featuredImage
-                      ? <Image src={article.featuredImage} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-95" sizes="100vw" unoptimized priority={index === 0} />
-                      : <div className="absolute inset-0 bg-gradient-to-br from-[#2C1810] to-slate-900 flex items-center justify-center"><BookOpen size={64} className="text-white/20" /></div>
-                    }
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-black/20" />
-                  <div className="relative z-10 p-6 sm:p-8 flex items-center gap-3">
-                    <span className="px-4 py-1.5 bg-white/95 text-[#2C1810] text-xs font-extrabold uppercase tracking-widest rounded-full shadow-md">★ FEATURED INSIGHT</span>
-                    <span className="px-3.5 py-1.5 bg-black/40 text-white/90 text-xs font-bold uppercase tracking-wider rounded-full border border-white/20">{translateCategoryName((article as any).category || 'Insights')}</span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 z-10 p-6 sm:p-10 lg:p-12">
-                    <div className="flex items-center gap-3 text-xs text-amber-300 font-semibold uppercase tracking-wider mb-3">
-                      <span className="flex items-center gap-1.5"><Calendar size={14} /> {fmtDate(article.publishedAt)}</span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1.5"><Clock size={14} /> 5 min read</span>
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-4 group-hover:text-amber-300 transition-colors max-w-4xl">{article.title}</h2>
-                    {article.excerpt && <p className="text-neutral-200 text-sm sm:text-base line-clamp-2 leading-relaxed max-w-3xl mb-6 opacity-90">{article.excerpt.replace(/<[^>]*>/g, '')}</p>}
-                    <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-white group-hover:text-amber-300 transition-all">
-                      <span>{t('Baca Artikel Lengkap', 'Read Full Article')}</span>
-                      <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-              {latestArticles.length > 1 && (
-                <>
-                  <button onClick={(e) => { e.preventDefault(); prevSlide(); }} className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all" aria-label="Prev"><ChevronLeft size={24} /></button>
-                  <button onClick={(e) => { e.preventDefault(); nextSlide(); }} className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all" aria-label="Next"><ChevronRight size={24} /></button>
-                  <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                    {latestArticles.map((_, i) => (
-                      <button key={i} onClick={(e) => { e.preventDefault(); setCurrentSlide(i); }}
-                        className={['h-2 rounded-full transition-all', i === currentSlide ? 'bg-white w-8' : 'bg-white/50 w-2 hover:bg-white/75'].join(' ')} aria-label={'Slide ' + (i + 1)} />
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
         {/* KOLEKSI ARTIKEL & FILTER */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 py-6 border-b border-neutral-200">
           <div>
@@ -169,28 +105,28 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
 
         {/* CARDS GRID */}
         {filteredArticles.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 pb-20">
-            {(searchQuery || activeCategory !== 'Semua Topik' ? filteredArticles : gridArticles).map((post) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 pb-20">
+            {filteredArticles.map((post) => (
               <Link key={post.id} href={'/news/' + post.slug}
-                className="group relative h-[430px] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 bg-slate-900">
+                className="group relative h-[340px] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 bg-[#1a0f0a]">
                 <div className="absolute inset-0 overflow-hidden">
                   {post.featuredImage
-                    ? <Image src={post.featuredImage} alt={post.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-90" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" unoptimized />
-                    : <div className="absolute inset-0 bg-gradient-to-br from-[#2C1810] to-slate-900 flex items-center justify-center"><BookOpen size={48} className="text-white/20" /></div>
+                    ? <Image src={post.featuredImage} alt={post.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-90" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" unoptimized />
+                    : <div className="absolute inset-0 bg-gradient-to-br from-[#2C1810] to-[#1a0f0a] flex items-center justify-center"><BookOpen size={48} className="text-white/20" /></div>
                   }
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-black/20 group-hover:from-slate-950/95 transition-all duration-500" />
-                <div className="relative z-10 p-5">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a0f0a] via-[#1a0f0a]/70 to-black/20 group-hover:from-[#1a0f0a]/95 transition-all duration-500" />
+                <div className="relative z-10 p-4">
                   <span className="inline-block px-3 py-1 bg-white/95 text-[#2C1810] text-[10px] font-extrabold uppercase tracking-widest rounded-full shadow-md">{translateCategoryName((post as any).category || 'INSIGHTS')}</span>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
+                <div className="absolute bottom-0 left-0 right-0 z-10 p-5">
                   <div className="flex items-center gap-2 text-[10px] text-neutral-300 uppercase tracking-wider mb-2">
                     <Calendar size={12} className="text-white/70" /><span>{fmtDate(post.publishedAt)}</span>
                     <span>•</span><Clock size={12} className="text-white/70" /><span>4 min</span>
                   </div>
-                  <h3 className="font-bold text-lg text-white leading-snug line-clamp-3 mb-2 group-hover:text-amber-300 transition-colors">{post.title}</h3>
+                  <h3 className="font-bold text-base text-white leading-snug line-clamp-2 mb-2 group-hover:text-amber-300 transition-colors">{post.title}</h3>
                   {post.excerpt && <p className="text-neutral-300 text-xs line-clamp-2 leading-relaxed opacity-85">{post.excerpt.replace(/<[^>]*>/g, '')}</p>}
-                  <div className="mt-4 pt-3 border-t border-white/15 flex items-center gap-1.5 text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
+                  <div className="mt-3 pt-3 border-t border-white/15 flex items-center gap-1.5 text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
                     <span>{t('Baca Artikel', 'Read Article')}</span>
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>

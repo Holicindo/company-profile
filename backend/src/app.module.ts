@@ -7,6 +7,7 @@ import { BlogModule } from './modules/blog/blog.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { PagesModule } from './modules/pages/pages.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { UploadModule } from './modules/upload/upload.module';
     BlogModule,
     ContactModule,
     UploadModule,
+    PagesModule,
   ],
 })
 export class AppModule {}

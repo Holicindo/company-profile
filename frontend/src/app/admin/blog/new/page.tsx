@@ -54,60 +54,60 @@ export default function NewBlogPage() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 max-w-4xl">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link href="/admin/blog" className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition">
-            <ArrowLeft size={16} />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-[#2C1810] to-[#3d2817] px-6 py-5 rounded-2xl border border-[#D4AF37]/20">
+        <div className="flex items-center gap-4">
+          <Link href="/admin/blog" className="p-2 rounded-lg border border-[#D4AF37]/30 text-white hover:bg-[#3d2817] transition">
+            <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-slate-800">Tulis Artikel Baru</h1>
-            <p className="text-slate-500 text-sm">Buat dan publikasikan artikel blog</p>
+            <h1 className="text-2xl font-bold text-white">Tulis Artikel Baru</h1>
+            <p className="text-white/60 text-sm mt-1">Buat dan publikasikan artikel blog</p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <button type="button" onClick={() => { set('status', 'draft'); }} className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${form.status === 'draft' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+        <div className="flex gap-3">
+          <button type="button" onClick={() => { set('status', 'draft'); }} className={`px-5 py-2.5 rounded-xl text-sm font-bold border-2 transition ${form.status === 'draft' ? 'bg-amber-500 text-[#2C1810] border-amber-500' : 'bg-[#3d2817] border-[#D4AF37]/30 text-white/70 hover:border-[#D4AF37]'}`}>
             Draft
           </button>
-          <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-brand-600 to-brand-400 text-white text-sm font-semibold rounded-lg hover:from-brand-500 hover:to-brand-300 transition disabled:opacity-60 shadow">
-            {saving ? <><Loader2 size={16} className="animate-spin" /> Menyimpan...</> : <><Save size={16} /> Publikasikan</>}
+          <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#B8941E] text-[#2C1810] text-sm font-bold rounded-xl hover:from-[#B8941E] hover:to-[#D4AF37] transition disabled:opacity-60 shadow-lg">
+            {saving ? <><Loader2 size={18} className="animate-spin" /> Menyimpan...</> : <><Save size={18} /> Publikasikan</>}
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main content */}
-        <div className="lg:col-span-2 space-y-5">
+        <div className="lg:col-span-2 space-y-6">
           {/* Judul */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
-            <label className="block text-sm font-medium text-slate-700 mb-2">Judul Artikel <span className="text-red-500">*</span></label>
+          <div className="bg-gradient-to-br from-[#2C1810] to-[#1a0f0a] rounded-2xl border border-[#D4AF37]/20 p-6">
+            <label className="block text-sm font-bold text-white mb-3">Judul Artikel <span className="text-red-400">*</span></label>
             <input
               type="text" value={form.title} onChange={e => handleTitleChange(e.target.value)}
               placeholder="Tulis judul artikel yang menarik..."
-              className="w-full px-4 py-3 border border-neutral-200 rounded-xl text-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+              className="w-full px-4 py-3 border-2 border-[#D4AF37]/30 rounded-xl text-lg font-semibold text-white bg-[#3d2817] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent placeholder:text-white/30"
               required
             />
-            <div className="mt-2 flex items-center gap-2">
-              <span className="text-xs text-slate-400">Slug:</span>
+            <div className="mt-3 flex items-center gap-3">
+              <span className="text-xs font-medium text-white/60">Slug:</span>
               <input
                 type="text" value={form.slug} onChange={e => set('slug', e.target.value)}
-                className="flex-1 px-2 py-1 text-xs border border-neutral-200 rounded-lg font-mono text-slate-600 focus:outline-none focus:ring-1 focus:ring-brand-400"
+                className="flex-1 px-3 py-2 text-xs border border-[#D4AF37]/30 rounded-lg font-mono text-white/80 bg-[#3d2817] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
               />
             </div>
           </div>
 
           {/* Editor */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
-            <label className="block text-sm font-medium text-slate-700 mb-3">Konten Artikel</label>
+          <div className="bg-gradient-to-br from-[#2C1810] to-[#1a0f0a] rounded-2xl border border-[#D4AF37]/20 p-6">
+            <label className="block text-sm font-bold text-white mb-4">Konten Artikel</label>
             <RichTextEditor value={form.content} onChange={v => set('content', v)} />
           </div>
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-5">
+        <div className="space-y-6">
           {/* Featured Image */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <div className="bg-gradient-to-br from-[#2C1810] to-[#1a0f0a] rounded-2xl border border-[#D4AF37]/20 p-6">
             <ImageUpload
               label="Gambar Utama (Featured Image)"
               value={form.featuredImage}
@@ -117,40 +117,40 @@ export default function NewBlogPage() {
           </div>
 
           {/* Meta */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
-            <h3 className="font-semibold text-slate-700 text-sm">Informasi Artikel</h3>
+          <div className="bg-gradient-to-br from-[#2C1810] to-[#1a0f0a] rounded-2xl border border-[#D4AF37]/20 p-6 space-y-5">
+            <h3 className="font-bold text-white text-base">Informasi Artikel</h3>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1.5">Excerpt / Ringkasan</label>
+              <label className="block text-xs font-semibold text-white/70 mb-2">Excerpt / Ringkasan</label>
               <textarea
                 value={form.excerpt} onChange={e => set('excerpt', e.target.value)}
                 rows={3} placeholder="Ringkasan singkat artikel (untuk SEO & preview)..."
-                className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none"
+                className="w-full px-3 py-2.5 border border-[#D4AF37]/30 rounded-xl text-sm text-white/80 bg-[#3d2817] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent resize-none placeholder:text-white/30"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1.5">Author</label>
+              <label className="block text-xs font-semibold text-white/70 mb-2">Author</label>
               <input
                 type="text" value={form.author} onChange={e => set('author', e.target.value)}
-                className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-[#D4AF37]/30 rounded-xl text-sm text-white/80 bg-[#3d2817] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1.5">Tags (pisahkan dengan koma)</label>
+              <label className="block text-xs font-semibold text-white/70 mb-2">Tags (pisahkan dengan koma)</label>
               <input
                 type="text" value={form.tags} onChange={e => set('tags', e.target.value)}
                 placeholder="mesin makanan, bakery, tips"
-                className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-[#D4AF37]/30 rounded-xl text-sm text-white/80 bg-[#3d2817] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent placeholder:text-white/30"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1.5">Status</label>
+              <label className="block text-xs font-semibold text-white/70 mb-2">Status</label>
               <select
                 value={form.status} onChange={e => set('status', e.target.value)}
-                className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
+                className="w-full px-3 py-2.5 border border-[#D4AF37]/30 rounded-xl text-sm text-white/80 bg-[#3d2817] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
               >
                 <option value="draft">Draft (tidak tampil)</option>
                 <option value="published">Published (tampil di website)</option>

@@ -58,7 +58,7 @@ export function MainHero() {
           <span className="inline-block px-3.5 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mb-4 sm:mb-6 rounded-full">
             {t('Est. 2001', 'Est. 2001')}
           </span>
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.2] sm:leading-[1.15] tracking-tight mb-4 drop-shadow-xl text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.50] sm:leading-[1.5] tracking-tight mb-4 drop-shadow-xl text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
             {t('Spesialis Showcase & Pendingin', 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
             {t('Komersial Terpercaya Indonesia.', '& Refrigeration Solutions.')}
           </h1>

@@ -29,18 +29,36 @@ export function ProjectsSection({ projects }: { projects: Portfolio[] }) {
         </div>
         
         {projects.length ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {projects.slice(0, 6).map(p => (
-              <Link key={p.id} href={`/projects/${p.slug}`} className="group block border-2 border-[#C9A84C] hover:border-[#C9A84C] transition-colors duration-300 active:scale-[0.99]">
-                <div className="relative h-32 sm:h-64 bg-neutral-100 overflow-hidden">
+              <div key={p.id} className="group bg-white border-2 border-[#C9A84C] flex flex-col overflow-hidden">
+                {/* Thumbnail */}
+                <Link href={`/projects/${p.slug}`} className="relative overflow-hidden block h-32 sm:h-[220px]">
                   {p.imageUrl
-                    ? <Image src={p.imageUrl} alt={p.title} fill className="object-cover group-hover:scale-105 transition-all duration-500" sizes="(max-width: 640px) 50vw, 33vw" unoptimized />
-                    : <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center"><Building2 size={28} strokeWidth={1} className="text-neutral-300" /></div>}
-                </div>
-                <div className="p-3 sm:p-6 bg-white">
+                    ? <Image src={p.imageUrl} alt={p.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, 33vw" unoptimized />
+                    : <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center"><Building2 size={28} strokeWidth={1} className="text-neutral-300" /></div>
+                  }
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-[#2C1810]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="px-5 py-2 bg-white text-[#2C1810] text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
+                      {t('Lihat Proyek', 'View Project')} <ArrowRight size={14} />
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Card body */}
+                <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between bg-white">
                   <h3 className="font-medium sm:font-light text-xs sm:text-xl text-black mb-1 sm:mb-2 line-clamp-2 tracking-tight group-hover:text-neutral-600 transition-colors">{p.title}</h3>
+                  <div className="flex items-center justify-end pt-2 sm:pt-4 border-t border-neutral-100 mt-1 sm:mt-2">
+                    <Link
+                      href={`/projects/${p.slug}`}
+                      className="inline-flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] font-bold text-[#2C1810] hover:text-black uppercase tracking-widest transition-colors"
+                    >
+                      {t('Detail', 'Details')} <ArrowRight size={12} />
+                    </Link>
+                  </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         ) : (

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { PublicLayout } from '@/components/layout/PublicLayout';
+import { OrganizationSchema } from '@/components/seo/StructuredData';
 
 export const metadata: Metadata = {
   title: { default: 'Holic | Food Machinery, Refrigerator & Showcase', template: '%s | Holic' },
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id">
       <body>
+        <OrganizationSchema />
         <PublicLayout>{children}</PublicLayout>
       </body>
     </html>

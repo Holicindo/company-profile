@@ -27,44 +27,40 @@ const statCards = [
     label: 'Total Artikel Blog',
     icon: FileText,
     href: '/admin/blog',
-    color: 'from-blue-500 to-blue-600',
-    bg: 'bg-blue-50',
-    text: 'text-blue-600',
+    bg: 'bg-[#3d2817]',
+    text: 'text-white/70',
   },
   {
     key: 'totalProducts',
     label: 'Total Produk',
     icon: Package,
     href: '/admin/products',
-    color: 'from-emerald-500 to-emerald-600',
-    bg: 'bg-emerald-50',
-    text: 'text-emerald-600',
+    bg: 'bg-[#3d2817]',
+    text: 'text-white/70',
   },
   {
     key: 'totalPortfolio',
     label: 'Total Portfolio',
     icon: Image,
     href: '/admin/portfolio',
-    color: 'from-purple-500 to-purple-600',
-    bg: 'bg-purple-50',
-    text: 'text-purple-600',
+    bg: 'bg-[#3d2817]',
+    text: 'text-white/70',
   },
   {
     key: 'unreadContacts',
     label: 'Pesan Belum Dibaca',
     icon: MessageSquare,
     href: '/admin/contacts',
-    color: 'from-brand-500 to-brand-600',
-    bg: 'bg-brand-50',
-    text: 'text-brand-600',
+    bg: 'bg-[#3d2817]',
+    text: 'text-white/70',
   },
 ];
 
 const quickActions = [
-  { label: 'Tulis Artikel Baru', href: '/admin/blog/new', icon: FileText, color: 'bg-blue-600 hover:bg-blue-700' },
-  { label: 'Tambah Produk', href: '/admin/products/new', icon: Package, color: 'bg-emerald-600 hover:bg-emerald-700' },
-  { label: 'Tambah Portfolio', href: '/admin/portfolio/new', icon: Image, color: 'bg-purple-600 hover:bg-purple-700' },
-  { label: 'Lihat Pesan Masuk', href: '/admin/contacts', icon: MessageSquare, color: 'bg-brand-600 hover:bg-brand-700' },
+  { label: 'Tulis Artikel Baru', href: '/admin/blog/new', icon: FileText, color: 'bg-gradient-to-br from-[#F5F1E8] to-[#FAF7F0] hover:from-[#FAF7F0] hover:to-[#F5F1E8] text-[#2C1810]' },
+  { label: 'Tambah Produk', href: '/admin/products/new', icon: Package, color: 'bg-gradient-to-br from-[#F5F1E8] to-[#FAF7F0] hover:from-[#FAF7F0] hover:to-[#F5F1E8] text-[#2C1810]' },
+  { label: 'Tambah Portfolio', href: '/admin/portfolio/new', icon: Image, color: 'bg-gradient-to-br from-[#F5F1E8] to-[#FAF7F0] hover:from-[#FAF7F0] hover:to-[#F5F1E8] text-[#2C1810]' },
+  { label: 'Lihat Pesan Masuk', href: '/admin/contacts', icon: MessageSquare, color: 'bg-gradient-to-br from-[#F5F1E8] to-[#FAF7F0] hover:from-[#FAF7F0] hover:to-[#F5F1E8] text-[#2C1810]' },
 ];
 
 export default function AdminDashboardPage() {
@@ -83,10 +79,10 @@ export default function AdminDashboardPage() {
       {/* Welcome */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800 font-display">Dashboard</h1>
-          <p className="text-slate-500 text-sm mt-0.5">Selamat datang di panel administrasi Holicindo.</p>
+          <h1 className="text-2xl font-bold text-[#2C1810] font-display">Dashboard</h1>
+          <p className="text-[#2C1810]/60 text-sm mt-0.5">Selamat datang di panel administrasi Holicindo.</p>
         </div>
-        <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-white border border-slate-200 rounded-lg px-3 py-2">
+        <div className="hidden sm:flex items-center gap-2 text-xs text-[#2C1810]/60 bg-white border border-[#2C1810]/10 rounded-lg px-3 py-2 shadow-sm">
           <TrendingUp className="w-3.5 h-3.5" />
           {new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </div>
@@ -101,16 +97,16 @@ export default function AdminDashboardPage() {
             <Link
               key={card.key}
               href={card.href}
-              className="bg-white rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:shadow-md transition-all duration-200 group"
+              className="bg-gradient-to-br from-[#2C1810] to-[#1a0f0a] rounded-xl border-2 border-[#B8941E]/30 p-5 hover:border-[#FAF7F0]/60 hover:shadow-xl hover:shadow-black/20 transition-all duration-200 group"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm text-slate-500 font-medium">{card.label}</p>
+                  <p className="text-sm text-white/70 font-medium">{card.label}</p>
                   <div className="mt-2 flex items-baseline gap-1">
                     {loading ? (
-                      <Loader2 className="w-5 h-5 animate-spin text-slate-300" />
+                      <Loader2 className="w-5 h-5 animate-spin text-white/50" />
                     ) : (
-                      <span className="text-3xl font-bold text-slate-800">{value}</span>
+                      <span className="text-3xl font-bold text-white">{value}</span>
                     )}
                   </div>
                 </div>
@@ -118,7 +114,7 @@ export default function AdminDashboardPage() {
                   <Icon className={`w-5 h-5 ${card.text}`} />
                 </div>
               </div>
-              <div className="mt-3 flex items-center gap-1 text-xs text-slate-400 group-hover:text-slate-600 transition">
+              <div className="mt-3 flex items-center gap-1 text-xs text-white/50 group-hover:text-white/70 transition">
                 <span>Lihat semua</span>
                 <ArrowRight className="w-3 h-3" />
               </div>
@@ -129,7 +125,7 @@ export default function AdminDashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-base font-semibold text-slate-700 mb-3">Quick Actions</h2>
+        <h2 className="text-base font-semibold text-[#2C1810] mb-3">Quick Actions</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {quickActions.map((action) => {
             const Icon = action.icon;
@@ -137,12 +133,12 @@ export default function AdminDashboardPage() {
               <Link
                 key={action.href}
                 href={action.href}
-                className={`${action.color} text-white rounded-xl p-4 flex flex-col items-start gap-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg`}
+                className={`${action.color} rounded-xl border-2 border-[#2C1810]/20 p-4 flex flex-col items-start gap-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:border-[#2C1810]/40 font-semibold`}
               >
-                <div className="bg-white/20 rounded-lg p-2">
+                <div className="bg-[#2C1810]/10 rounded-lg p-2">
                   <Icon className="w-4 h-4" />
                 </div>
-                <span className="text-sm font-medium leading-tight">{action.label}</span>
+                <span className="text-sm leading-tight">{action.label}</span>
               </Link>
             );
           })}
@@ -151,8 +147,8 @@ export default function AdminDashboardPage() {
 
       {/* Info Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 className="font-semibold text-slate-700 mb-3">Navigasi Cepat</h3>
+        <div className="bg-gradient-to-br from-[#FAF7F0] to-[#F5F1E8] rounded-2xl border-2 border-[#2C1810] p-5 shadow-2xl">
+          <h3 className="font-semibold text-[#2C1810] mb-3 text-lg">Navigasi Cepat</h3>
           <div className="space-y-2">
             {[
               { label: 'Kelola Blog & Artikel', href: '/admin/blog', desc: 'Tulis, edit, dan publikasikan artikel' },
@@ -160,38 +156,38 @@ export default function AdminDashboardPage() {
               { label: 'Kelola Portfolio', href: '/admin/portfolio', desc: 'Tampilkan proyek-proyek terbaik' },
               { label: 'Pesan Masuk', href: '/admin/contacts', desc: 'Baca dan balas pesan dari pengunjung' },
             ].map(item => (
-              <Link key={item.href} href={item.href} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition group">
+              <Link key={item.href} href={item.href} className="flex items-center justify-between p-3 rounded-xl hover:bg-[#2C1810]/10 border border-transparent hover:border-[#2C1810]/20 transition group">
                 <div>
-                  <p className="text-sm font-medium text-slate-700">{item.label}</p>
-                  <p className="text-xs text-slate-400">{item.desc}</p>
+                  <p className="text-sm font-semibold text-[#2C1810]">{item.label}</p>
+                  <p className="text-xs text-[#2C1810]/50 mt-0.5">{item.desc}</p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition" />
+                <ArrowRight className="w-4 h-4 text-[#2C1810]/30 group-hover:text-[#2C1810]/60 transition" />
               </Link>
             ))}
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 className="font-semibold text-slate-700 mb-3">Info Sistem</h3>
+        <div className="bg-gradient-to-br from-[#FAF7F0] to-[#F5F1E8] rounded-2xl border-2 border-[#2C1810] p-5 shadow-2xl">
+          <h3 className="font-semibold text-[#2C1810] mb-3 text-lg">Info Sistem</h3>
           <div className="space-y-3 text-sm">
-            <div className="flex justify-between py-2 border-b border-slate-100">
-              <span className="text-slate-500">Website</span>
-              <a href="https://holicindo.com" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline font-medium">holicindo.com</a>
+            <div className="flex justify-between py-2 border-b border-[#2C1810]/20">
+              <span className="text-[#2C1810]/60">Website</span>
+              <a href="https://holicindo.com" target="_blank" rel="noopener noreferrer" className="text-[#2C1810] hover:underline font-semibold">holicindo.com</a>
             </div>
-            <div className="flex justify-between py-2 border-b border-slate-100">
-              <span className="text-slate-500">Backend API</span>
-              <span className="text-emerald-600 font-medium flex items-center gap-1">
+            <div className="flex justify-between py-2 border-b border-[#2C1810]/20">
+              <span className="text-[#2C1810]/60">Backend API</span>
+              <span className="text-emerald-600 font-semibold flex items-center gap-1">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full inline-block animate-pulse" />
                 Online
               </span>
             </div>
-            <div className="flex justify-between py-2 border-b border-slate-100">
-              <span className="text-slate-500">Environment</span>
-              <span className="text-slate-700 font-medium">Production</span>
+            <div className="flex justify-between py-2 border-b border-[#2C1810]/20">
+              <span className="text-[#2C1810]/60">Environment</span>
+              <span className="text-[#2C1810] font-semibold">Production</span>
             </div>
             <div className="flex justify-between py-2">
-              <span className="text-slate-500">Versi</span>
-              <span className="text-slate-700 font-medium">v1.0.0</span>
+              <span className="text-[#2C1810]/60">Versi</span>
+              <span className="text-[#2C1810] font-semibold">v1.0.0</span>
             </div>
           </div>
         </div>

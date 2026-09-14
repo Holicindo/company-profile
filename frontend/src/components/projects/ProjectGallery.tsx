@@ -163,41 +163,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
         </div>
       )}
 
-      {/* ── 2. E-KATALOG BANNER ── */}
-      <div className="bg-[#2C1810] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="flex items-start gap-5">
-          <div className="w-12 h-12 bg-white/10 border border-white/15 text-white flex items-center justify-center shrink-0">
-            <FileText size={22} />
-          </div>
-          <div>
-            <p className="text-[9px] font-bold text-white/60 uppercase tracking-[0.2em] mb-1">
-              {t('Dokumen Resmi', 'Official Document')}
-            </p>
-            <h3 className="text-lg md:text-xl font-bold text-white mb-2 tracking-tight leading-snug">
-              {t('E-Katalog Proyek & Showcase Mesin 2026', '2026 Project E-Catalog & Machine Showcase')}
-            </h3>
-            <p className="text-white/60 text-sm max-w-xl leading-relaxed">
-              {t(
-                'Dokumentasi lengkap spesifikasi unit mesin makanan, peralatan F&B, dan galeri instalasi Holicindo.',
-                'Complete documentation of food machine specs, F&B equipment, and Holicindo installation gallery.'
-              )}
-            </p>
-          </div>
-        </div>
-
-        <div className="shrink-0 w-full md:w-auto">
-          <a
-            href="/catalogue-showcase-2026.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full md:w-auto px-7 py-3 bg-white text-[#2C1810] hover:bg-white/90 text-[10px] font-bold uppercase tracking-widest transition-colors inline-flex items-center justify-center gap-2"
-          >
-            <ExternalLink size={14} /> {t('Buka PDF', 'Open PDF')}
-          </a>
-        </div>
-      </div>
-
-      {/* ── 3. GALLERY GRID ── */}
+      {/* ── 2. GALLERY GRID ── */}
       <div>
         <div className="mb-10 pb-5 border-b border-neutral-200 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
@@ -282,6 +248,38 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
         )}
       </div>
 
+      {/* ── 3. E-KATALOG BANNER ── */}
+      <div className="bg-[#2C1810] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="flex items-start gap-5">
+          <div className="w-12 h-12 bg-white/10 border border-white/15 text-white flex items-center justify-center shrink-0">
+            <FileText size={22} />
+          </div>
+          <div>
+            <p className="text-[9px] font-bold text-white/60 uppercase tracking-[0.2em] mb-1">
+              {t('Dokumen Resmi', 'Official Document')}
+            </p>
+            <h3 className="text-lg md:text-xl font-bold text-white mb-2 tracking-tight leading-snug">
+              {t('E-Katalog Proyek & Showcase Mesin 2026', '2026 Project E-Catalog & Machine Showcase')}
+            </h3>
+            <p className="text-white/60 text-sm max-w-xl leading-relaxed">
+              {t(
+                'Dokumentasi lengkap spesifikasi unit mesin makanan, peralatan F&B, dan galeri instalasi Holicindo.',
+                'Complete documentation of food machine specs, F&B equipment, and Holicindo installation gallery.'
+              )}
+            </p>
+          </div>
+        </div>
+        <div className="shrink-0 w-full md:w-auto">
+          <a
+            href="/catalogue-showcase-2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full md:w-auto px-7 py-3 bg-white text-[#2C1810] hover:bg-white/90 text-[10px] font-bold uppercase tracking-widest transition-colors inline-flex items-center justify-center gap-2"
+          >
+            <ExternalLink size={14} /> {t('Buka PDF', 'Open PDF')}
+          </a>
+        </div>
+      </div>
 
     </div>
   );

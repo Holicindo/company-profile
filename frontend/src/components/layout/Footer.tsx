@@ -60,10 +60,10 @@ export function Footer() {
 
       {/* ── Minimalist B2B Footer ── */}
       <div className="container-wide py-8 sm:py-10 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6 lg:gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 sm:gap-6 items-start justify-between">
           
-          {/* Col 1: Brand */}
-          <div className="flex flex-col">
+          {/* Col 1: Brand - stays LEFT */}
+          <div className="flex flex-col lg:w-[26%]">
             <Image src="/logo.png" alt="Holicindo Logo" width={130} height={38} className="object-contain brightness-0 invert mb-3 sm:mb-4" />
             <p className="text-xs sm:text-sm leading-relaxed text-neutral-200 font-normal">
               {t(
@@ -73,8 +73,8 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Col 2: Jakarta */}
-          <div>
+          {/* Col 2: Jakarta - MORE TO THE RIGHT with spacing */}
+          <div className="lg:w-[40%] lg:ml-12">
             <p className="text-[10px] text-white uppercase tracking-[0.2em] mb-2.5 sm:mb-3 font-bold flex items-center gap-2">
               <span className="gold-line"></span> Jakarta
             </p>
@@ -91,26 +91,8 @@ export function Footer() {
             </a>
           </div>
 
-          {/* Col 3: Cimahi */}
-          <div>
-            <p className="text-[10px] text-white uppercase tracking-[0.2em] mb-2.5 sm:mb-3 font-bold flex items-center gap-2">
-              <span className="gold-line"></span> Cimahi
-            </p>
-            <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed font-normal mb-2">
-              Komplek Jersindo, Jl. Raya Cimindi No.115, Cimahi Selatan, Jawa Barat 40535
-            </p>
-            <a 
-              href="https://maps.app.goo.gl/mzNfquTqXZtTCTxz8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-neutral-200 hover:text-white transition-colors underline underline-offset-4 decoration-neutral-300 hover:decoration-white font-normal"
-            >
-              {t('Lihat di Maps', 'View on Maps')} <ExternalLink size={12} strokeWidth={2} />
-            </a>
-          </div>
-            
-          {/* Col 4: Temui Kami */}
-          <div>
+          {/* Col 3: Temui Kami - RIGHT side */}
+          <div className="lg:w-[22%] lg:ml-auto">
             <p className="text-[10px] text-white uppercase tracking-[0.2em] mb-2.5 sm:mb-3 font-bold flex items-center gap-2">
               <span className="gold-line"></span> {t('Temui Kami:', 'Find Us:')}
             </p>
@@ -138,9 +120,27 @@ export function Footer() {
 
       {/* Copyright Bar */}
       <div className="border-t border-gold-subtle relative z-10 bg-[#080301]">
-        <div className="container-wide py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
-          <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-neutral-300">© {new Date().getFullYear()} Holicindo. All rights reserved.</p>
-          <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-neutral-300">Food Machinery, Refrigerator &amp; Showcase</p>
+        <div className="container-wide py-4">
+          <div className="flex flex-col lg:flex-row gap-2 items-start justify-between">
+            
+            {/* Left: Copyright - matches Brand column */}
+            <div className="lg:w-[26%]">
+              <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                © {new Date().getFullYear()} Holicindo. All rights reserved.
+              </p>
+            </div>
+            
+            {/* Center: Empty - matches Jakarta column */}
+            <div className="hidden lg:block lg:w-[40%] lg:ml-12" />
+            
+            {/* Right: Tagline - matches Temui Kami column */}
+            <div className="lg:w-[22%] lg:ml-auto">
+              <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                Food Machinery, Refrigerator &amp; Showcase
+              </p>
+            </div>
+            
+          </div>
         </div>
       </div>
     </footer>
