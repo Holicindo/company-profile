@@ -1,0 +1,19 @@
+# ========================================
+# COPY SEMUA COMMAND INI KE TERMINAL SSH
+# ========================================
+
+# 1. Deploy Backend + Run Seeder
+cd ~/company-profile/backend && git pull origin staging && npm install && npm run build && npx ts-node -r tsconfig-paths/register src/seeder/seed-pages.ts && pm2 restart all && pm2 list
+
+# 2. Deploy Frontend
+cd ~/company-profile/frontend && git pull origin staging && npm install && npm run build && pm2 restart all
+
+# 3. Verify
+curl http://localhost:3011/api/pages/slug/layanan
+
+# ========================================
+# KALAU BERHASIL, OUTPUT HARUSNYA:
+# ========================================
+# ✅ All pages seeded successfully!
+# ✅ PM2 processes restarted
+# ✅ API response with correct data
