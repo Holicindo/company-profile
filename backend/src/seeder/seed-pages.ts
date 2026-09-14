@@ -164,21 +164,21 @@ const layananSections = {
   },
   smartEcosystem: {
     badge: 'Eksklusif Untuk Klien B2B',
-    title: 'Holic Smart Asset Ecosystem',
+    title: 'Layanan Khusus untuk Customer',
     description: 'Fasilitas premium khusus untuk klien korporasi kami. Nikmati ketenangan pikiran dengan sistem pemantauan aset digital yang dirancang eksklusif untuk menjaga investasi bisnis Anda tetap terpantau dengan standar tertinggi.',
-    showcaseImage: '/images/services/Cold%20case%20FIC%20FIXNB.png',
+    showcaseImage: '/uploads/1789194555673-571623.png',
     features: [
       {
-        title: 'Akses Instan & VIP',
-        description: 'Dapatkan jalur prioritas untuk terhubung langsung dengan tim dukungan teknis kami secara presisi dan efisien hanya dalam hitungan detik.',
+        title: 'Service Prioritas',
+        description: 'Showcase bermasalah? WhatsApp kami dan teknisi langsung datang. Tidak perlu nunggu lama.',
       },
       {
-        title: 'Pemantauan Armada Terpusat',
-        description: 'Kendali penuh atas seluruh aset operasional Anda di berbagai cabang. Dapatkan visibilitas komprehensif untuk memastikan produktivitas tanpa henti.',
+        title: 'Pantau Semua Unit di Semua Outlet',
+        description: 'Lihat status semua chiller di semua cabang Anda dari HP. Tahu suhu showcase normal atau tidak, meski Anda lagi di luar kota.',
       },
       {
-        title: 'Keamanan & Rekam Jejak Digital',
-        description: 'Validasi keaslian produk dan pelacakan riwayat perawatan terstruktur yang menjamin transparansi serta nilai investasi jangka panjang mesin Anda.',
+        title: 'Garansi & Service History Digital',
+        description: 'Kapan terakhir service? Garansi masih berlaku? Semua tercatat rapi. Anda tinggal cek online, tidak perlu cari-cari nota lagi.',
       },
     ],
     contactLink: 'https://wa.me/6281111825718',
