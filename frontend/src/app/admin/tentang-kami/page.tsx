@@ -84,6 +84,47 @@ export default function EditTentangKamiPage() {
     }
   };
 
+  // Add/Remove functions for dynamic arrays
+  const addWarehouseSlide = () => {
+    setSections({
+      ...sections,
+      history: {
+        ...sections.history,
+        warehouseSlides: [...sections.history.warehouseSlides, ''],
+      },
+    });
+  };
+
+  const removeWarehouseSlide = (index: number) => {
+    setSections({
+      ...sections,
+      history: {
+        ...sections.history,
+        warehouseSlides: sections.history.warehouseSlides.filter((_: any, i: number) => i !== index),
+      },
+    });
+  };
+
+  const addCustomFeature = () => {
+    setSections({
+      ...sections,
+      customization: {
+        ...sections.customization,
+        features: [...sections.customization.features, { title: '', description: '' }],
+      },
+    });
+  };
+
+  const removeCustomFeature = (index: number) => {
+    setSections({
+      ...sections,
+      customization: {
+        ...sections.customization,
+        features: sections.customization.features.filter((_: any, i: number) => i !== index),
+      },
+    });
+  };
+
   const autoGenerateSEO = async () => {
     try {
       setGenerating(true);
@@ -196,19 +237,31 @@ export default function EditTentangKamiPage() {
             <textarea value={sections.history.paragraph1} onChange={e => setSections({ ...sections, history: { ...sections.history, paragraph1: e.target.value } })} rows={3} placeholder="Paragraf 1" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
             <textarea value={sections.history.paragraph2} onChange={e => setSections({ ...sections, history: { ...sections.history, paragraph2: e.target.value } })} rows={3} placeholder="Paragraf 2" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
             <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Warehouse Slides</label>
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-semibold text-[#2C1810]">Warehouse Slides</label>
+                <button onClick={addWarehouseSlide} className="flex items-center gap-1 px-3 py-1.5 bg-green-100 text-green-700 rounded-lg border border-green-300 text-sm font-semibold hover:bg-green-200 transition">
+                  <Plus size={14} /> Tambah Slide
+                </button>
+              </div>
               <div className="space-y-3">
                 {sections.history.warehouseSlides.map((slide: string, idx: number) => (
-                  <ImageUpload
-                    key={idx}
-                    label={`Slide Warehouse ${idx + 1}`}
-                    value={slide}
-                    onChange={url => {
-                      const newSlides = [...sections.history.warehouseSlides];
-                      newSlides[idx] = url;
-                      setSections({ ...sections, history: { ...sections.history, warehouseSlides: newSlides } });
-                    }}
-                  />
+                  <div key={idx} className="p-4 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="font-semibold text-[#2C1810]">Slide #{idx + 1}</span>
+                      <button onClick={() => removeWarehouseSlide(idx)} className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                    <ImageUpload
+                      label={`Slide Warehouse ${idx + 1}`}
+                      value={slide}
+                      onChange={url => {
+                        const newSlides = [...sections.history.warehouseSlides];
+                        newSlides[idx] = url;
+                        setSections({ ...sections, history: { ...sections.history, warehouseSlides: newSlides } });
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
@@ -242,21 +295,36 @@ export default function EditTentangKamiPage() {
               onChange={url => setSections({ ...sections, customization: { ...sections.customization, showcaseImage: url } })}
             />
             <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Fitur Kustomisasi</label>
-              {sections.customization.features.map((feature: any, idx: number) => (
-                <div key={idx} className="p-3 mb-2 bg-[#FAF7F0] rounded-xl">
-                  <input type="text" value={feature.title} onChange={e => {
-                    const newFeatures = [...sections.customization.features];
-                    newFeatures[idx].title = e.target.value;
-                    setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
-                  }} placeholder="Judul fitur" className="w-full px-3 py-2 mb-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
-                  <textarea value={feature.description} onChange={e => {
-                    const newFeatures = [...sections.customization.features];
-                    newFeatures[idx].description = e.target.value;
-                    setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
-                  }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
-                </div>
-              ))}
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-semibold text-[#2C1810]">Fitur Kustomisasi</label>
+                <button onClick={addCustomFeature} className="flex items-center gap-1 px-3 py-1.5 bg-green-100 text-green-700 rounded-lg border border-green-300 text-sm font-semibold hover:bg-green-200 transition">
+                  <Plus size={14} /> Tambah Fitur
+                </button>
+              </div>
+              <div className="space-y-3">
+                {sections.customization.features.map((feature: any, idx: number) => (
+                  <div key={idx} className="p-4 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
+                    <div className="flex justify-between items-start mb-3">
+                      <h4 className="font-bold text-[#2C1810]">Fitur #{idx + 1}</h4>
+                      <button onClick={() => removeCustomFeature(idx)} className="p-1.5 text-red-600 hover:bg-red-100 rounded-lg transition">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      <input type="text" value={feature.title} onChange={e => {
+                        const newFeatures = [...sections.customization.features];
+                        newFeatures[idx].title = e.target.value;
+                        setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                      }} placeholder="Judul fitur" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold" />
+                      <textarea value={feature.description} onChange={e => {
+                        const newFeatures = [...sections.customization.features];
+                        newFeatures[idx].description = e.target.value;
+                        setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                      }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>

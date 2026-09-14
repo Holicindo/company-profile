@@ -83,6 +83,67 @@ export default function EditLayananPage() {
     }
   };
 
+  // Add/Remove functions for dynamic arrays
+  const addSlide = () => {
+    setSections({
+      ...sections,
+      hero: {
+        ...sections.hero,
+        slides: [...sections.hero.slides, ''],
+      },
+    });
+  };
+
+  const removeSlide = (index: number) => {
+    setSections({
+      ...sections,
+      hero: {
+        ...sections.hero,
+        slides: sections.hero.slides.filter((_: any, i: number) => i !== index),
+      },
+    });
+  };
+
+  const addServiceItem = () => {
+    setSections({
+      ...sections,
+      services: {
+        ...sections.services,
+        items: [...sections.services.items, { title: '', description: '' }],
+      },
+    });
+  };
+
+  const removeServiceItem = (index: number) => {
+    setSections({
+      ...sections,
+      services: {
+        ...sections.services,
+        items: sections.services.items.filter((_: any, i: number) => i !== index),
+      },
+    });
+  };
+
+  const addFeature = () => {
+    setSections({
+      ...sections,
+      smartEcosystem: {
+        ...sections.smartEcosystem,
+        features: [...sections.smartEcosystem.features, { title: '', description: '' }],
+      },
+    });
+  };
+
+  const removeFeature = (index: number) => {
+    setSections({
+      ...sections,
+      smartEcosystem: {
+        ...sections.smartEcosystem,
+        features: sections.smartEcosystem.features.filter((_: any, i: number) => i !== index),
+      },
+    });
+  };
+
   const autoGenerateSEO = async () => {
     try {
       setGenerating(true);
@@ -181,19 +242,31 @@ export default function EditLayananPage() {
             <input type="text" value={sections.hero.title} onChange={e => setSections({ ...sections, hero: { ...sections.hero, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
             <textarea value={sections.hero.description} onChange={e => setSections({ ...sections, hero: { ...sections.hero, description: e.target.value } })} rows={3} placeholder="Deskripsi" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
             <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Hero Slides</label>
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-semibold text-[#2C1810]">Hero Slides</label>
+                <button onClick={addSlide} className="flex items-center gap-1 px-3 py-1.5 bg-green-100 text-green-700 rounded-lg border border-green-300 text-sm font-semibold hover:bg-green-200 transition">
+                  <Plus size={14} /> Tambah Slide
+                </button>
+              </div>
               <div className="space-y-3">
                 {sections.hero.slides.map((slide: string, idx: number) => (
-                  <ImageUpload
-                    key={idx}
-                    label={`Slide ${idx + 1}`}
-                    value={slide}
-                    onChange={url => {
-                      const newSlides = [...sections.hero.slides];
-                      newSlides[idx] = url;
-                      setSections({ ...sections, hero: { ...sections.hero, slides: newSlides } });
-                    }}
-                  />
+                  <div key={idx} className="p-4 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="font-semibold text-[#2C1810]">Slide #{idx + 1}</span>
+                      <button onClick={() => removeSlide(idx)} className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                    <ImageUpload
+                      label={`Gambar Slide ${idx + 1}`}
+                      value={slide}
+                      onChange={url => {
+                        const newSlides = [...sections.hero.slides];
+                        newSlides[idx] = url;
+                        setSections({ ...sections, hero: { ...sections.hero, slides: newSlides } });
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
@@ -207,22 +280,36 @@ export default function EditLayananPage() {
             <input type="text" value={sections.services.title} onChange={e => setSections({ ...sections, services: { ...sections.services, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
             <textarea value={sections.services.description} onChange={e => setSections({ ...sections, services: { ...sections.services, description: e.target.value } })} rows={2} placeholder="Deskripsi" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
             <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Item Layanan</label>
-              {sections.services.items.map((item: any, idx: number) => (
-                <div key={idx} className="p-4 mb-3 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
-                  <h4 className="font-bold text-[#2C1810] mb-2">Layanan #{idx + 1}</h4>
-                  <input type="text" value={item.title} onChange={e => {
-                    const newItems = [...sections.services.items];
-                    newItems[idx].title = e.target.value;
-                    setSections({ ...sections, services: { ...sections.services, items: newItems } });
-                  }} placeholder="Judul layanan" className="w-full px-3 py-2 mb-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
-                  <textarea value={item.description} onChange={e => {
-                    const newItems = [...sections.services.items];
-                    newItems[idx].description = e.target.value;
-                    setSections({ ...sections, services: { ...sections.services, items: newItems } });
-                  }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
-                </div>
-              ))}
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-semibold text-[#2C1810]">Item Layanan</label>
+                <button onClick={addServiceItem} className="flex items-center gap-1 px-3 py-1.5 bg-green-100 text-green-700 rounded-lg border border-green-300 text-sm font-semibold hover:bg-green-200 transition">
+                  <Plus size={14} /> Tambah Layanan
+                </button>
+              </div>
+              <div className="space-y-3">
+                {sections.services.items.map((item: any, idx: number) => (
+                  <div key={idx} className="p-4 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
+                    <div className="flex justify-between items-start mb-3">
+                      <h4 className="font-bold text-[#2C1810]">Layanan #{idx + 1}</h4>
+                      <button onClick={() => removeServiceItem(idx)} className="p-1.5 text-red-600 hover:bg-red-100 rounded-lg transition">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      <input type="text" value={item.title} onChange={e => {
+                        const newItems = [...sections.services.items];
+                        newItems[idx].title = e.target.value;
+                        setSections({ ...sections, services: { ...sections.services, items: newItems } });
+                      }} placeholder="Judul layanan" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold" />
+                      <textarea value={item.description} onChange={e => {
+                        const newItems = [...sections.services.items];
+                        newItems[idx].description = e.target.value;
+                        setSections({ ...sections, services: { ...sections.services, items: newItems } });
+                      }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -241,21 +328,36 @@ export default function EditLayananPage() {
             />
             <input type="text" value={sections.smartEcosystem.contactLink} onChange={e => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, contactLink: e.target.value } })} placeholder="Link WhatsApp" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
             <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Fitur</label>
-              {sections.smartEcosystem.features.map((feature: any, idx: number) => (
-                <div key={idx} className="p-3 mb-2 bg-[#FAF7F0] rounded-xl">
-                  <input type="text" value={feature.title} onChange={e => {
-                    const newFeatures = [...sections.smartEcosystem.features];
-                    newFeatures[idx].title = e.target.value;
-                    setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
-                  }} placeholder="Judul fitur" className="w-full px-3 py-2 mb-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
-                  <textarea value={feature.description} onChange={e => {
-                    const newFeatures = [...sections.smartEcosystem.features];
-                    newFeatures[idx].description = e.target.value;
-                    setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
-                  }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
-                </div>
-              ))}
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-semibold text-[#2C1810]">Fitur</label>
+                <button onClick={addFeature} className="flex items-center gap-1 px-3 py-1.5 bg-green-100 text-green-700 rounded-lg border border-green-300 text-sm font-semibold hover:bg-green-200 transition">
+                  <Plus size={14} /> Tambah Fitur
+                </button>
+              </div>
+              <div className="space-y-3">
+                {sections.smartEcosystem.features.map((feature: any, idx: number) => (
+                  <div key={idx} className="p-4 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
+                    <div className="flex justify-between items-start mb-3">
+                      <h4 className="font-bold text-[#2C1810]">Fitur #{idx + 1}</h4>
+                      <button onClick={() => removeFeature(idx)} className="p-1.5 text-red-600 hover:bg-red-100 rounded-lg transition">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      <input type="text" value={feature.title} onChange={e => {
+                        const newFeatures = [...sections.smartEcosystem.features];
+                        newFeatures[idx].title = e.target.value;
+                        setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
+                      }} placeholder="Judul fitur" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold" />
+                      <textarea value={feature.description} onChange={e => {
+                        const newFeatures = [...sections.smartEcosystem.features];
+                        newFeatures[idx].description = e.target.value;
+                        setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
+                      }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
