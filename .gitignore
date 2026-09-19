@@ -9,3 +9,12 @@ dist/
 # Private keys - NEVER commit these
 *.pem
 *.key
+
+# User uploaded files - managed per environment, not in repo
+frontend/public/uploads/
+backend/uploads/
+uploads/
+
+# Build artifacts
+backend/tsconfig.tsbuildinfo
+frontend/tsconfig.tsbuildinfo

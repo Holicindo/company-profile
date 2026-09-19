@@ -29,7 +29,25 @@ export default async function ProductDetailPage({ params }: Props) {
   const waText = `Halo Holicindo, saya tertarik dengan produk *${product.name}*. Boleh minta informasi lebih lanjut?`;
 
   return (
-    <div className="min-h-screen bg-white font-sans text-neutral-900">
+    <div className="min-h-screen bg-white font-sans text-neutral-900 pb-20 lg:pb-0">
+
+      {/* Sticky Bottom CTA Bar - Mobile Only */}
+      <div className="fixed bottom-0 left-0 right-0 bg-black text-white px-4 py-3 shadow-[0_-4px_24px_rgba(0,0,0,0.15)] z-50 lg:hidden">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-neutral-400">Tertarik?</p>
+            <p className="text-xs font-medium mt-0.5">{product.name}</p>
+          </div>
+          <a
+            href={`https://wa.me/6281111825718?text=${encodeURIComponent(waText)}`}
+            target="_blank"
+            rel="noreferrer"
+            className="bg-white text-black px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-100 transition-colors rounded-none whitespace-nowrap flex-shrink-0"
+          >
+            Minta Penawaran
+          </a>
+        </div>
+      </div>
 
       <div className="container-wide py-12 lg:py-20">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">

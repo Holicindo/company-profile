@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export interface SEOResult {
@@ -23,7 +23,7 @@ export class SEOGeneratorService {
 
   async generateSEO(content: any, pageType: string): Promise<SEOResult> {
     if (!this.model) {
-      throw new Error('Gemini API key not configured');
+      throw new BadRequestException('Gemini API key tidak dikonfigurasi. Set GEMINI_API_KEY di environment variables.');
     }
 
     // Extract content text based on page type

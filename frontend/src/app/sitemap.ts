@@ -59,12 +59,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     let dynamicPages: MetadataRoute.Sitemap = [];
     
     if (pagesRes.ok) {
-      const pages = await pagesRes.json();
+      const pagesData = await pagesRes.json();
+      const pages = Array.isArray(pagesData) ? pagesData : (pagesData?.items || []);
       dynamicPages = pages
         .filter((page: any) => page.status === 'published')
         .map((page: any) => ({
           url: `${baseUrl}/${page.slug}`,
-          lastModified: new Date(page.updatedAt),
+          lastModified: new Date(page.updatedAt || Date.now()),
           changeFrequency: 'monthly' as const,
           priority: 0.7,
         }));
@@ -78,10 +79,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     let blogPages: MetadataRoute.Sitemap = [];
     
     if (blogRes.ok) {
-      const blogPosts = await blogRes.json();
+      const blogData = await blogRes.json();
+      const blogPosts = Array.isArray(blogData) ? blogData : (blogData?.items || []);
       blogPages = blogPosts.map((post: any) => ({
         url: `${baseUrl}/news/${post.slug}`,
-        lastModified: new Date(post.updatedAt),
+        lastModified: new Date(post.updatedAt || Date.now()),
         changeFrequency: 'monthly' as const,
         priority: 0.6,
       }));

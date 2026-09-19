@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -14,21 +12,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get form data from request
     const formData = await req.formData();
-    
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3011';
-    const uploadUrl = `${backendUrl}/api/upload`; // FIX: Added /api prefix
-    
+
+    // Use env var directly — no /api suffix here, it's added below
+    const backendBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3011';
+    const uploadUrl = `${backendBase}/api/upload`;
+
     console.log('[Upload API] Forwarding to:', uploadUrl);
-    console.log('[Upload API] Token:', token.substring(0, 20) + '...');
-    
-    // Forward to backend
+
     const response = await fetch(uploadUrl, {
       method: 'POST',
-      headers: {
-        'Authorization': token,
-      },
+      headers: { 'Authorization': token },
       body: formData,
     });
 
@@ -41,7 +35,6 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json();
-    console.log('[Upload API] Success:', data);
     return NextResponse.json(data);
   } catch (error: any) {
     console.error('[Upload API] Exception:', error);

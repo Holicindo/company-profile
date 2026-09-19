@@ -14,7 +14,10 @@ export default async function BlogPage() {
   try {
     const data = await getBlogPosts({ page: 1, limit: 20 });
     initialPosts = data?.items || [];
-  } catch {}
+  } catch (err) {
+    console.error('[BlogPage] Failed to fetch blog posts from API:', err);
+    // Page will still render — BlogGallery falls back to static INSIGHTS_ARTICLES
+  }
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 pb-20">

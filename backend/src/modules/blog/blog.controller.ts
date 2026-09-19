@@ -7,21 +7,18 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class BlogController {
   constructor(private readonly svc: BlogService) {}
 
-  @Get('latest')
-  getLatest(@Query('limit') limit?: string) { return this.svc.getLatestPosts(limit ? +limit : 3); }
-
-  @Get()
-  getPosts(@Query('page') page?: string, @Query('limit') limit?: string, @Query('search') search?: string) {
-    return this.svc.getPosts(page ? +page : 1, limit ? +limit : 10, search);
-  }
-
-  @Get(':slug')
-  getBySlug(@Param('slug') slug: string) { return this.svc.getPostBySlug(slug); }
+  // ── Admin endpoints (must be declared BEFORE :slug to avoid shadowing) ──────
 
   @UseGuards(JwtAuthGuard)
   @Get('admin/all')
   getAllAdmin(@Query('page') page?: string, @Query('limit') limit?: string) {
     return this.svc.getAllForAdmin(page ? +page : 1, limit ? +limit : 20);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('admin/:id')
+  getByIdAdmin(@Param('id', ParseIntPipe) id: number) {
+    return this.svc.getPostById(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -37,4 +34,17 @@ export class BlogController {
   @UseGuards(JwtAuthGuard)
   @Delete('admin/:id')
   deletePost(@Param('id', ParseIntPipe) id: number) { return this.svc.deletePost(id); }
+
+  // ── Public endpoints ─────────────────────────────────────────────────────────
+
+  @Get('latest')
+  getLatest(@Query('limit') limit?: string) { return this.svc.getLatestPosts(limit ? +limit : 3); }
+
+  @Get()
+  getPosts(@Query('page') page?: string, @Query('limit') limit?: string, @Query('search') search?: string) {
+    return this.svc.getPosts(page ? +page : 1, limit ? +limit : 10, search);
+  }
+
+  @Get(':slug')
+  getBySlug(@Param('slug') slug: string) { return this.svc.getPostBySlug(slug); }
 }

@@ -21,10 +21,10 @@ export class ContactService {
     return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
-  async updateStatus(id: number, status: string) {
+  async updateStatus(id: number, status: InquiryStatus) {
     const inquiry = await this.repo.findOne({ where: { id } });
     if (!inquiry) throw new NotFoundException('Inquiry not found');
-    inquiry.status = status as InquiryStatus;
+    inquiry.status = status;
     return this.repo.save(inquiry);
   }
 

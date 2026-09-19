@@ -10,7 +10,7 @@ export async function generateMetadata(props: { searchParams: Promise<{ category
   return { title: seo.title, description: seo.description };
 }
 
-export const revalidate = 0;
+export const revalidate = 3600; // ISR: revalidate every hour
 
 // Kata kunci nama kategori yang diizinkan (case-insensitive)
 const ALLOWED_KEYWORDS = ['showcase', 'refrigerator', 'blast freezer', 'blast-freezer', 'freezer'];
@@ -35,8 +35,8 @@ export default async function ProductsPage(props: {
 
   const [categories, rawData] = await Promise.all([
     getProductCategories().catch(() => []),
-    // Saat semua produk (no category), fetch dengan limit besar untuk bisa filter
-    getProducts({ page: !category ? 1 : page, limit: !category ? 999 : limit, search, category })
+    // When no category filter: fetch paginated allowed products directly from API
+    getProducts({ page, limit, search, category })
       .catch(() => ({ items: [], total: 0, totalPages: 0 })),
   ]);
 
@@ -50,14 +50,16 @@ export default async function ProductsPage(props: {
     });
   });
 
-  // Filter & paginate
+  // When no specific category: client-side filter by allowed categories
+  // then re-paginate using the filtered subset
   let data = rawData;
   if (!category) {
     const allAllowed = (rawData.items || []).filter((p: any) => isCategoryAllowed(p.category));
     allAllowed.sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''));
     const total = allAllowed.length;
-    const totalPages = Math.ceil(total / limit);
+    const totalPages = Math.ceil(total / limit) || 1;
     const start = (page - 1) * limit;
+    // total here is the accurate filtered count — no misleading numbers
     data = { items: allAllowed.slice(start, start + limit), total, totalPages };
   }
 

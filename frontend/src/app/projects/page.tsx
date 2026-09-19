@@ -8,8 +8,9 @@ export const metadata: Metadata = {
 };
 export const revalidate = 0;
 
-export default async function ProjectsPage({ searchParams }: { searchParams: { page?: string } }) {
-  const page = searchParams.page ? +searchParams.page : 1;
+export default async function ProjectsPage(props: { searchParams: Promise<{ page?: string }> }) {
+  const searchParams = await props.searchParams;
+  const page = searchParams?.page ? +searchParams.page : 1;
   const data = await getPortfolio({ page, limit: 12 }).catch(() => ({ items: [], totalPages: 0, total: 0 }));
 
   return <ProjectsView data={data} page={page} />;

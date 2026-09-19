@@ -27,3 +27,6 @@ export const getLatestBlogPosts = (limit = 3) => api.get('/blog/latest', { param
 export const getBlogPostBySlug = (slug: string) => api.get(`/blog/${slug}`).then(r => r.data);
 
 export const submitContact = (data: any) => api.post('/contact', data).then(r => r.data);
+
+export const getPageBySlug = (slug: string) =>
+  api.get(`/pages/slug/${slug}`).then(r => r.data).catch(() => null);

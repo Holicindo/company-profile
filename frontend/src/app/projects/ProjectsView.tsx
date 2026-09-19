@@ -33,7 +33,7 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
     <div className="min-h-screen bg-white font-sans text-neutral-900">
 
       {/* ── Hero Slideshow — min-h on mobile, natural on desktop ── */}
-      <div className="relative text-white overflow-hidden min-h-[360px] sm:min-h-0 bg-neutral-900">
+      <div className="relative text-white overflow-hidden min-h-[260px] sm:min-h-0 bg-neutral-900">
 
         {/* Ghost spacer: hidden on mobile, normal flow on desktop to give natural height */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -71,18 +71,18 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
           ))}
 
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/25" />
 
           {/* Centered content */}
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <div className="text-center px-6 max-w-5xl">
-              <p className="text-white/70 font-bold text-xs sm:text-sm uppercase tracking-[0.25em] mb-4 drop-shadow">
+          <div className="absolute inset-0 flex items-center justify-center z-10 px-4 sm:px-6">
+            <div className="text-center max-w-4xl">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-black/45 backdrop-blur-sm border border-white/20 rounded-full text-[8px] sm:text-xs font-bold uppercase tracking-[0.2em] text-white/90 mb-2 sm:mb-4 shadow-sm">
                 Project Experiences
-              </p>
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6 leading-[1.1] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text whitespace-nowrap">
+              </div>
+              <h1 className="text-xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-2 sm:mb-6 leading-tight sm:leading-[1.1] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
                 {t('Portofolio Instalasi Mesin', 'Machine Installation Portfolio')}
               </h1>
-              <p className="text-white/90 text-lg md:text-xl font-normal leading-relaxed drop-shadow-md max-w-2xl mx-auto">
+              <p className="text-white/85 text-xs sm:text-lg md:text-xl font-normal leading-relaxed drop-shadow-md max-w-xl mx-auto">
                 {t(
                   'Jejak keberhasilan instalasi mesin kami yang telah dipercaya oleh ratusan pelaku industri F&B dan HORECA di Indonesia.',
                   'The track record of our successful machine installations, trusted by hundreds of F&B and HORECA industry players in Indonesia.'
@@ -91,16 +91,15 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
             </div>
           </div>
 
-
           {/* Slide dots */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2 z-10">
             {heroSlides.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className="h-[5px] rounded-full transition-all duration-300 cursor-pointer"
+                className="h-1 sm:h-[5px] rounded-full transition-all duration-300 cursor-pointer"
                 style={{
-                  width: index === currentSlide ? '24px' : '6px',
+                  width: index === currentSlide ? '20px' : '5px',
                   backgroundColor: index === currentSlide ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.45)',
                 }}
                 aria-label={`Go to slide ${index + 1}`}
@@ -111,13 +110,13 @@ export function ProjectsView({ data, page }: { data: any; page: number }) {
       </div>
 
       {/* ── Album Showcase & Gallery Section ── */}
-      <div className="container-wide py-12 md:py-16">
+      <div className="container-wide py-6 sm:py-12 md:py-16">
         {data.items.length > 0 ? (
           <>
             <ProjectGallery projects={data.items} />
 
             {data.totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-16 border-t border-neutral-200 pt-8">
+              <div className="flex justify-center gap-2 mt-8 sm:mt-16 border-t border-neutral-200 pt-6 sm:pt-8">
                 {Array.from({ length: data.totalPages }, (_, i) => i + 1)
                   .filter((p: number) => Math.abs(p - page) <= 2)
                   .map((p: number) => (

@@ -80,9 +80,8 @@ export async function deleteBlog(id: number) {
 }
 
 export async function fetchBlogById(id: number) {
-  const res = await apiFetch(`${BASE}/blog/admin/all?page=1&limit=999`, { headers: authHeaders() });
-  const data = await handleResponse(res);
-  return data?.items?.find((p: any) => p.id === id) ?? null;
+  const res = await apiFetch(`${BASE}/blog/admin/${id}`, { headers: authHeaders() });
+  return handleResponse(res);
 }
 
 // ── Products ────────────────────────────────────────────────────────────────
@@ -96,10 +95,8 @@ export async function fetchAdminProducts(page = 1, limit = 20, search?: string, 
 }
 
 export async function fetchProductById(id: number) {
-  // Admin all endpoint, cari by id
-  const res = await apiFetch(`${BASE}/products/admin/all?page=1&limit=999`, { headers: authHeaders() });
-  const data = await handleResponse(res);
-  return data?.items?.find((p: any) => p.id === id) ?? null;
+  const res = await apiFetch(`${BASE}/products/admin/${id}`, { headers: authHeaders() });
+  return handleResponse(res);
 }
 
 export async function fetchCategories() {
@@ -136,9 +133,8 @@ export async function fetchAdminPortfolio(page = 1, limit = 20) {
 }
 
 export async function fetchPortfolioById(id: number) {
-  const res = await apiFetch(`${BASE}/portfolio/admin/all?page=1&limit=999`, { headers: authHeaders() });
-  const data = await handleResponse(res);
-  return data?.items?.find((p: any) => p.id === id) ?? null;
+  const res = await apiFetch(`${BASE}/portfolio/admin/${id}`, { headers: authHeaders() });
+  return handleResponse(res);
 }
 
 export async function createPortfolio(data: any) {

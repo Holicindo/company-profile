@@ -61,14 +61,22 @@ export class ProductsService {
 
   // ── Admin CRUD ───────────────────────────────────────────────────────────────
 
-  async getAllForAdmin(page = 1, limit = 20) {
+  async getAllForAdmin(page = 1, limit = 20, search?: string, category?: string) {
     const qb = this.productRepo.createQueryBuilder('p')
       .leftJoinAndSelect('p.category', 'cat')
       .orderBy('p.createdAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit);
+    if (search) qb.andWhere('(p.name ILIKE :s OR p.sku ILIKE :s)', { s: `%${search}%` });
+    if (category) qb.andWhere('cat.slug = :category', { category });
     const [items, total] = await qb.getManyAndCount();
     return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
+  }
+
+  async getProductById(id: number) {
+    const product = await this.productRepo.findOne({ where: { id }, relations: ['category', 'category.parent'] });
+    if (!product) throw new NotFoundException('Product not found');
+    return product;
   }
 
   async createProduct(dto: any) {

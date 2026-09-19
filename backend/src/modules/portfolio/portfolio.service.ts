@@ -38,6 +38,12 @@ export class PortfolioService {
     return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
+  async getPortfolioById(id: number) {
+    const item = await this.repo.findOne({ where: { id } });
+    if (!item) throw new NotFoundException('Portfolio not found');
+    return item;
+  }
+
   async createPortfolio(dto: any) {
     const item = this.repo.create(dto);
     return this.repo.save(item);

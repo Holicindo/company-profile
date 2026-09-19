@@ -66,7 +66,7 @@ export default function ContactPage() {
           </button>
 
           {showMap && (
-            <div className="mt-8 border border-[#C9A84C]/30 overflow-hidden" style={{ height: '400px' }}>
+            <div className="mt-8 border border-[#C9A84C]/30 overflow-hidden h-[250px] sm:h-[350px] lg:h-[400px]">
               <iframe
                 src={MAPS_EMBED}
                 width="100%"

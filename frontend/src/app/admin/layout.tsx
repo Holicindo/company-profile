@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('holic_admin_token');
       if (!token) {
-        router.replace('/login');
+        router.replace('/admin/login');
         return;
       }
       // Decode JWT untuk email
@@ -56,7 +56,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const handleLogout = () => {
     localStorage.removeItem('holic_admin_token');
     document.cookie = 'holic_admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    router.replace('/login');
+    router.replace('/admin/login');
   };
 
   const isActive = (item: typeof navItems[0]) => {

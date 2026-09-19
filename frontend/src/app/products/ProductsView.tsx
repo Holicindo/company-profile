@@ -53,13 +53,13 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
     <div className="min-h-screen bg-white font-sans text-neutral-900">
 
       {/* ── Fokus Industri Kami ── */}
-      <div id="industri" className="bg-dark-metallic border-b border-[#C9A84C]/20 py-16 sm:py-24">
+      <div id="industri" className="bg-dark-metallic border-b border-[#C9A84C]/20 py-8 sm:py-24">
         <div className="container-wide">
-          <div className="text-center mb-12 sm:mb-20">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4">
+          <div className="text-center mb-5 sm:mb-20">
+            <h2 className="text-2xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-2 sm:mb-4">
               {t('Solusi Industri', 'Our Industry Solution')}
             </h2>
-            <p className="text-neutral-400 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
+            <p className="text-neutral-400 max-w-2xl mx-auto text-xs sm:text-base md:text-lg leading-relaxed">
               {t(
                 'Inovasi teknologi pendingin komersial kami dirancang untuk mendukung berbagai skala industri dengan standar efisiensi, durabilitas, dan estetika tanpa kompromi.',
                 'Our commercial refrigeration technology innovations are designed to support various industrial scales with uncompromising efficiency, durability, and aesthetics.'
@@ -67,19 +67,19 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:gap-8 hide-scrollbar">
             {/* Card 1: Bakery */}
-            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all flex-shrink-0 w-[78vw] sm:w-auto snap-center h-[200px] sm:h-[350px] md:h-[450px]">
               <div className="absolute inset-0">
                 <Image src="/images/products/hero_section_product_(1).png" alt="Bakery" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
               </div>
-              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
-                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+              <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
+                <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
                   Bakery & Pastry
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Estetika Display & Presisi Suhu</h3>
-                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Estetika Display & Presisi Suhu</h3>
+                <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Curved showcase elegan dengan kontrol kelembapan tinggi (high-humidity) menjaga kualitas kue dan roti tetap segar sambil menarik perhatian pelanggan dari pandangan pertama.',
                     'Elegant curved showcases with high-humidity control keep cakes and pastries fresh while captivating customers at first sight.'
@@ -89,17 +89,17 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
             </div>
 
             {/* Card 2: HORECA */}
-            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all flex-shrink-0 w-[78vw] sm:w-auto snap-center h-[200px] sm:h-[350px] md:h-[450px]">
               <div className="absolute inset-0">
                 <Image src="/images/products/hero_section_product_(2).png" alt="HORECA" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
               </div>
-              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
-                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+              <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
+                <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
                   HORECA (Hotel & Resto)
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Ketahanan Dapur Komersial</h3>
-                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Ketahanan Dapur Komersial</h3>
+                <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Mesin Stainless Steel Undercounter & Upright Chiller tugas berat yang didesain tangguh untuk memfasilitasi alur kerja cepat di dapur komersial.',
                     'Heavy-duty Stainless Steel Undercounter & Upright Chillers built tough to facilitate fast-paced workflows in commercial kitchens.'
@@ -109,17 +109,17 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
             </div>
 
             {/* Card 3: Retail & Supermarket */}
-            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all flex-shrink-0 w-[78vw] sm:w-auto snap-center h-[200px] sm:h-[350px] md:h-[450px]">
               <div className="absolute inset-0">
                 <Image src="/images/products/hero_section_product_(3).png" alt="Retail" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
               </div>
-              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
-                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+              <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
+                <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
                   Retail & Supermarket
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Visibilitas & Kapasitas Ekstra</h3>
-                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Visibilitas & Kapasitas Ekstra</h3>
+                <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Multideck Open Chiller dan Island Freezer berkapasitas masif yang memaksimalkan area display produk untuk mendorong penjualan seketika.',
                     'Massive capacity Multideck Open Chillers and Island Freezers that maximize product display areas to drive impulse purchases.'
@@ -129,17 +129,17 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
             </div>
 
             {/* Card 4: Industrial */}
-            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all h-[350px] sm:h-[450px]">
+            <div className="group relative rounded-xl overflow-hidden bg-[#251009] border border-[#C9A84C]/20 hover:border-[#C9A84C]/60 transition-all flex-shrink-0 w-[78vw] sm:w-auto snap-center h-[200px] sm:h-[350px] md:h-[450px]">
               <div className="absolute inset-0">
                 <Image src="/images/products/hero_section_product_(4).png" alt="Industrial" fill className="object-cover opacity-65 group-hover:opacity-80 transition-opacity group-hover:scale-105 duration-700" unoptimized />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080401] via-[#080401]/60 to-transparent" />
               </div>
-              <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
-                <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
+              <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
+                <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
                   Pengolahan Industri
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Kekuatan Produksi Massal</h3>
-                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Kekuatan Produksi Massal</h3>
+                <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Dari Cold Room hingga Blast Freezer skala pabrik, sistem pendingin kami menjaga integritas bahan baku makanan pada volume produksi raksasa secara stabil.',
                     'From Cold Rooms to factory-scale Blast Freezers, our cooling systems stably maintain the integrity of raw materials at gigantic production volumes.'
@@ -153,12 +153,12 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
 
       {/* ── Product Grid — Refrigerator & Showcase only ── */}
       <div className="bg-white" id="products">
-        <div className="container-wide py-8 sm:py-12 lg:py-16">
-          <div className="flex flex-col lg:flex-row gap-6 sm:gap-12">
+        <div className="container-wide py-6 sm:py-12 lg:py-16">
+          <div className="flex flex-col lg:flex-row gap-5 sm:gap-12">
 
             {/* ── Category Filter ── */}
             <div className="w-full lg:w-64 flex-shrink-0">
-              <div className="lg:sticky lg:top-28 border border-neutral-200 bg-neutral-50 p-4 sm:p-6 rounded-sm">
+              <div className="lg:sticky lg:top-28 border border-neutral-200 bg-neutral-50 p-3 sm:p-6 rounded-sm">
                 <div className="flex items-center gap-2.5 mb-3 sm:mb-6 pb-2.5 sm:pb-4 border-b border-neutral-200">
                   <Grid size={15} strokeWidth={1.75} className="text-black" />
                   <h2 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-black">
@@ -204,7 +204,7 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
 
               {data.items.length > 0 ? (
                 <>
-                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6">
                     {data.items.map((p: any) => (
                       <Link
                         key={p.id}
@@ -212,15 +212,15 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
                         prefetch={true}
                         className="group relative bg-white border border-neutral-200 hover:border-neutral-400 hover:shadow-sm transition-all duration-300 flex flex-col h-full rounded-none overflow-hidden active:scale-[0.99]"
                       >
-                        <div className="relative h-36 sm:h-48 bg-white overflow-hidden p-2 sm:p-4 flex items-center justify-center border-b border-neutral-100">
+                        <div className="relative h-32 sm:h-48 bg-white overflow-hidden p-1.5 sm:p-4 flex items-center justify-center border-b border-neutral-100">
                           {p.imageUrl
-                            ? <Image src={p.imageUrl} alt={p.name} fill className="object-contain p-2 sm:p-4 group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, 25vw" unoptimized />
+                            ? <Image src={p.imageUrl} alt={p.name} fill className="object-contain p-1.5 sm:p-4 group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, 25vw" unoptimized />
                             : <div className="flex flex-col items-center justify-center text-neutral-300 gap-2"><Settings size={20} strokeWidth={1} /><span className="text-[8px] uppercase tracking-widest font-bold">No Image</span></div>
                           }
                         </div>
-                        <div className="p-2.5 sm:p-4 flex flex-col flex-1 justify-between">
+                        <div className="p-2 sm:p-4 flex flex-col flex-1 justify-between">
                           <div>
-                            <p className="text-[8px] sm:text-[9px] text-neutral-400 font-bold mb-1 sm:mb-2 uppercase tracking-[0.15em] truncate">{p.category?.name || 'Uncategorized'}</p>
+                            <p className="text-[8px] sm:text-[9px] text-neutral-400 font-bold mb-0.5 sm:mb-2 uppercase tracking-[0.15em] truncate">{p.category?.name || 'Uncategorized'}</p>
                             <h3 className="text-xs sm:text-sm font-medium text-black line-clamp-2 leading-snug mb-1 sm:mb-2 group-hover:text-neutral-600 transition-colors">{p.name}</h3>
                           </div>
                           <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-black opacity-0 group-hover:opacity-100 transition-all duration-300 pt-1 border-t border-neutral-100 mt-1">

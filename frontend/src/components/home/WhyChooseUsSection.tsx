@@ -2,10 +2,18 @@
 
 import { useLanguage } from '@/context/LanguageContext';
 
-export function WhyChooseUsSection() {
+interface WhyChooseUsSectionProps {
+  initialData?: {
+    title?: string;
+    subtitle?: string;
+    features?: Array<{ title: string; description?: string; desc?: string }>;
+  };
+}
+
+export function WhyChooseUsSection({ initialData }: WhyChooseUsSectionProps) {
   const { t } = useLanguage();
 
-  const features = [
+  const defaultFeatures = [
     { title: t('Kualitas Terjamin', 'Guaranteed Quality'), desc: t('Seluruh produk memenuhi standar kualitas internasional dengan bahan baku pilihan.', 'All products meet international quality standards with selected raw materials.') },
     { title: t('Garansi Resmi', 'Official Warranty'), desc: t('Setiap produk dilengkapi garansi resmi dan dukungan purna jual terpercaya.', 'Every product comes with an official warranty and reliable after-sales support.') },
     { title: t('Teknisi Berpengalaman', 'Experienced Technicians'), desc: t('Tim teknisi kami berpengalaman lebih dari 20 tahun di industri mesin makanan.', 'Our technician team has over 20 years of experience in the food machinery industry.') },
@@ -14,31 +22,36 @@ export function WhyChooseUsSection() {
     { title: t('Support 24/7', '24/7 Support'), desc: t('Tim support siap membantu Anda kapan saja untuk memastikan operasional lancar.', 'Our support team is ready to help you anytime to ensure smooth operations.') },
   ];
 
+  const features = (initialData?.features && initialData.features.length > 0)
+    ? initialData.features.map(f => ({ title: f.title, desc: f.description || f.desc || '' }))
+    : defaultFeatures;
+
   return (
-    <section className="py-10 sm:py-16 bg-white relative overflow-hidden border-b border-neutral-200">
+    <section className="py-8 sm:py-16 bg-white relative overflow-hidden border-b border-neutral-200">
       <div className="container-wide">
-        <div className="flex flex-col md:flex-row gap-6 sm:gap-12 mb-10 sm:mb-20">
+        <div className="flex flex-col md:flex-row gap-3 sm:gap-12 mb-6 sm:mb-16">
           <div className="md:w-1/3">
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black mb-2 sm:mb-6">
-              {t('Mengapa Memilih Kami', 'Why Choose Us')}
+            <h2 className="text-xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black mb-1 sm:mb-6">
+              {initialData?.title || t('Mengapa Memilih Kami', 'Why Choose Us')}
             </h2>
           </div>
-          <div className="md:w-2/3 border-l-2 border-neutral-900 pl-4 sm:pl-8 md:pl-12 flex items-center">
-            <p className="text-neutral-800 font-medium text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl">
-              {t(
-                'Berpengalaman lebih dari 20 tahun sebagai pionir penyedia peralatan dapur komersial dan mesin F&B di Indonesia. Kami menghadirkan presisi, kualitas, dan keandalan pada setiap instalasi bisnis Anda.',
-                'Over 20 years of experience as a pioneer provider of commercial kitchen equipment and F&B machinery in Indonesia. We deliver precision, quality, and reliability in every installation for your business.'
-              )}
+          <div className="md:w-2/3 border-l-2 border-neutral-900 pl-3 sm:pl-8 md:pl-12 flex items-center">
+            <p className="text-neutral-800 font-medium text-xs sm:text-lg md:text-xl leading-relaxed max-w-2xl">
+              {initialData?.subtitle ||
+                t(
+                  'Berpengalaman lebih dari 20 tahun sebagai pionir penyedia peralatan dapur komersial dan mesin F&B di Indonesia. Kami menghadirkan presisi, kualitas, dan keandalan pada setiap instalasi bisnis Anda.',
+                  'Over 20 years of experience as a pioneer provider of commercial kitchen equipment and F&B machinery in Indonesia. We deliver precision, quality, and reliability in every installation for your business.'
+                )}
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 sm:gap-x-12 gap-y-4 sm:gap-y-16">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-x-12 gap-y-4 sm:gap-y-16">
           {features.map(({ title, desc }, idx) => (
-            <div key={title} className="border-t-2 border-neutral-900 pt-3 sm:pt-6">
-              <span className="text-xs sm:text-base font-black block mb-1 sm:mb-4 uppercase tracking-[0.2em]" style={{ color: '#C9A84C' }}>0{idx + 1}</span>
-              <h3 className="text-black font-bold text-sm sm:text-2xl mb-1 sm:mb-3 tracking-tight">{title}</h3>
-              <p className="text-neutral-700 text-xs sm:text-base font-normal leading-snug sm:leading-relaxed">{desc}</p>
+            <div key={idx} className="border-t-2 border-neutral-900 pt-2.5 sm:pt-6 flex flex-col justify-start">
+              <span className="text-[10px] sm:text-base font-black block mb-0.5 sm:mb-3 uppercase tracking-[0.2em]" style={{ color: '#C9A84C' }}>0{idx + 1}</span>
+              <h3 className="text-black font-bold text-xs sm:text-2xl mb-1 sm:mb-3 tracking-tight leading-snug">{title}</h3>
+              <p className="text-neutral-600 text-[11px] sm:text-base font-normal leading-snug sm:leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>

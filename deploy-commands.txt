@@ -2,7 +2,11 @@
 # COPY SEMUA COMMAND INI KE TERMINAL SSH
 # ========================================
 
-# 1. Deploy Backend + Run Seeder
+# PENTING: Seeder sekarang pakai SAFE MODE
+#     - Kalau page sudah ada data TIDAK ditimpa (aman!)
+#     - Kalau mau reset semua page tambah flag --force (HATI-HATI!)
+
+# 1. Deploy Backend (SAFE - tidak timpa data CMS yang sudah ada)
 cd ~/company-profile/backend && git pull origin staging && npm install && npm run build && npx ts-node -r tsconfig-paths/register src/seeder/seed-pages.ts && pm2 restart all && pm2 list
 
 # 2. Deploy Frontend
@@ -10,10 +14,18 @@ cd ~/company-profile/frontend && git pull origin staging && npm install && npm r
 
 # 3. Verify
 curl http://localhost:3011/api/pages/slug/layanan
+curl http://localhost:3011/api/pages/slug/tentang-kami
+curl http://localhost:3011/api/pages/slug/beranda
 
 # ========================================
-# KALAU BERHASIL, OUTPUT HARUSNYA:
+# OUTPUT YANG HARUSNYA MUNCUL:
 # ========================================
-# ✅ All pages seeded successfully!
-# ✅ PM2 processes restarted
-# ✅ API response with correct data
+# [SAFE MODE] Page 'beranda' already exists - skipping
+# [SAFE MODE] Page 'layanan' already exists - skipping
+# All pages checked. Existing pages preserved.
+# PM2 processes restarted
+
+# ========================================
+# KALAU MAU RESET DATA (HATI-HATI!):
+# ========================================
+# npx ts-node -r tsconfig-paths/register src/seeder/seed-pages.ts --force

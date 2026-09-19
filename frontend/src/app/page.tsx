@@ -6,7 +6,7 @@ import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSecti
 import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
 import { ClientsMarquee } from '@/components/home/ClientsMarquee';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
-import { getProductCategories, getFeaturedProducts, getFeaturedPortfolio } from '@/lib/api';
+import { getProductCategories, getFeaturedProducts, getFeaturedPortfolio, getPageBySlug } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,30 +17,36 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export const revalidate = 3600;
+// Force dynamic so admin updates reflect immediately
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getData() {
   try {
-    const [categories, featuredProducts, portfolio] = await Promise.all([
-      getProductCategories(), getFeaturedProducts(8), getFeaturedPortfolio(6)
+    const [categories, featuredProducts, portfolio, berandaPage] = await Promise.all([
+      getProductCategories().catch(() => []),
+      getFeaturedProducts(8).catch(() => []),
+      getFeaturedPortfolio(6).catch(() => []),
+      getPageBySlug('beranda').catch(() => null),
     ]);
-    return { categories, featuredProducts, portfolio };
+    return { categories, featuredProducts, portfolio, sections: berandaPage?.sections };
   } catch {
-    return { categories: [], featuredProducts: [], portfolio: [] };
+    return { categories: [], featuredProducts: [], portfolio: [], sections: null };
   }
 }
 
 export default async function HomePage() {
-  const { categories, featuredProducts, portfolio } = await getData();
+  const { categories, featuredProducts, portfolio, sections } = await getData();
   return (
     <>
-      <MainHero />
-      <HeroSection />
+      <MainHero initialData={sections?.mainHero} />
+      <HeroSection initialData={sections?.heroSection} />
 
       <ProductCategoriesSection categories={categories} />
       <FeaturedProductsSection products={featuredProducts} />
-      <WhyChooseUsSection />
+      <WhyChooseUsSection initialData={sections?.whyChooseUs} />
       <ProjectsSection projects={portfolio} />
     </>
   );
 }
+

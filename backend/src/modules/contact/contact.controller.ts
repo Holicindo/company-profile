@@ -1,7 +1,8 @@
-import { Controller, Post, Get, Patch, Delete, Body, Param, Query, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Delete, Body, Param, Query, UseGuards, ParseIntPipe, BadRequestException } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { InquiryStatus } from './entities/contact-inquiry.entity';
 
 @Controller('contact')
 export class ContactController {
@@ -19,7 +20,11 @@ export class ContactController {
   @UseGuards(JwtAuthGuard)
   @Patch('admin/:id')
   updateStatus(@Param('id', ParseIntPipe) id: number, @Body() body: { status: string }) {
-    return this.svc.updateStatus(id, body.status);
+    const validStatuses = Object.values(InquiryStatus);
+    if (!validStatuses.includes(body.status as InquiryStatus)) {
+      throw new BadRequestException(`Status tidak valid. Gunakan salah satu: ${validStatuses.join(', ')}`);
+    }
+    return this.svc.updateStatus(id, body.status as InquiryStatus);
   }
 
   @UseGuards(JwtAuthGuard)

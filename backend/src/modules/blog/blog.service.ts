@@ -48,6 +48,12 @@ export class BlogService {
 
   async deletePost(id: number) { await this.repo.delete(id); }
 
+  async getPostById(id: number) {
+    const post = await this.repo.findOne({ where: { id } });
+    if (!post) throw new NotFoundException('Post not found');
+    return post;
+  }
+
   async getAllForAdmin(page = 1, limit = 20) {
     const [items, total] = await this.repo.findAndCount({ order: { createdAt: 'DESC' }, skip: (page - 1) * limit, take: limit });
     return { items, total, page, limit, totalPages: Math.ceil(total / limit) };

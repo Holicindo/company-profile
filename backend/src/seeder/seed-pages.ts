@@ -193,13 +193,22 @@ async function seed() {
 
     const pageRepo = AppDataSource.getRepository(Page);
 
+    const force = process.argv.includes('--force');
+    if (force) {
+      console.log('⚠️  RUNNING WITH --force: Existing page content will be overwritten with default seed data!');
+    } else {
+      console.log('🛡️  SAFE MODE: Existing page content will be PRESERVED (pass --force to overwrite)');
+    }
+
     // Seed Beranda
     console.log('\n📄 Seeding Beranda page...');
     let beranda = await pageRepo.findOne({ where: { slug: 'beranda' } });
-    if (beranda) {
+    if (beranda && !force) {
+      console.log('ℹ️  Beranda page already exists — preserving existing CMS content');
+    } else if (beranda && force) {
       beranda.sections = berandaSections;
       await pageRepo.save(beranda);
-      console.log('✅ Beranda page updated');
+      console.log('⚠️  Beranda page forcefully updated with seed data');
     } else {
       beranda = pageRepo.create({
         slug: 'beranda',
@@ -220,10 +229,12 @@ async function seed() {
     // Seed Tentang Kami
     console.log('\n📄 Seeding Tentang Kami page...');
     let tentangKami = await pageRepo.findOne({ where: { slug: 'tentang-kami' } });
-    if (tentangKami) {
+    if (tentangKami && !force) {
+      console.log('ℹ️  Tentang Kami page already exists — preserving existing CMS content');
+    } else if (tentangKami && force) {
       tentangKami.sections = tentangKamiSections;
       await pageRepo.save(tentangKami);
-      console.log('✅ Tentang Kami page updated');
+      console.log('⚠️  Tentang Kami page forcefully updated with seed data');
     } else {
       tentangKami = pageRepo.create({
         slug: 'tentang-kami',
@@ -244,10 +255,12 @@ async function seed() {
     // Seed Layanan
     console.log('\n📄 Seeding Layanan page...');
     let layanan = await pageRepo.findOne({ where: { slug: 'layanan' } });
-    if (layanan) {
+    if (layanan && !force) {
+      console.log('ℹ️  Layanan page already exists — preserving existing CMS content');
+    } else if (layanan && force) {
       layanan.sections = layananSections;
       await pageRepo.save(layanan);
-      console.log('✅ Layanan page updated');
+      console.log('⚠️  Layanan page forcefully updated with seed data');
     } else {
       layanan = pageRepo.create({
         slug: 'layanan',

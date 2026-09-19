@@ -1,7 +1,9 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { AboutView } from './AboutView';
 import { generatePageMetadata } from '@/lib/seo';
 import { BreadcrumbSchema } from '@/components/seo/StructuredData';
+
+import { getPageBySlug } from '@/lib/api';
 
 export async function generateMetadata(): Promise<Metadata> {
   return generatePageMetadata('tentang-kami', {
@@ -11,7 +13,13 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default function AboutPage() {
+// Force dynamic and disable cache so admin updates appear instantly
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export default async function AboutPage() {
+  const pageData = await getPageBySlug('tentang-kami');
+
   return (
     <>
       <BreadcrumbSchema
@@ -20,7 +28,7 @@ export default function AboutPage() {
           { name: 'Tentang Kami', url: 'https://holicindo.com/about' },
         ]}
       />
-      <AboutView />
+      <AboutView initialData={pageData?.sections} />
     </>
   );
 }

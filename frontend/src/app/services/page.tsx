@@ -11,11 +11,15 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
+import { getPageBySlug } from '@/lib/api';
+
 // Disable caching for this page - always fetch fresh data
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const pageData = await getPageBySlug('layanan');
+
   return (
     <>
       <BreadcrumbSchema
@@ -24,7 +28,8 @@ export default function ServicesPage() {
           { name: 'Layanan', url: 'https://holicindo.com/services' },
         ]}
       />
-      <ServicesView />
+      <ServicesView initialData={pageData?.sections} />
     </>
   );
 }
+
