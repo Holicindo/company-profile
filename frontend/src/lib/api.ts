@@ -30,3 +30,27 @@ export const submitContact = (data: any) => api.post('/contact', data).then(r =>
 
 export const getPageBySlug = (slug: string) =>
   api.get(`/pages/slug/${slug}`).then(r => r.data).catch(() => null);
+
+export function getImageUrl(url?: string | null): string {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+    return url;
+  }
+
+  const backendBase =
+    process.env.NEXT_PUBLIC_API_URL ||
+    (process.env.NODE_ENV === 'production' ? 'http://52.64.193.232:3011' : '');
+
+  const cleanBackend = backendBase ? backendBase.replace(/\/+$/, '').replace(/\/api$/, '') : '';
+
+  if (url.startsWith('/uploads/')) {
+    return cleanBackend ? `${cleanBackend}${url}` : url;
+  }
+
+  if (url.startsWith('/')) {
+    return url;
+  }
+
+  return cleanBackend ? `${cleanBackend}/${url}` : `/${url}`;
+}
+
