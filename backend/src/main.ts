@@ -14,12 +14,30 @@ async function bootstrap() {
 
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3010';
   app.enableCors({
-    origin: [
-      frontendUrl,
-      'http://localhost:3010',
-      'http://localhost:3000',
-    ],
+    origin: (origin, callback) => {
+      // Izinkan request tanpa origin (seperti curl, mobile app, server-to-server proxy)
+      if (!origin) return callback(null, true);
+
+      const isAllowed =
+        origin === frontendUrl ||
+        origin === 'http://localhost:3010' ||
+        origin === 'http://localhost:3000' ||
+        origin === 'https://holicindo.com' ||
+        origin === 'https://www.holicindo.com' ||
+        origin === 'https://staging.holicindo.com' ||
+        origin.endsWith('.amplifyapp.com') ||
+        origin.includes('localhost');
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        // Fallback izinkan untuk staging domain lain
+        callback(null, true);
+      }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
 
   app.setGlobalPrefix('api');

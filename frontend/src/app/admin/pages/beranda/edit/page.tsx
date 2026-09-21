@@ -80,7 +80,7 @@ export default function EditBerandaPage() {
   const fetchPage = async () => {
     try {
       const token = localStorage.getItem('holic_admin_token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/slug/beranda`, {
+      const res = await fetch('/api/pages/slug/beranda', {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -105,7 +105,7 @@ export default function EditBerandaPage() {
     try {
       setSaving(true);
       const token = localStorage.getItem('holic_admin_token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/${pageId}`, {
+      const res = await fetch(`/api/pages/${pageId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
