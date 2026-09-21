@@ -11,7 +11,8 @@
     "seed": "npx ts-node -r tsconfig-paths/register src/seeder/seed.ts",
     "seed:insights": "npx ts-node -r tsconfig-paths/register src/seeder/seed-insights.ts",
     "seed:pages": "npx ts-node -r tsconfig-paths/register src/seeder/seed-pages.ts",
-    "update:views": "npx ts-node -r tsconfig-paths/register src/seeder/update-views.ts"
+    "update:views": "npx ts-node -r tsconfig-paths/register src/seeder/update-views.ts",
+    "update:categories": "npx ts-node -r tsconfig-paths/register src/seeder/update-categories.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1136.0",

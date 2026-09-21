@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Settings, Grid } from 'lucide-react';
+import { ArrowRight, Settings, Grid, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 // Slugs kategori refrigerator & showcase yang mau ditampilkan
@@ -42,6 +43,9 @@ function isAllowedCategory(cat: any): boolean {
 
 export function ProductsView({ data, roots, category, page, seoInfo }: any) {
   const { t } = useLanguage();
+  const [showcaseExpanded, setShowcaseExpanded] = useState(
+    category?.includes('cold-case') || category?.includes('undercounter') || category === 'showcase'
+  );
 
   // Filter roots hanya refrigerator & showcase
   const allowedRoots = (roots || []).filter(isAllowedCategory);
@@ -176,17 +180,62 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
                     >
                       <span>{t('Semua Produk', 'All Products')}</span>
                     </Link>
-                    {allowedRoots.map((c: any) => (
-                      <Link
-                        key={c.id}
-                        href={`/products?category=${c.slug}#products`}
-                        prefetch={true}
-                        scroll={false}
-                        className={`flex-shrink-0 flex items-center justify-between px-3.5 py-2.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-colors border whitespace-nowrap ${category === c.slug ? 'bg-black text-white border-black' : 'bg-white border-neutral-200 text-neutral-600 hover:border-black hover:text-black'}`}
-                      >
-                        <span>{c.name.replace('PLEER &AMP; SLICER', 'PEELER & SLICER').replace(/&AMP;/gi, '&')}</span>
-                      </Link>
-                    ))}
+                    {allowedRoots.map((c: any) => {
+                      const isShowcase = c.slug === 'showcase' || c.name?.toLowerCase() === 'showcase';
+                      const subCats = isShowcase ? (c.children || []) : [];
+                      const isShowcaseActive = category === c.slug || subCats.some((s: any) => s.slug === category);
+
+                      if (isShowcase && subCats.length > 0) {
+                        return (
+                          <div key={c.id} className="flex-shrink-0 lg:w-full">
+                            {/* Showcase parent button */}
+                            <button
+                              type="button"
+                              onClick={() => setShowcaseExpanded(prev => !prev)}
+                              className={`w-full flex items-center justify-between px-3.5 py-2.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-colors border whitespace-nowrap ${
+                                isShowcaseActive ? 'bg-black text-white border-black' : 'bg-white border-neutral-200 text-neutral-600 hover:border-black hover:text-black'
+                              }`}
+                            >
+                              <Link href={`/products?category=${c.slug}#products`} prefetch scroll={false} className="flex-1 text-left" onClick={e => e.stopPropagation()}>
+                                {c.name}
+                              </Link>
+                              <ChevronDown size={12} className={`ml-2 transition-transform ${showcaseExpanded ? 'rotate-180' : ''}`} />
+                            </button>
+                            {/* Sub-kategori Showcase */}
+                            {showcaseExpanded && (
+                              <div className="flex lg:flex-col gap-1 lg:ml-3 mt-1 overflow-x-auto">
+                                {subCats.map((sub: any) => (
+                                  <Link
+                                    key={sub.id}
+                                    href={`/products?category=${sub.slug}#products`}
+                                    prefetch={true}
+                                    scroll={false}
+                                    className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest transition-colors border whitespace-nowrap ${
+                                      category === sub.slug ? 'bg-neutral-800 text-white border-neutral-800' : 'bg-neutral-50 border-neutral-200 text-neutral-500 hover:border-neutral-500 hover:text-neutral-800'
+                                    }`}
+                                  >
+                                    <span className="w-1 h-1 rounded-full bg-current opacity-60" />
+                                    {sub.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <Link
+                          key={c.id}
+                          href={`/products?category=${c.slug}#products`}
+                          prefetch={true}
+                          scroll={false}
+                          className={`flex-shrink-0 flex items-center justify-between px-3.5 py-2.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-colors border whitespace-nowrap ${category === c.slug ? 'bg-black text-white border-black' : 'bg-white border-neutral-200 text-neutral-600 hover:border-black hover:text-black'}`}
+                        >
+                          <span>{c.name.replace('PLEER &AMP; SLICER', 'PEELER & SLICER').replace(/&AMP;/gi, '&')}</span>
+                        </Link>
+                      );
+                    })}
                   </div>
                 ) : (
                   <p className="text-xs text-neutral-500">{t('Tidak ada kategori.', 'No categories available.')}</p>
