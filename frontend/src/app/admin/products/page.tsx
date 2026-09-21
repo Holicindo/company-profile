@@ -7,6 +7,7 @@ import {
   Plus, Pencil, Trash2, Loader2, Package, Search,
   ChevronLeft, ChevronRight, Star, StarOff,
 } from 'lucide-react';
+import { AdminSelect } from '@/components/admin/AdminSelect';
 
 interface Product {
   id: number;
@@ -109,16 +110,16 @@ export default function AdminProductsPage() {
             className="w-full pl-10 pr-4 py-2.5 border-2 border-[#2C1810]/20 rounded-xl text-sm text-[#2C1810] placeholder:text-[#2C1810]/40 focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50 focus:border-[#B8941E]/50 transition bg-white"
           />
         </div>
-        <select
+        <AdminSelect
           value={filterCat}
-          onChange={e => setFilterCat(e.target.value)}
-          className="px-4 py-2.5 border-2 border-[#2C1810]/20 rounded-xl text-sm text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50 focus:border-[#B8941E]/50 transition bg-white font-medium"
-        >
-          <option value="">Semua Kategori</option>
-          {categories.map(c => (
-            <option key={c.id} value={String(c.id)}>{c.name}</option>
-          ))}
-        </select>
+          onChange={val => { setFilterCat(val); }}
+          placeholder="Semua Kategori"
+          options={[
+            { value: '', label: 'Semua Kategori' },
+            ...categories.map(c => ({ value: String(c.id), label: c.name })),
+          ]}
+          className="min-w-[180px]"
+        />
       </div>
 
       <div className="bg-gradient-to-br from-[#FAF7F0] to-[#F5F1E8] rounded-2xl border-2 border-[#2C1810] shadow-2xl overflow-hidden">

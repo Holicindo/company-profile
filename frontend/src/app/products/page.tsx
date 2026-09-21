@@ -13,7 +13,7 @@ export async function generateMetadata(props: { searchParams: Promise<{ category
 export const revalidate = 3600; // ISR: revalidate every hour
 
 // Kata kunci nama kategori yang diizinkan (case-insensitive)
-const ALLOWED_KEYWORDS = ['showcase', 'refrigerator', 'blast freezer', 'blast-freezer', 'freezer'];
+const ALLOWED_KEYWORDS = ['showcase', 'refrigerator', 'blast freezer', 'blast-freezer', 'freezer', 'under', 'cold'];
 
 function isCategoryAllowed(cat: any): boolean {
   if (!cat) return false;
@@ -40,14 +40,14 @@ export default async function ProductsPage(props: {
       .catch(() => ({ items: [], total: 0, totalPages: 0 })),
   ]);
 
-  // Sidebar: hanya kategori yang allowed
+  // Sidebar: hanya kategori utama yang allowed (Refrigerator & Showcase) beserta children-nya
   const roots: any[] = [];
-  const seen = new Set<string>();
   categories.forEach((c: any) => {
-    if (isCategoryAllowed(c) && !seen.has(c.slug)) { roots.push(c); seen.add(c.slug); }
-    (c.children || []).forEach((child: any) => {
-      if (isCategoryAllowed(child) && !seen.has(child.slug)) { roots.push(child); seen.add(child.slug); }
-    });
+    const slug = (c.slug || '').toLowerCase();
+    const name = (c.name || '').toLowerCase();
+    if (slug === 'refrigerator' || name === 'refrigerator' || slug === 'showcase' || name === 'showcase') {
+      roots.push(c);
+    }
   });
 
   // When no specific category: client-side filter by allowed categories

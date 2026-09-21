@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Settings, Grid, ChevronDown } from 'lucide-react';
+import { ArrowRight, Settings, Grid } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+
+import { useState } from 'react';
 
 // Slugs kategori refrigerator & showcase yang mau ditampilkan
 const ALLOWED_CATEGORY_SLUGS = [
@@ -37,15 +38,16 @@ function isAllowedCategory(cat: any): boolean {
     name.includes('refrigerat') ||
     name.includes('chiller') ||
     name.includes('freezer') ||
-    name.includes('cold')
+    name.includes('cold') ||
+    slug.includes('under') ||
+    name.includes('under')
   );
 }
 
 export function ProductsView({ data, roots, category, page, seoInfo }: any) {
   const { t } = useLanguage();
-  const [showcaseExpanded, setShowcaseExpanded] = useState(
-    category?.includes('cold-case') || category?.includes('undercounter') || category === 'showcase'
-  );
+  const isShowcaseRelated = category === 'showcase' || ['cold-case', 'showcase-undercounter', 'show-case'].includes(category);
+  const [showcaseOpen, setShowcaseOpen] = useState(true);
 
   // Filter roots hanya refrigerator & showcase
   const allowedRoots = (roots || []).filter(isAllowedCategory);
@@ -158,164 +160,193 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
       {/* ── Product Grid — Refrigerator & Showcase only ── */}
       <div className="bg-white" id="products">
         <div className="container-wide py-6 sm:py-12 lg:py-16">
-          <div className="flex flex-col lg:flex-row gap-5 sm:gap-12">
 
-            {/* ── Category Filter ── */}
-            <div className="w-full lg:w-64 flex-shrink-0">
-              <div className="lg:sticky lg:top-28 border border-neutral-200 bg-neutral-50 p-3 sm:p-6 rounded-sm">
-                <div className="flex items-center gap-2.5 mb-3 sm:mb-6 pb-2.5 sm:pb-4 border-b border-neutral-200">
-                  <Grid size={15} strokeWidth={1.75} className="text-black" />
-                  <h2 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-black">
-                    {t('Filter Kategori', 'Category Filter')}
-                  </h2>
-                </div>
+          {/* ── Horizontal Category Filter Tabs ── */}
+          <div className="mb-8 sm:mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <Grid size={16} strokeWidth={1.75} className="text-[#C9A84C]" />
+              <h2 className="text-xs sm:text-sm font-bold uppercase tracking-widest text-black">
+                {t('Filter Kategori', 'Category Filter')}
+              </h2>
+            </div>
 
-                {allowedRoots.length > 0 ? (
-                  <div className="flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none flex-nowrap">
-                    <Link
-                      href="/products#products"
-                      prefetch={true}
-                      scroll={false}
-                      className={`flex-shrink-0 flex items-center justify-between px-3.5 py-2.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-colors border whitespace-nowrap ${!category ? 'bg-black text-white border-black' : 'bg-white border-neutral-200 text-neutral-600 hover:border-black hover:text-black'}`}
-                    >
-                      <span>{t('Semua Produk', 'All Products')}</span>
-                    </Link>
-                    {allowedRoots.map((c: any) => {
-                      const isShowcase = c.slug === 'showcase' || c.name?.toLowerCase() === 'showcase';
-                      const subCats = isShowcase ? (c.children || []) : [];
-                      const isShowcaseActive = category === c.slug || subCats.some((s: any) => s.slug === category);
+            {allowedRoots.length > 0 ? (
+              <div>
+                <div className="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-none flex-nowrap border-b border-neutral-200">
+                  <Link
+                    href="/products#products"
+                    prefetch={true}
+                    scroll={false}
+                    className={`flex-shrink-0 px-4 py-2.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all border rounded-full ${
+                      !category 
+                        ? 'bg-[#C9A84C] text-black border-[#C9A84C] shadow-md' 
+                        : 'bg-white border-neutral-200 text-neutral-600 hover:border-[#C9A84C] hover:text-black'
+                    }`}
+                  >
+                    {t('Semua Produk', 'All Products')}
+                  </Link>
 
-                      if (isShowcase && subCats.length > 0) {
-                        return (
-                          <div key={c.id} className="flex-shrink-0 lg:w-full">
-                            {/* Showcase parent button */}
-                            <button
-                              type="button"
-                              onClick={() => setShowcaseExpanded(prev => !prev)}
-                              className={`w-full flex items-center justify-between px-3.5 py-2.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-colors border whitespace-nowrap ${
-                                isShowcaseActive ? 'bg-black text-white border-black' : 'bg-white border-neutral-200 text-neutral-600 hover:border-black hover:text-black'
-                              }`}
-                            >
-                              <Link href={`/products?category=${c.slug}#products`} prefetch scroll={false} className="flex-1 text-left" onClick={e => e.stopPropagation()}>
-                                {c.name}
-                              </Link>
-                              <ChevronDown size={12} className={`ml-2 transition-transform ${showcaseExpanded ? 'rotate-180' : ''}`} />
-                            </button>
-                            {/* Sub-kategori Showcase */}
-                            {showcaseExpanded && (
-                              <div className="flex lg:flex-col gap-1 lg:ml-3 mt-1 overflow-x-auto">
-                                {subCats.map((sub: any) => (
-                                  <Link
-                                    key={sub.id}
-                                    href={`/products?category=${sub.slug}#products`}
-                                    prefetch={true}
-                                    scroll={false}
-                                    className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest transition-colors border whitespace-nowrap ${
-                                      category === sub.slug ? 'bg-neutral-800 text-white border-neutral-800' : 'bg-neutral-50 border-neutral-200 text-neutral-500 hover:border-neutral-500 hover:text-neutral-800'
-                                    }`}
-                                  >
-                                    <span className="w-1 h-1 rounded-full bg-current opacity-60" />
-                                    {sub.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      }
+                  {allowedRoots.map((c: any) => {
+                    const isShowcase = (c.slug || '').toLowerCase().includes('showcase');
+                    const isRefrig = (c.slug || '').toLowerCase().includes('refrigerat');
+                    const hasSub = isShowcase;
+                    
+                    const subItems = [
+                      { name: 'Semua Showcase', slug: 'showcase' },
+                      { name: 'Cold Case', slug: 'cold-case' },
+                      { name: 'Undercounter', slug: 'showcase-undercounter' },
+                      { name: 'Show Case', slug: 'show-case' },
+                    ];
 
-                      return (
+                    const isSubSelected = subItems.some(s => s.slug === category && s.slug !== 'showcase');
+                    const isShowcaseActive = category === 'showcase' || isSubSelected;
+                    const isCatActive = isShowcase ? isShowcaseActive : (category === c.slug || (isRefrig && category === 'blastfreezer'));
+
+                    return (
+                      <div key={c.id} className="flex-shrink-0 flex items-center">
                         <Link
-                          key={c.id}
                           href={`/products?category=${c.slug}#products`}
                           prefetch={true}
                           scroll={false}
-                          className={`flex-shrink-0 flex items-center justify-between px-3.5 py-2.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-colors border whitespace-nowrap ${category === c.slug ? 'bg-black text-white border-black' : 'bg-white border-neutral-200 text-neutral-600 hover:border-black hover:text-black'}`}
+                          className={`px-4 py-2.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all border rounded-full ${
+                            isCatActive 
+                              ? 'bg-[#C9A84C] text-black border-[#C9A84C] shadow-md' 
+                              : 'bg-white border-neutral-200 text-neutral-600 hover:border-[#C9A84C] hover:text-black'
+                          }`}
                         >
-                          <span>{c.name.replace('PLEER &AMP; SLICER', 'PEELER & SLICER').replace(/&AMP;/gi, '&')}</span>
+                          {c.name.replace('PLEER &AMP; SLICER', 'PEELER & SLICER').replace(/&AMP;/gi, '&')}
+                        </Link>
+                        {hasSub && (
+                          <button
+                            type="button"
+                            onClick={() => setShowcaseOpen(prev => !prev)}
+                            className={`ml-1 px-3 py-2.5 text-[10px] font-bold border rounded-full transition-all flex items-center justify-center ${
+                              isCatActive 
+                                ? 'bg-[#C9A84C] text-black border-[#C9A84C]' 
+                                : 'bg-white border-neutral-200 text-neutral-600 hover:border-[#C9A84C]'
+                            }`}
+                            title={showcaseOpen ? 'Tutup pilihan' : 'Buka pilihan'}
+                          >
+                            <span className={`transition-transform duration-200 inline-block ${showcaseOpen ? 'rotate-180' : ''}`}>
+                              ▼
+                            </span>
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Sub-kategori Dropdown / Accordion untuk Showcase di bawah tab */}
+                {showcaseOpen && allowedRoots.some(c => (c.slug || '').toLowerCase().includes('showcase')) && (
+                  <div className="flex items-center gap-2 overflow-x-auto py-3 px-3 mt-3 bg-[#251009] border border-[#C9A84C]/30 rounded-lg scrollbar-none flex-nowrap animate-fadeIn">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A84C] mr-2 flex-shrink-0">
+                      Showcase Sub:
+                    </span>
+                    {[
+                      { name: 'Semua Showcase', slug: 'showcase' },
+                      { name: 'Cold Case', slug: 'cold-case' },
+                      { name: 'Undercounter', slug: 'showcase-undercounter' },
+                      { name: 'Show Case', slug: 'show-case' },
+                    ].map(sub => {
+                      const isSubActive = category === sub.slug;
+                      return (
+                        <Link
+                          key={sub.slug}
+                          href={`/products?category=${sub.slug}#products`}
+                          prefetch={true}
+                          scroll={false}
+                          className={`flex-shrink-0 px-3.5 py-1.5 text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider transition-all whitespace-nowrap rounded-md ${
+                            isSubActive
+                              ? 'bg-[#C9A84C] text-black font-bold shadow'
+                              : 'bg-[#3b1f0a] text-neutral-300 hover:text-white hover:border-[#C9A84C] border border-[#C9A84C]/20'
+                          }`}
+                        >
+                          • {sub.name}
                         </Link>
                       );
                     })}
                   </div>
-                ) : (
-                  <p className="text-xs text-neutral-500">{t('Tidak ada kategori.', 'No categories available.')}</p>
                 )}
               </div>
-            </div>
-
-            {/* ── Grid Produk ── */}
-            <div className="flex-1">
-              <div className="flex items-center justify-between mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-neutral-200">
-                <span className="text-xs sm:text-sm font-light text-neutral-500">
-                  {t('Menampilkan', 'Showing')} <strong className="font-bold text-black">{data.items.length}</strong> {t('dari', 'of')} <strong className="font-bold text-black">{data.total}</strong> {t('produk', 'products')}
-                </span>
-              </div>
-
-              {data.items.length > 0 ? (
-                <>
-                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6">
-                    {data.items.map((p: any) => (
-                      <Link
-                        key={p.id}
-                        href={`/products/${p.slug}`}
-                        prefetch={true}
-                        className="group relative bg-white border border-neutral-200 hover:border-neutral-400 hover:shadow-sm transition-all duration-300 flex flex-col h-full rounded-none overflow-hidden active:scale-[0.99]"
-                      >
-                        <div className="relative h-32 sm:h-48 bg-white overflow-hidden p-1.5 sm:p-4 flex items-center justify-center border-b border-neutral-100">
-                          {p.imageUrl
-                            ? <Image src={p.imageUrl} alt={p.name} fill className="object-contain p-1.5 sm:p-4 group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, 25vw" unoptimized />
-                            : <div className="flex flex-col items-center justify-center text-neutral-300 gap-2"><Settings size={20} strokeWidth={1} /><span className="text-[8px] uppercase tracking-widest font-bold">No Image</span></div>
-                          }
-                        </div>
-                        <div className="p-2 sm:p-4 flex flex-col flex-1 justify-between">
-                          <div>
-                            <p className="text-[8px] sm:text-[9px] text-neutral-400 font-bold mb-0.5 sm:mb-2 uppercase tracking-[0.15em] truncate">{p.category?.name || 'Uncategorized'}</p>
-                            <h3 className="text-xs sm:text-sm font-medium text-black line-clamp-2 leading-snug mb-1 sm:mb-2 group-hover:text-neutral-600 transition-colors">{p.name}</h3>
-                          </div>
-                          <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-black opacity-0 group-hover:opacity-100 transition-all duration-300 pt-1 border-t border-neutral-100 mt-1">
-                            {t('Detail', 'View')} <ArrowRight size={11} strokeWidth={2} />
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-
-                  {/* Pagination */}
-                  {data.totalPages > 1 && (
-                    <div className="flex justify-center gap-1.5 sm:gap-2 mt-10 sm:mt-16">
-                      {page > 1 && (
-                        <Link href={`/products?page=${page - 1}${category ? `&category=${category}` : ''}#products`} prefetch={true} scroll={false}
-                          className="px-4 sm:px-6 h-10 sm:h-12 flex items-center justify-center text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-white border border-neutral-200 text-neutral-500 hover:border-black hover:text-black transition-colors active:scale-95">
-                          Prev
-                        </Link>
-                      )}
-                      {Array.from({ length: data.totalPages }, (_, i) => i + 1)
-                        .filter((p: number) => Math.abs(p - page) <= 2)
-                        .map((p: number) => (
-                          <Link key={p} href={`/products?page=${p}${category ? `&category=${category}` : ''}#products`} prefetch={true} scroll={false}
-                            className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-colors ${p === page ? 'bg-black text-white border border-black' : 'bg-white border border-neutral-200 text-neutral-500 hover:border-black hover:text-black'} active:scale-95`}>
-                            {p}
-                          </Link>
-                        ))}
-                      {page < data.totalPages && (
-                        <Link href={`/products?page=${page + 1}${category ? `&category=${category}` : ''}#products`} prefetch={true} scroll={false}
-                          className="px-4 sm:px-6 h-10 sm:h-12 flex items-center justify-center text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-white border border-neutral-200 text-neutral-500 hover:border-black hover:text-black transition-colors active:scale-95">
-                          Next
-                        </Link>
-                      )}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-20 sm:py-32 bg-neutral-50 border border-neutral-200 px-4 text-center">
-                  <Settings size={40} strokeWidth={1} className="text-neutral-300 mb-4" />
-                  <p className="text-neutral-500 font-light text-sm sm:text-lg">
-                    {t('Belum ada produk tersedia di kategori ini.', 'No products available in this category yet.')}
-                  </p>
-                </div>
-              )}
-            </div>
+            ) : (
+              <p className="text-xs text-neutral-500">{t('Tidak ada kategori.', 'No categories available.')}</p>
+            )}
           </div>
+
+          {/* ── Grid Produk ── */}
+          <div>
+            <div className="flex items-center justify-between mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-neutral-200">
+              <span className="text-xs sm:text-sm font-light text-neutral-500">
+                {t('Menampilkan', 'Showing')} <strong className="font-bold text-black">{data.items.length}</strong> {t('dari', 'of')} <strong className="font-bold text-black">{data.total}</strong> {t('produk', 'products')}
+              </span>
+            </div>
+
+            {data.items.length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6">
+                  {data.items.map((p: any) => (
+                    <Link
+                      key={p.id}
+                      href={`/products/${p.slug}`}
+                      prefetch={true}
+                      className="group relative bg-white border border-neutral-200 hover:border-neutral-400 hover:shadow-sm transition-all duration-300 flex flex-col h-full rounded-none overflow-hidden active:scale-[0.99]"
+                    >
+                      <div className="relative h-32 sm:h-48 bg-white overflow-hidden p-1.5 sm:p-4 flex items-center justify-center border-b border-neutral-100">
+                        {p.imageUrl
+                          ? <Image src={p.imageUrl} alt={p.name} fill className="object-contain p-1.5 sm:p-4 group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, 25vw" unoptimized />
+                          : <div className="flex flex-col items-center justify-center text-neutral-300 gap-2"><Settings size={20} strokeWidth={1} /><span className="text-[8px] uppercase tracking-widest font-bold">No Image</span></div>
+                        }
+                      </div>
+                      <div className="p-2 sm:p-4 flex flex-col flex-1 justify-between">
+                        <div>
+                          <p className="text-[8px] sm:text-[9px] text-neutral-400 font-bold mb-0.5 sm:mb-2 uppercase tracking-[0.15em] truncate">{p.category?.name || 'Uncategorized'}</p>
+                          <h3 className="text-xs sm:text-sm font-medium text-black line-clamp-2 leading-snug mb-1 sm:mb-2 group-hover:text-neutral-600 transition-colors">{p.name}</h3>
+                        </div>
+                        <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-black opacity-0 group-hover:opacity-100 transition-all duration-300 pt-1 border-t border-neutral-100 mt-1">
+                          {t('Detail', 'View')} <ArrowRight size={11} strokeWidth={2} />
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {data.totalPages > 1 && (
+                  <div className="flex justify-center gap-1.5 sm:gap-2 mt-10 sm:mt-16">
+                    {page > 1 && (
+                      <Link href={`/products?page=${page - 1}${category ? `&category=${category}` : ''}#products`} prefetch={true} scroll={false}
+                        className="px-4 sm:px-6 h-10 sm:h-12 flex items-center justify-center text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-white border border-neutral-200 text-neutral-500 hover:border-black hover:text-black transition-colors active:scale-95">
+                        Prev
+                      </Link>
+                    )}
+                    {Array.from({ length: data.totalPages }, (_, i) => i + 1)
+                      .filter((p: number) => Math.abs(p - page) <= 2)
+                      .map((p: number) => (
+                        <Link key={p} href={`/products?page=${p}${category ? `&category=${category}` : ''}#products`} prefetch={true} scroll={false}
+                          className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-colors ${p === page ? 'bg-[#C9A84C] text-black border border-[#C9A84C]' : 'bg-white border border-neutral-200 text-neutral-500 hover:border-black hover:text-black'} active:scale-95`}>
+                          {p}
+                        </Link>
+                      ))}
+                    {page < data.totalPages && (
+                      <Link href={`/products?page=${page + 1}${category ? `&category=${category}` : ''}#products`} prefetch={true} scroll={false}
+                        className="px-4 sm:px-6 h-10 sm:h-12 flex items-center justify-center text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-white border border-neutral-200 text-neutral-500 hover:border-black hover:text-black transition-colors active:scale-95">
+                        Next
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-20 sm:py-32 bg-neutral-50 border border-neutral-200 px-4 text-center">
+                <Settings size={40} strokeWidth={1} className="text-neutral-300 mb-4" />
+                <p className="text-neutral-500 font-light text-sm sm:text-lg">
+                  {t('Belum ada produk tersedia di kategori ini.', 'No products available in this category yet.')}
+                </p>
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
 

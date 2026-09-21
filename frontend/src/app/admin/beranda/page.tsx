@@ -173,7 +173,7 @@ export default function EditBerandaPage() {
   }
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="w-full">
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">

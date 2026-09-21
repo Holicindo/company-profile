@@ -178,7 +178,7 @@ export default function EditLayananPage() {
   }
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="w-full">
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">

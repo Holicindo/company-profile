@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { createProduct, fetchCategories } from '@/lib/admin-api';
 import { ArrowLeft, Loader2, Save, Wand2 } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
+import { AdminSelect } from '@/components/admin/AdminSelect';
 
 function slugify(str: string) {
   return str.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
@@ -22,9 +23,7 @@ export default function NewProductPage() {
 
   useEffect(() => {
     fetchCategories().then((cats: any[]) => {
-      const flat: any[] = [];
-      cats.forEach((c: any) => { flat.push(c); if (c.children) flat.push(...c.children); });
-      setCategories(flat);
+      setCategories(cats || []);
     }).catch(() => {});
   }, []);
 
@@ -54,37 +53,75 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="max-w-4xl">
-      <div className="flex items-center gap-3 mb-6">
-        <Link href="/admin/products" className="p-2 rounded-lg text-slate-500 hover:bg-slate-200 transition">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="text-xl font-bold text-slate-800">Tambah Produk Baru</h1>
-          <p className="text-sm text-slate-500">Isi detail produk di bawah ini</p>
+    <div className="w-full">
+      {/* ── Top Header Bar ── */}
+      <div className="flex items-center justify-between mb-6 pb-5 border-b-2 border-[#2C1810]/10">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/products"
+            className="p-2 rounded-xl border-2 border-[#2C1810]/15 text-[#2C1810]/60 hover:border-[#C9A84C]/60 hover:text-[#2C1810] transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </Link>
+          <div>
+            <h1 className="text-xl font-bold text-[#2C1810]">Tambah Produk Baru</h1>
+            <p className="text-sm text-[#2C1810]/50 mt-0.5">Isi detail produk di bawah ini</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/products"
+            className="px-4 py-2 rounded-xl border-2 border-[#2C1810]/15 text-[#2C1810]/60 text-sm font-medium hover:border-[#2C1810]/40 hover:text-[#2C1810] transition"
+          >
+            Batal
+          </Link>
+          <button
+            type="submit"
+            form="new-product-form"
+            disabled={loading}
+            className="flex items-center gap-2 px-5 py-2 bg-[#C9A84C] hover:bg-[#b08f3b] text-white text-sm font-semibold rounded-xl transition disabled:opacity-60 shadow-md shadow-[#C9A84C]/30"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            Simpan Produk
+          </button>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
+      <form id="new-product-form" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-6">
+
+          {/* ── Kolom Kiri: Konten Utama ── */}
+          <div className="space-y-5">
+            <div className="bg-white rounded-2xl border-2 border-[#2C1810]/10 p-6 space-y-5">
+              <div className="flex items-center gap-2 pb-3 border-b border-[#2C1810]/8">
+                <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
+                <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Identitas Produk</h2>
+              </div>
+
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Nama Produk <span className="text-red-500">*</span></label>
+                <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">
+                  Nama Produk <span className="text-red-400">*</span>
+                </label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={e => { set('name', e.target.value); if (!form.slug || form.slug === slugify(form.name)) set('slug', slugify(e.target.value)); }}
-                  placeholder="Contoh: Blast Freezer 500L"
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-400 transition"
+                  placeholder="Contoh: Blast Freezer 2 Door 500L"
+                  className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-base font-medium placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
                   required
                 />
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-sm font-medium text-slate-700">Slug <span className="text-red-500">*</span></label>
-                  <button type="button" onClick={() => set('slug', slugify(form.name))} className="flex items-center gap-1 text-xs text-brand-600 hover:text-brand-700">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider">
+                    Slug URL <span className="text-red-400">*</span>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => set('slug', slugify(form.name))}
+                    className="flex items-center gap-1 text-[10px] font-semibold text-[#C9A84C] hover:text-[#b08f3b] uppercase tracking-wider transition"
+                  >
                     <Wand2 className="w-3 h-3" /> Auto dari nama
                   </button>
                 </div>
@@ -92,88 +129,135 @@ export default function NewProductPage() {
                   type="text"
                   value={form.slug}
                   onChange={e => set('slug', e.target.value)}
-                  placeholder="blast-freezer-500l"
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-400 transition"
+                  placeholder="blast-freezer-2-door-500l"
+                  className="w-full px-4 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] font-mono text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Deskripsi Singkat</label>
+                <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">
+                  Deskripsi Singkat
+                </label>
                 <textarea
                   value={form.shortDescription}
                   onChange={e => set('shortDescription', e.target.value)}
-                  rows={2}
-                  placeholder="Deskripsi singkat untuk kartu produk..."
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-400 transition resize-none"
+                  rows={3}
+                  placeholder="Deskripsi pendek untuk kartu produk di katalog..."
+                  className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-none"
                 />
               </div>
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                  Deskripsi Lengkap
-                  <span className="ml-2 text-xs font-normal text-slate-400">(HTML diperbolehkan)</span>
-                </label>
-                <textarea
-                  value={form.description}
-                  onChange={e => set('description', e.target.value)}
-                  rows={10}
-                  placeholder="<p>Deskripsi lengkap produk...</p>"
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-400 transition font-mono text-sm resize-y"
-                />
+            <div className="bg-white rounded-2xl border-2 border-[#2C1810]/10 p-6 space-y-4">
+              <div className="flex items-center gap-2 pb-3 border-b border-[#2C1810]/8">
+                <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
+                <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Deskripsi Lengkap</h2>
+                <span className="ml-auto text-[10px] text-[#2C1810]/40 font-medium bg-[#2C1810]/5 px-2 py-0.5 rounded-full">HTML diperbolehkan</span>
               </div>
+              <textarea
+                value={form.description}
+                onChange={e => set('description', e.target.value)}
+                rows={16}
+                placeholder="<p>Deskripsi lengkap produk dalam format HTML...</p>"
+                className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] font-mono text-sm placeholder:text-[#2C1810]/25 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-y min-h-[280px]"
+              />
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
-              <h3 className="font-semibold text-slate-700 text-sm">Pengaturan Produk</h3>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Kategori</label>
-                <select
-                  value={form.categoryId}
-                  onChange={e => set('categoryId', e.target.value)}
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-400 transition"
-                >
-                  <option value="">Tanpa Kategori</option>
-                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">SKU</label>
-                <input type="text" value={form.sku} onChange={e => set('sku', e.target.value)} placeholder="SKU-001" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-400 transition" />
-              </div>
-              <div className="flex items-center gap-3">
-                <input type="checkbox" id="featured" checked={form.isFeatured} onChange={e => set('isFeatured', e.target.checked)} className="w-4 h-4 accent-brand-500" />
-                <label htmlFor="featured" className="text-sm font-medium text-slate-700">Produk Unggulan</label>
-              </div>
-              <div className="flex items-center gap-3">
-                <input type="checkbox" id="active" checked={form.isActive} onChange={e => set('isActive', e.target.checked)} className="w-4 h-4 accent-brand-500" />
-                <label htmlFor="active" className="text-sm font-medium text-slate-700">Aktif (tampil di website)</label>
-              </div>
-            </div>
+          {/* ── Kolom Kanan: Pengaturan (Sticky) ── */}
+          <div className="space-y-5 xl:sticky xl:top-5 xl:self-start">
 
-            <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
-              <h3 className="font-semibold text-slate-700 text-sm">Gambar Produk</h3>
+            <div className="bg-white rounded-2xl border-2 border-[#2C1810]/10 p-5 space-y-4">
+              <div className="flex items-center gap-2 pb-3 border-b border-[#2C1810]/8">
+                <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
+                <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Gambar Produk</h2>
+              </div>
               <ImageUpload
                 value={form.imageUrl}
                 onChange={v => set('imageUrl', v)}
-                hint="Gambar utama produk yang tampil di katalog."
+                hint="Gambar utama yang tampil di katalog."
               />
             </div>
 
-            <div className="flex gap-2">
-              <Link href="/admin/products" className="flex-1 text-center px-4 py-2.5 border border-slate-300 rounded-lg text-slate-600 text-sm font-medium hover:bg-slate-50 transition">
-                Batal
-              </Link>
-              <button type="submit" disabled={loading} className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-brand-600 to-brand-400 text-white text-sm font-semibold rounded-lg hover:from-brand-500 hover:to-brand-300 transition disabled:opacity-60">
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                Simpan
-              </button>
+            <div className="bg-white rounded-2xl border-2 border-[#2C1810]/10 p-5 space-y-4">
+              <div className="flex items-center gap-2 pb-3 border-b border-[#2C1810]/8">
+                <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
+                <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Pengaturan</h2>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Kategori</label>
+                <AdminSelect
+                  value={form.categoryId}
+                  onChange={val => set('categoryId', val)}
+                  placeholder="Tanpa Kategori"
+                  options={[
+                    { value: '', label: 'Tanpa Kategori' },
+                    ...categories.flatMap((c: any) => {
+                      if (c.children && c.children.length > 0) {
+                        return [
+                          { value: c.id, label: c.name, isGroup: true },
+                          { value: c.id, label: `${c.name} (Utama)`, indent: 1 },
+                          ...c.children.map((ch: any) => ({ value: ch.id, label: `↳ ${ch.name}`, indent: 1 })),
+                        ];
+                      }
+                      return [{ value: c.id, label: c.name }];
+                    }),
+                  ]}
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">SKU</label>
+                <input
+                  type="text"
+                  value={form.sku}
+                  onChange={e => set('sku', e.target.value)}
+                  placeholder="Contoh: BF-500L-2D"
+                  className="w-full px-3.5 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm font-mono placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                />
+              </div>
+
+              <label className="flex items-center justify-between gap-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium text-[#2C1810]">Produk Unggulan</p>
+                  <p className="text-[11px] text-[#2C1810]/45">Tampil di halaman utama</p>
+                </div>
+                <div
+                  onClick={() => set('isFeatured', !form.isFeatured)}
+                  className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${form.isFeatured ? 'bg-[#C9A84C]' : 'bg-[#2C1810]/15'}`}
+                >
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-sm transition-all ${form.isFeatured ? 'left-6' : 'left-1'}`} />
+                </div>
+              </label>
+
+              <label className="flex items-center justify-between gap-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium text-[#2C1810]">Aktif</p>
+                  <p className="text-[11px] text-[#2C1810]/45">Tampil di website</p>
+                </div>
+                <div
+                  onClick={() => set('isActive', !form.isActive)}
+                  className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${form.isActive ? 'bg-[#C9A84C]' : 'bg-[#2C1810]/15'}`}
+                >
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-sm transition-all ${form.isActive ? 'left-6' : 'left-1'}`} />
+                </div>
+              </label>
             </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="xl:hidden w-full flex items-center justify-center gap-2 px-5 py-3 bg-[#C9A84C] hover:bg-[#b08f3b] text-white text-sm font-semibold rounded-xl transition disabled:opacity-60 shadow-md"
+            >
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              Simpan Produk
+            </button>
           </div>
         </div>
       </form>
     </div>
   );
 }
+
