@@ -6,6 +6,7 @@ import { Save, ArrowLeft, Loader2, Eye, EyeOff, Plus, Trash2 } from 'lucide-reac
 import ImageUpload from '@/components/admin/ImageUpload';
 import { Toast } from '@/components/admin/Toast';
 import { GoogleSearchPreview } from '@/components/admin/GoogleSearchPreview';
+import { fetchAdminPageBySlug, updateAdminPage, generateAdminSeo } from '@/lib/admin-api';
 
 export default function EditTentangKamiPage() {
   const router = useRouter();
@@ -34,12 +35,8 @@ export default function EditTentangKamiPage() {
 
   const fetchPage = async () => {
     try {
-      const token = localStorage.getItem('holic_admin_token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/slug/tentang-kami`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) {
-        const data = await res.json();
+      const data = await fetchAdminPageBySlug('tentang-kami');
+      if (data) {
         setPageId(data.id);
         setStatus(data.status);
         setSections(data.sections);
@@ -66,17 +63,8 @@ export default function EditTentangKamiPage() {
     }
     try {
       setSaving(true);
-      const token = localStorage.getItem('holic_admin_token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/${pageId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ sections, status, metadata }),
-      });
-      if (res.ok) {
-        setToast({ type: 'success', message: 'Halaman Tentang Kami berhasil diperbarui!' });
-      } else {
-        setToast({ type: 'error', message: 'Gagal menyimpan perubahan' });
-      }
+      await updateAdminPage(pageId, { sections, status, metadata });
+      setToast({ type: 'success', message: 'Halaman Tentang Kami berhasil diperbarui!' });
     } catch (err: any) {
       setToast({ type: 'error', message: err.message || 'Terjadi kesalahan' });
     } finally {
@@ -128,22 +116,12 @@ export default function EditTentangKamiPage() {
   const autoGenerateSEO = async () => {
     try {
       setGenerating(true);
-      const token = localStorage.getItem('holic_admin_token');
-      
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/generate-seo`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          content: sections,
-          pageType: 'tentang-kami',
-        }),
+      const generated = await generateAdminSeo({
+        content: sections,
+        pageType: 'tentang-kami',
       });
 
-      if (res.ok) {
-        const generated = await res.json();
+      if (generated) {
         setMetadata({
           ...metadata,
           seoTitle: generated.title,

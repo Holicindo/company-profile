@@ -196,3 +196,33 @@ export async function fetchDashboardStats() {
     unreadContacts: contacts?.total ?? 0,
   };
 }
+
+// ── Pages CMS ───────────────────────────────────────────────────────────────
+
+export async function fetchAdminPageBySlug(slug: string) {
+  const res = await apiFetch(`${BASE}/pages/slug/${slug}`, { headers: authHeaders() });
+  return handleResponse(res);
+}
+
+export async function fetchAllAdminPages() {
+  const res = await apiFetch(`${BASE}/pages`, { headers: authHeaders() });
+  return handleResponse(res);
+}
+
+export async function updateAdminPage(id: number, data: any) {
+  const res = await apiFetch(`${BASE}/pages/${id}`, {
+    method: 'PUT',
+    headers: authHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse(res);
+}
+
+export async function generateAdminSeo(data: any) {
+  const res = await apiFetch(`${BASE}/pages/generate-seo`, {
+    method: 'POST',
+    headers: authHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse(res);
+}

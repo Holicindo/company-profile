@@ -8,9 +8,9 @@ import { LanguageProvider } from '@/context/LanguageContext';
 
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith('/admin');
+  const isNoPublicLayout = pathname?.startsWith('/admin') || pathname?.includes('login');
 
-  if (isAdmin) {
+  if (isNoPublicLayout) {
     return <>{children}</>;
   }
 

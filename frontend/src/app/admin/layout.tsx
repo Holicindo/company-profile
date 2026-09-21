@@ -38,7 +38,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [adminEmail, setAdminEmail] = useState('Admin');
 
+  const isLoginPage = pathname?.includes('login') ?? false;
+
   useEffect(() => {
+    if (isLoginPage) return;
+
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('holic_admin_token');
       if (!token) {
@@ -51,7 +55,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         setAdminEmail(payload.email || payload.sub || 'Admin');
       } catch {}
     }
-  }, [router]);
+  }, [router, pathname, isLoginPage]);
+
+  // Jika di halaman login, jangan render sidebar ataupun container admin
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('holic_admin_token');

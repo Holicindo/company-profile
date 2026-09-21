@@ -22,7 +22,7 @@ export default function PagesAdminPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('holic_admin_token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages`, {
+      const res = await fetch('/api/pages', {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {

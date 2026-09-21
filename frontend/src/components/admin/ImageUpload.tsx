@@ -34,20 +34,14 @@ export default function ImageUpload({ value, onChange, label = 'Gambar', hint }:
       formData.append('file', file);
 
       const token = typeof window !== 'undefined' ? localStorage.getItem('holic_admin_token') || '' : '';
-      // Environment variable is available on client side because it starts with NEXT_PUBLIC_
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3011';
-      const uploadUrl = `${backendUrl}/api/upload`;
-      
-      console.log('Uploading directly to backend:', uploadUrl);
-      console.log('Token exists:', !!token);
-      
-      const res = await fetch(uploadUrl, {
+
+      // Gunakan relative path /api/upload agar always same-origin
+      // Mencegah error 'Failed to fetch' karena Mixed Content (HTTPS -> HTTP) & CORS di AWS Amplify
+      const res = await fetch('/api/upload', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
-
-      console.log('Upload response status:', res.status);
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
