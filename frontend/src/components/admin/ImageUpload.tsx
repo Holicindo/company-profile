@@ -17,7 +17,7 @@ export default function ImageUpload({ value, onChange, label = 'Gambar', hint }:
   const [uploadError, setUploadError] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Upload file ke backend → simpan ke /public/uploads (via API route)
+  // Upload file ke backend → simpan ke /public/uploads (via API route) dengan fallback ke Base64 Data URL
   const handleFile = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       setUploadError('File harus berupa gambar (jpg, png, webp, gif).');
@@ -30,32 +30,52 @@ export default function ImageUpload({ value, onChange, label = 'Gambar', hint }:
 
     setUploading(true);
     setUploadError('');
+
+    // Pre-generate Base64 Data URL sebagai fallback garansi
+    const base64Promise = new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve((e.target?.result as string) || '');
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+
+    const base64Url = await base64Promise;
+
     try {
       const formData = new FormData();
       formData.append('file', file);
 
       const token = typeof window !== 'undefined' ? localStorage.getItem('holic_admin_token') || '' : '';
 
-      // Gunakan relative path /api/upload agar always same-origin
-      // Mencegah error 'Failed to fetch' karena Mixed Content (HTTPS -> HTTP) & CORS di AWS Amplify
       const res = await fetch('/api/upload', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        console.error('Upload error:', err);
-        throw new Error(err.message || `Upload gagal (${res.status})`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.url) {
+          console.log('Upload success via API:', data);
+          onChange(data.url);
+          return;
+        }
       }
 
-      const data = await res.json();
-      console.log('Upload success:', data);
-      onChange(data.url);
+      // Jika API upload tidak mengembalikan 200 OK, gunakan fallback Base64
+      console.warn('API upload response not ok, using Base64 fallback');
+      if (base64Url) {
+        onChange(base64Url);
+      } else {
+        throw new Error(`Upload gagal (${res.status})`);
+      }
     } catch (err: any) {
-      console.error('Upload exception:', err);
-      setUploadError(err.message || 'Upload gagal. Coba lagi.');
+      console.warn('Upload API exception, using Base64 fallback:', err);
+      if (base64Url) {
+        onChange(base64Url);
+      } else {
+        setUploadError(err.message || 'Upload gagal. Coba lagi.');
+      }
     } finally {
       setUploading(false);
     }
