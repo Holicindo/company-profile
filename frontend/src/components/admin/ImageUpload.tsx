@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { Upload, X, Loader2, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
+import { getImageUrl } from '@/lib/api';
 
 interface Props {
   value: string;           // URL gambar saat ini
@@ -140,7 +141,14 @@ export default function ImageUpload({ value, onChange, label = 'Gambar', hint }:
       {value && (
         <div className="relative w-full max-h-48 rounded-xl overflow-hidden border-2 border-[#2C1810]/20 bg-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="Preview" className="w-full h-48 object-contain" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <img
+            src={getImageUrl(value)}
+            alt="Preview"
+            className="w-full h-48 object-contain"
+            onError={(e) => {
+              console.warn('[ImageUpload] Preview load error for:', getImageUrl(value));
+            }}
+          />
           <button
             type="button"
             onClick={() => onChange('')}
