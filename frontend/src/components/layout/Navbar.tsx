@@ -161,7 +161,7 @@ export function Navbar() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-[#128C7E] text-white py-3.5 px-4 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm active:scale-[0.98] transition-transform"
               >
-                Chat WhatsApp
+                {t('Chat WhatsApp', 'Chat WhatsApp')}
               </a>
             </div>
           </div>

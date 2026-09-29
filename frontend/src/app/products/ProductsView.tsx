@@ -82,9 +82,9 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
               </div>
               <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
                 <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
-                  Bakery & Pastry
+                  {t('Bakery & Pastry', 'Bakery & Pastry')}
                 </div>
-                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Estetika Display & Presisi Suhu</h3>
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">{t('Estetika Display & Presisi Suhu', 'Display Aesthetics & Temperature Precision')}</h3>
                 <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Curved showcase elegan dengan kontrol kelembapan tinggi (high-humidity) menjaga kualitas kue dan roti tetap segar sambil menarik perhatian pelanggan dari pandangan pertama.',
@@ -102,9 +102,9 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
               </div>
               <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
                 <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
-                  HORECA (Hotel & Resto)
+                  {t('HORECA (Hotel & Resto)', 'HORECA (Hotel & Restaurant)')}
                 </div>
-                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Ketahanan Dapur Komersial</h3>
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">{t('Ketahanan Dapur Komersial', 'Commercial Kitchen Durability')}</h3>
                 <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Mesin Stainless Steel Undercounter & Upright Chiller tugas berat yang didesain tangguh untuk memfasilitasi alur kerja cepat di dapur komersial.',
@@ -122,9 +122,9 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
               </div>
               <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
                 <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
-                  Retail & Supermarket
+                  {t('Retail & Supermarket', 'Retail & Supermarket')}
                 </div>
-                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Visibilitas & Kapasitas Ekstra</h3>
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">{t('Visibilitas & Kapasitas Ekstra', 'Extra Visibility & Capacity')}</h3>
                 <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Multideck Open Chiller dan Island Freezer berkapasitas masif yang memaksimalkan area display produk untuk mendorong penjualan seketika.',
@@ -142,9 +142,9 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
               </div>
               <div className="absolute inset-0 p-4 sm:p-10 flex flex-col justify-end">
                 <div className="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-[#C9A84C]/10 text-[#C9A84C] text-[8px] sm:text-[10px] font-bold uppercase tracking-widest rounded-full w-fit border border-[#C9A84C]/30 shadow-lg">
-                  Pengolahan Industri
+                  {t('Pengolahan Industri', 'Industrial Processing')}
                 </div>
-                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">Kekuatan Produksi Massal</h3>
+                <h3 className="text-sm sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-3 leading-snug">{t('Kekuatan Produksi Massal', 'Mass Production Power')}</h3>
                 <p className="text-neutral-300 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-0 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {t(
                     'Dari Cold Room hingga Blast Freezer skala pabrik, sistem pendingin kami menjaga integritas bahan baku makanan pada volume produksi raksasa secara stabil.',
