@@ -10,10 +10,11 @@ export class UploadService {
   private region: string = 'ap-southeast-1';
 
   constructor() {
-    const bucket = process.env.AWS_S3_BUCKET || process.env.AWS_BUCKET_NAME;
-    const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-    const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-    const region = process.env.AWS_REGION || 'ap-southeast-1';
+    // Support both AWS_ prefix (local) and S3_ prefix (Amplify)
+    const bucket = process.env.S3_BUCKET || process.env.AWS_S3_BUCKET || process.env.AWS_BUCKET_NAME;
+    const accessKeyId = process.env.S3_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+    const region = process.env.S3_REGION || process.env.AWS_REGION || 'ap-southeast-1';
 
     if (bucket && accessKeyId && secretAccessKey) {
       this.bucketName = bucket;

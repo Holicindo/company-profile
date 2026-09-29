@@ -6,7 +6,16 @@ import { ArrowRight } from 'lucide-react';
 import type { ProductCategory } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
 
-export function ProductCategoriesSection({ categories }: { categories: ProductCategory[] }) {
+interface ProductCategoriesSectionProps {
+  categories: ProductCategory[];
+  customData?: {
+    title?: string;
+    subtitle?: string;
+    cards?: Array<{ name: string; slug: string; description: string; image: string }>;
+  };
+}
+
+export function ProductCategoriesSection({ categories, customData }: ProductCategoriesSectionProps) {
   const { t } = useLanguage();
 
   const fallback = [
@@ -33,13 +42,33 @@ export function ProductCategoriesSection({ categories }: { categories: ProductCa
     },
   ];
 
-  const displayCats = ['showcase', 'refrigerator', 'machinery'].map(slug => {
-    const found = categories.find(c => c.slug === slug);
-    const fall = fallback.find(f => f.slug === slug);
-    return found ? { ...found, imageUrl: fall?.imageUrl || null, description: fall?.description || '' } : fall;
-  }).filter(Boolean);
+  // Use customData from admin if available, otherwise use fallback logic
+  let display: any[] = [];
+  
+  if (customData?.cards && customData.cards.length === 3 && customData.cards.every(c => c.name && c.slug && c.image)) {
+    // Use admin custom data
+    display = customData.cards.map(card => ({
+      slug: card.slug,
+      name: card.name,
+      imageUrl: card.image,
+      description: card.description || '',
+    }));
+  } else {
+    // Fallback to original logic
+    const displayCats = ['showcase', 'refrigerator', 'machinery'].map(slug => {
+      const found = categories.find(c => c.slug === slug);
+      const fall = fallback.find(f => f.slug === slug);
+      return found ? { ...found, imageUrl: fall?.imageUrl || null, description: fall?.description || '' } : fall;
+    }).filter(Boolean);
 
-  const display = displayCats.length === 3 ? displayCats : (categories.filter(c => !c.parentId).slice(0, 3));
+    display = displayCats.length === 3 ? displayCats : (categories.filter(c => !c.parentId).slice(0, 3));
+  }
+
+  const sectionTitle = customData?.title || t('Display & Pendingin untuk Bisnis Anda', 'Display & Cooling for Your Business');
+  const sectionSubtitle = customData?.subtitle || t(
+    'Jika Anda sedang mencari unit showcase untuk kebutuhan restoran, toko roti, hotel, atau pabrik makanan yang memerlukan spesifikasi khusus (bukan ukuran standar rumah tangga), produk dari PT Holicindo bisa menjadi salah satu opsi yang tepat.',
+    'If you are looking for showcase units for restaurant, bakery, hotel, or food factory needs that require special specifications (not standard household sizes), PT Holicindo products could be the right choice.'
+  );
 
   return (
     <section className="relative py-8 sm:py-16 bg-white border-b border-neutral-200">
@@ -47,12 +76,9 @@ export function ProductCategoriesSection({ categories }: { categories: ProductCa
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 sm:gap-6 mb-5 sm:mb-16 border-b border-neutral-200 pb-4 sm:pb-8">
           <div>
             <p className="text-[#C9A84C] font-black text-xs sm:text-sm uppercase tracking-[0.25em] mb-1.5 sm:mb-4">{t('Kategori Produk', 'Product Categories')}</p>
-            <h2 className="text-xl sm:text-4xl lg:text-5xl font-light tracking-tight text-black">{t('Display & Pendingin untuk Bisnis Anda', 'Display & Cooling for Your Business')}</h2>
+            <h2 className="text-xl sm:text-4xl lg:text-5xl font-light tracking-tight text-black">{sectionTitle}</h2>
             <p className="text-xs sm:text-base text-neutral-600 font-light mt-2 sm:mt-4 max-w-2xl leading-relaxed">
-              {t(
-                'Jika Anda sedang mencari unit showcase untuk kebutuhan restoran, toko roti, hotel, atau pabrik makanan yang memerlukan spesifikasi khusus (bukan ukuran standar rumah tangga), produk dari PT Holicindo bisa menjadi salah satu opsi yang tepat.',
-                'If you are looking for showcase units for restaurant, bakery, hotel, or food factory needs that require special specifications (not standard household sizes), PT Holicindo products could be the right choice.'
-              )}
+              {sectionSubtitle}
             </p>
           </div>
           <Link href="/products" className="inline-flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] text-black font-bold uppercase tracking-widest hover:gap-4 transition-all self-start md:self-auto pt-1">

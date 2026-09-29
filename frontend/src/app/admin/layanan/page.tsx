@@ -367,13 +367,13 @@ export default function EditLayananPage() {
             <div>
               <label className="block text-sm font-semibold text-[#2C1810] mb-2">
                 SEO Title
-                <span className="text-xs font-normal text-neutral-500 ml-2">(Max 60 karakter)</span>
+                <span className="text-xs font-normal text-neutral-500 ml-2">(Max 100 karakter)</span>
               </label>
               <input
                 type="text"
                 value={metadata.seoTitle}
                 onChange={e => setMetadata({ ...metadata, seoTitle: e.target.value })}
-                maxLength={60}
+                maxLength={100}
                 placeholder="Layanan Showcase & Pendingin Komersial | Holicindo"
                 className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/50"
               />

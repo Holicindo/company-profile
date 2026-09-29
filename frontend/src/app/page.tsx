@@ -42,7 +42,7 @@ export default async function HomePage() {
       <MainHero initialData={sections?.mainHero} />
       <HeroSection initialData={sections?.heroSection} />
 
-      <ProductCategoriesSection categories={categories} />
+      <ProductCategoriesSection categories={categories} customData={sections?.productCategories} />
       <FeaturedProductsSection products={featuredProducts} />
       <WhyChooseUsSection initialData={sections?.whyChooseUs} />
       <ProjectsSection projects={portfolio} />

@@ -29,12 +29,12 @@ export function HeroSection({ initialData }: HeroSectionProps) {
       <section id="industrial-equipment" className="relative bg-white min-h-0 lg:min-h-[70vh] flex flex-col justify-center border-b border-neutral-200 overflow-hidden">
         
         {/* Absolute Right Side Background (Full Bleed) - Desktop Only */}
-        <div className="hidden lg:flex absolute top-0 right-0 bottom-0 w-full lg:w-[50%] bg-neutral-100 items-center justify-center p-8 lg:p-24 overflow-hidden z-0">
+        <div className="hidden lg:flex absolute top-0 right-0 bottom-0 w-full lg:w-[50%] bg-neutral-100 items-center justify-center p-0 overflow-hidden z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-neutral-100/50 to-transparent pointer-events-none z-10" />
           <img
             src={initialData?.image || '/hero_section_1.png'}
             alt="Kitchen Equipment Showcase"
-            className="relative z-0 w-full h-full object-contain object-right scale-110 md:scale-[1.15] mix-blend-multiply opacity-90 transition-transform duration-1000 hover:scale-[1.2]"
+            className="relative z-0 w-full h-full object-contain object-center scale-110 mix-blend-multiply opacity-90 transition-transform duration-1000 hover:scale-[1.15]"
           />
         </div>
 
@@ -55,35 +55,13 @@ export function HeroSection({ initialData }: HeroSectionProps) {
                 )}
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-5 sm:mb-12">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 onClick={() => setIsVideoOpen(true)}
                 className="flex items-center justify-center gap-2.5 sm:gap-3 bg-[#2C1810] text-white border border-[#2C1810] px-6 sm:px-8 py-3.5 sm:py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-all w-full sm:w-auto shadow-md group">
                 <Play size={14} className="fill-white group-hover:scale-110 transition-transform" />
                 {t('Tonton Video', 'Watch Video')}
               </button>
-            </div>
-
-            {/* B2B Trust Indicators */}
-            <div className="grid grid-cols-3 divide-x divide-neutral-200 text-center sm:text-left sm:divide-x-0 sm:flex sm:flex-wrap sm:gap-8 pt-4 sm:pt-8 border-t border-neutral-200 max-w-md w-full">
-               <div className="px-1 sm:px-0">
-                 <div className="text-lg sm:text-2xl font-light text-black tracking-tighter">
-                   {initialData?.stats?.products || '282+'}
-                 </div>
-                 <div className="text-[8px] sm:text-[9px] uppercase tracking-wider sm:tracking-widest font-bold text-neutral-400 mt-0.5 sm:mt-1">{t('Jenis Produk', 'Product Lines')}</div>
-               </div>
-               <div className="px-1 sm:px-0">
-                 <div className="text-lg sm:text-2xl font-light text-black tracking-tighter">
-                   {initialData?.stats?.warranty || '100%'}
-                 </div>
-                 <div className="text-[8px] sm:text-[9px] uppercase tracking-wider sm:tracking-widest font-bold text-neutral-400 mt-0.5 sm:mt-1">{t('Garansi Resmi', 'Official Warranty')}</div>
-               </div>
-               <div className="px-1 sm:px-0">
-                 <div className="text-lg sm:text-2xl font-light text-black tracking-tighter">
-                   {initialData?.stats?.support || '24/7'}
-                 </div>
-                 <div className="text-[8px] sm:text-[9px] uppercase tracking-wider sm:tracking-widest font-bold text-neutral-400 mt-0.5 sm:mt-1">{t('Technical Support', 'Technical Support')}</div>
-               </div>
             </div>
           </div>
         </div>

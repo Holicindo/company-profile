@@ -43,6 +43,36 @@ const berandaSections = {
     },
     videoUrl: 'https://www.youtube.com/embed/SWEAJdRmvqk',
   },
+  productCategories: {
+    title: 'Display & Pendingin untuk Bisnis Anda',
+    subtitle: 'Jika Anda sedang mencari unit showcase untuk kebutuhan restoran, toko roti, hotel, atau pabrik makanan yang memerlukan spesifikasi khusus (bukan ukuran standar rumah tangga), produk dari PT Holicindo bisa menjadi salah satu opsi yang tepat.',
+    cards: [
+      {
+        name: 'Display Systems',
+        slug: 'display-systems',
+        description: 'Showcase & display produk makanan',
+        image: '/showcase.png',
+      },
+      {
+        name: 'Commercial Refrigeration',
+        slug: 'commercial-refrigeration',
+        description: 'Pendingin komersial & blast freezer',
+        image: '/refrigerator.png',
+      },
+      {
+        name: 'Ice Maker',
+        slug: 'ice-maker',
+        description: 'Mesin pembuat es untuk kebutuhan komersial',
+        image: '',
+      },
+      {
+        name: 'Bar Systems',
+        slug: 'bar-systems',
+        description: 'Peralatan bar & minuman profesional',
+        image: '/machinery.png',
+      },
+    ],
+  },
   whyChooseUs: {
     title: 'Mengapa Memilih Kami',
     subtitle: 'Berpengalaman lebih dari 20 tahun sebagai pionir penyedia peralatan dapur komersial dan mesin F&B di Indonesia. Kami menghadirkan presisi, kualitas, dan keandalan pada setiap instalasi bisnis Anda.',

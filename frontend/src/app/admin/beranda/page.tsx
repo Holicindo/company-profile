@@ -36,6 +36,15 @@ export default function EditBerandaPage() {
       stats: { products: '', warranty: '', support: '' },
       videoUrl: '',
     },
+    productCategories: {
+      title: '',
+      subtitle: '',
+      cards: [
+        { name: '', slug: '', description: '', image: '' },
+        { name: '', slug: '', description: '', image: '' },
+        { name: '', slug: '', description: '', image: '' },
+      ],
+    },
     whyChooseUs: {
       title: '',
       subtitle: '',
@@ -53,7 +62,48 @@ export default function EditBerandaPage() {
       if (data) {
         setPageId(data.id);
         setStatus(data.status);
-        setSections(data.sections);
+        
+        // Merge with default structure to ensure productCategories exists
+        const defaultSections = {
+          mainHero: {
+            subtitle: '',
+            title: { line1: '', line2: '' },
+            slides: [],
+          },
+          heroSection: {
+            badge: '',
+            title: '',
+            description: '',
+            image: '',
+            stats: { products: '', warranty: '', support: '' },
+            videoUrl: '',
+          },
+          productCategories: {
+            title: '',
+            subtitle: '',
+            cards: [
+              { name: '', slug: '', description: '', image: '' },
+              { name: '', slug: '', description: '', image: '' },
+              { name: '', slug: '', description: '', image: '' },
+            ],
+          },
+          whyChooseUs: {
+            title: '',
+            subtitle: '',
+            features: [],
+          },
+        };
+        
+        setSections({
+          ...defaultSections,
+          ...data.sections,
+          productCategories: {
+            ...defaultSections.productCategories,
+            ...(data.sections.productCategories || {}),
+            cards: data.sections.productCategories?.cards || defaultSections.productCategories.cards,
+          },
+        });
+        
         if (data.metadata) {
           setMetadata({
             seoTitle: data.metadata.seoTitle || '',
@@ -357,6 +407,102 @@ export default function EditBerandaPage() {
           </div>
         </section>
 
+        {/* Product Categories Cards */}
+        <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
+          <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">
+            Kategori Produk (3 Kartu Showcase)
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Judul Section</label>
+              <input
+                type="text"
+                value={sections.productCategories?.title || ''}
+                onChange={e => setSections({ ...sections, productCategories: { ...sections.productCategories, title: e.target.value } })}
+                placeholder="Display & Pendingin untuk Bisnis Anda"
+                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Deskripsi</label>
+              <textarea
+                value={sections.productCategories?.subtitle || ''}
+                onChange={e => setSections({ ...sections, productCategories: { ...sections.productCategories, subtitle: e.target.value } })}
+                rows={3}
+                placeholder="Jika Anda sedang mencari unit showcase untuk kebutuhan restoran..."
+                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-semibold text-[#2C1810] mb-3">3 Kartu Kategori</label>
+              <div className="space-y-4">
+                {sections.productCategories?.cards?.map((card: any, idx: number) => (
+                  <div key={idx} className="p-4 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
+                    <p className="text-xs font-bold text-[#2C1810] mb-3 uppercase tracking-wider">Kartu {idx + 1}</p>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-[#2C1810] mb-1">Nama Kategori</label>
+                        <input
+                          type="text"
+                          value={card.name}
+                          onChange={e => {
+                            const newCards = [...sections.productCategories.cards];
+                            newCards[idx].name = e.target.value;
+                            setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
+                          }}
+                          placeholder="Showcase"
+                          className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-[#2C1810] text-sm focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-[#2C1810] mb-1">Slug (URL)</label>
+                        <input
+                          type="text"
+                          value={card.slug}
+                          onChange={e => {
+                            const newCards = [...sections.productCategories.cards];
+                            newCards[idx].slug = e.target.value;
+                            setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
+                          }}
+                          placeholder="showcase"
+                          className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-[#2C1810] text-sm focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-[#2C1810] mb-1">Deskripsi</label>
+                        <input
+                          type="text"
+                          value={card.description}
+                          onChange={e => {
+                            const newCards = [...sections.productCategories.cards];
+                            newCards[idx].description = e.target.value;
+                            setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
+                          }}
+                          placeholder="Display & showcase produk makanan"
+                          className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-[#2C1810] text-sm focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-[#2C1810] mb-1">Gambar</label>
+                        <ImageUpload
+                          value={card.image}
+                          onChange={url => {
+                            const newCards = [...sections.productCategories.cards];
+                            newCards[idx].image = url;
+                            setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
+                          }}
+                          label="Upload Gambar Kategori"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Why Choose Us */}
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">
@@ -455,13 +601,13 @@ export default function EditBerandaPage() {
             <div>
               <label className="block text-sm font-semibold text-[#2C1810] mb-2">
                 SEO Title
-                <span className="text-xs font-normal text-neutral-500 ml-2">(Max 60 karakter)</span>
+                <span className="text-xs font-normal text-neutral-500 ml-2">(Max 100 karakter)</span>
               </label>
               <input
                 type="text"
                 value={metadata.seoTitle}
                 onChange={e => setMetadata({ ...metadata, seoTitle: e.target.value })}
-                maxLength={60}
+                maxLength={100}
                 placeholder="Showcase Komersial Terbaik Indonesia | Holicindo"
                 className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/50"
               />
