@@ -5,14 +5,36 @@ import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { apiService, Client } from '@/services/api';
 
+const FALLBACK_CLIENTS = [
+  { id: 1, name: 'Gelael Signature', logo: null, displayOrder: 0, isActive: true },
+  { id: 2, name: 'LuLu Hypermarket', logo: null, displayOrder: 1, isActive: true },
+  { id: 3, name: 'Cinema XXI', logo: null, displayOrder: 2, isActive: true },
+  { id: 4, name: 'Holland Bakery', logo: null, displayOrder: 3, isActive: true },
+  { id: 5, name: 'Flix Cinema', logo: null, displayOrder: 4, isActive: true },
+  { id: 6, name: 'BreadTalk', logo: null, displayOrder: 5, isActive: true },
+  { id: 7, name: 'J.CO Donuts', logo: null, displayOrder: 6, isActive: true },
+  { id: 8, name: 'Starbucks Indonesia', logo: null, displayOrder: 7, isActive: true },
+  { id: 9, name: 'Roti O', logo: null, displayOrder: 8, isActive: true },
+  { id: 10, name: 'Mayora Group', logo: null, displayOrder: 9, isActive: true },
+  { id: 11, name: 'Indomaret', logo: null, displayOrder: 10, isActive: true },
+  { id: 12, name: 'Alfamart', logo: null, displayOrder: 11, isActive: true },
+  { id: 13, name: 'Transmart Carrefour', logo: null, displayOrder: 12, isActive: true },
+  { id: 14, name: 'Giant Hypermart', logo: null, displayOrder: 13, isActive: true },
+  { id: 15, name: 'Hero Supermarket', logo: null, displayOrder: 14, isActive: true },
+  { id: 16, name: 'Ranch Market', logo: null, displayOrder: 15, isActive: true },
+  { id: 17, name: 'Food Hall', logo: null, displayOrder: 16, isActive: true },
+];
+
 export function ClientsMarquee() {
   const { t } = useLanguage();
-  const [clients, setClients] = useState<Client[]>([]);
+  const [clients, setClients] = useState<Client[]>(FALLBACK_CLIENTS);
 
   useEffect(() => {
     const fetchClients = async () => {
       const data = await apiService.getClients();
-      setClients(data);
+      if (data && data.length > 0) {
+        setClients(data);
+      }
     };
     fetchClients();
   }, []);

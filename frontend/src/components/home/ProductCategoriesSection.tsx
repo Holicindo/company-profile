@@ -64,8 +64,8 @@ export function ProductCategoriesSection({ categories, customData }: ProductCate
     display = displayCats.length === 3 ? displayCats : (categories.filter(c => !c.parentId).slice(0, 3));
   }
 
-  const sectionTitle = customData?.title || t('Display & Pendingin untuk Bisnis Anda', 'Display & Cooling for Your Business');
-  const sectionSubtitle = customData?.subtitle || t(
+  const sectionTitle = t('Display & Pendingin untuk Bisnis Anda', 'Display & Cooling for Your Business');
+  const sectionSubtitle = t(
     'Jika Anda sedang mencari unit showcase untuk kebutuhan restoran, toko roti, hotel, atau pabrik makanan yang memerlukan spesifikasi khusus (bukan ukuran standar rumah tangga), produk dari PT Holicindo bisa menjadi salah satu opsi yang tepat.',
     'If you are looking for showcase units for restaurant, bakery, hotel, or food factory needs that require special specifications (not standard household sizes), PT Holicindo products could be the right choice.'
   );
