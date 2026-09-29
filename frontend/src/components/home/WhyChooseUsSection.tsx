@@ -22,9 +22,8 @@ export function WhyChooseUsSection({ initialData }: WhyChooseUsSectionProps) {
     { title: t('Support 24/7', '24/7 Support'), desc: t('Tim support siap membantu Anda kapan saja untuk memastikan operasional lancar.', 'Our support team is ready to help you anytime to ensure smooth operations.') },
   ];
 
-  const features = (initialData?.features && initialData.features.length > 0)
-    ? initialData.features.map(f => ({ title: f.title, desc: f.description || f.desc || '' }))
-    : defaultFeatures;
+  // Always use default features with translation, ignore CMS data
+  const features = defaultFeatures;
 
   return (
     <section className="py-8 sm:py-16 bg-white relative overflow-hidden border-b border-neutral-200">
