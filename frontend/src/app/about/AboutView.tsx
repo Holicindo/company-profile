@@ -16,32 +16,34 @@ const DEFAULT_WAREHOUSE_SLIDES = [
   '/images/about/warehouse-slide-04.jpg',
 ];
 
-const DEFAULT_FEATURES = [
+const getDefaultFeatures = (t: any) => [
   {
-    title: 'Dimensi',
-    desc: 'Fleksibilitas untuk mengatur panjang, lebar, dan tinggi mesin secara presisi mengikuti kapasitas ruang komersial Anda.',
+    title: t('Dimensi', 'Dimensions'),
+    desc: t('Fleksibilitas untuk mengatur panjang, lebar, dan tinggi mesin secara presisi mengikuti kapasitas ruang komersial Anda.', 'Flexibility to adjust length, width, and height precisely according to your commercial space capacity.'),
   },
   {
-    title: 'Bentuk',
-    desc: 'Bentuk dan lekukan yang dirancang khusus agar menyatu sempurna dengan tata letak serta desain interior toko Anda.',
+    title: t('Bentuk', 'Shape'),
+    desc: t('Bentuk dan lekukan yang dirancang khusus agar menyatu sempurna dengan tata letak serta desain interior toko Anda.', 'Specially designed shapes and curves to blend perfectly with your store layout and interior design.'),
   },
   {
-    title: 'Warna',
-    desc: 'Pilihan warna yang beragam untuk mendukung estetika dan memperkuat identitas visual (branding) bisnis Anda.',
+    title: t('Warna', 'Color'),
+    desc: t('Pilihan warna yang beragam untuk mendukung estetika dan memperkuat identitas visual (branding) bisnis Anda.', 'Diverse color options to support aesthetics and strengthen your business visual identity (branding).'),
   },
   {
-    title: 'Material',
-    desc: 'Pemilihan material grade industri berkualitas tinggi yang dapat disesuaikan dengan standar operasional dan keawetan produk.',
+    title: t('Material', 'Material'),
+    desc: t('Pemilihan material grade industri berkualitas tinggi yang dapat disesuaikan dengan standar operasional dan keawetan produk.', 'High-quality industrial-grade material selection that can be customized to operational standards and product durability.'),
   },
   {
-    title: 'Fungsi',
-    desc: 'Sistem pengaturan suhu dan tingkat kelembapan yang dikustomisasi spesifik untuk menjaga kualitas serta kesegaran optimal produk Anda.',
+    title: t('Fungsi', 'Function'),
+    desc: t('Sistem pengaturan suhu dan tingkat kelembapan yang dikustomisasi spesifik untuk menjaga kualitas serta kesegaran optimal produk Anda.', 'Temperature and humidity control systems specifically customized to maintain optimal quality and freshness of your products.'),
   },
 ];
 
 export function AboutView({ initialData }: AboutViewProps) {
   const { t } = useLanguage();
   const [pageData, setPageData] = useState<any>(initialData || null);
+  
+  const DEFAULT_FEATURES = getDefaultFeatures(t);
 
   useEffect(() => {
     const fetchFreshData = async () => {
