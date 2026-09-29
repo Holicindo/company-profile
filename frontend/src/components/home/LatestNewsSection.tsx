@@ -2,22 +2,24 @@
 import Image from 'next/image';
 import { ArrowRight, Calendar } from 'lucide-react';
 import type { BlogPost } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
 
-const fmt = (d: string) => new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const fmt = (d: string, lang: string) => new Date(d).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 
 export function LatestNewsSection({ posts }: { posts: BlogPost[] }) {
+  const { t, language } = useLanguage();
   if (!posts.length) return null;
   return (
     <section className="py-12 md:py-16 bg-white">
       <div className="container-wide">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-12">
           <div>
-            <p className="text-brand-600 font-semibold text-sm uppercase tracking-widest mb-2">Holic Insights</p>
-            <h2 className="section-title text-slate-900">Artikel Terbaru</h2>
-            <p className="section-subtitle text-slate-600">Tips, berita, dan inspirasi seputar industri mesin makanan</p>
+            <p className="text-brand-600 font-semibold text-sm uppercase tracking-widest mb-2">{t('Holic Insights', 'Holic Insights')}</p>
+            <h2 className="section-title text-slate-900">{t('Artikel Terbaru', 'Latest Articles')}</h2>
+            <p className="section-subtitle text-slate-600">{t('Tips, berita, dan inspirasi seputar industri mesin makanan', 'Tips, news, and inspiration about the food machinery industry')}</p>
           </div>
           <Link href="/news" className="flex items-center gap-2 text-brand-700 font-semibold hover:text-brand-500 hover:gap-3 transition-all">
-            Semua Artikel <ArrowRight size={18} />
+            {t('Semua Artikel', 'All Articles')} <ArrowRight size={18} />
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -30,11 +32,11 @@ export function LatestNewsSection({ posts }: { posts: BlogPost[] }) {
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3">
-                  <Calendar size={13} />{fmt(post.publishedAt)}
+                  <Calendar size={13} />{fmt(post.publishedAt, language)}
                 </div>
                 <h3 className="font-semibold text-neutral-900 leading-snug line-clamp-2 group-hover:text-brand-600 transition-colors mb-2">{post.title}</h3>
                 {post.excerpt && <p className="text-neutral-500 text-sm line-clamp-2">{post.excerpt.replace(/<[^>]*>/g, '')}</p>}
-                <div className="flex items-center gap-1 text-brand-600 text-sm font-medium mt-4">Baca Selengkapnya <ArrowRight size={14} /></div>
+                <div className="flex items-center gap-1 text-brand-600 text-sm font-medium mt-4">{t('Baca Selengkapnya', 'Read More')} <ArrowRight size={14} /></div>
               </div>
             </Link>
           ))}
