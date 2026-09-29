@@ -41,38 +41,10 @@ const getDefaultFeatures = (t: any) => [
 
 export function AboutView({ initialData }: AboutViewProps) {
   const { t } = useLanguage();
-  const [pageData, setPageData] = useState<any>(initialData || null);
   
   const DEFAULT_FEATURES = getDefaultFeatures(t);
 
-  useEffect(() => {
-    const fetchFreshData = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3011'}/api/pages/slug/tentang-kami`,
-          {
-            cache: 'no-store',
-            headers: { 'Cache-Control': 'no-cache' },
-          }
-        );
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.sections) {
-            setPageData(data.sections);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to fetch tentang-kami data:', err);
-      }
-    };
-
-    fetchFreshData();
-  }, []);
-
-  const warehouseSlides =
-    pageData?.history?.warehouseSlides && pageData.history.warehouseSlides.length > 0
-      ? pageData.history.warehouseSlides
-      : DEFAULT_WAREHOUSE_SLIDES;
+  const warehouseSlides = DEFAULT_WAREHOUSE_SLIDES;
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -95,7 +67,7 @@ export function AboutView({ initialData }: AboutViewProps) {
       {/* ── Hero Section ── */}
       <div className="relative border-b border-neutral-200 text-white overflow-hidden min-h-[240px] sm:min-h-[500px] py-10 sm:py-0 flex items-center">
         <Image
-          src={pageData?.hero?.backgroundImage || '/images/about/hero-bg-02.jpg'}
+          src={'/images/about/hero-bg-02.jpg'}
           alt="Holicindo Warehouse"
           fill
           className="object-cover"
@@ -108,14 +80,13 @@ export function AboutView({ initialData }: AboutViewProps) {
         <div className="relative z-10 w-full flex items-center justify-center">
           <div className="text-center px-4 sm:px-6 max-w-3xl">
             <h1 className="text-2xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-2 sm:mb-6 leading-[1.15] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
-              {pageData?.hero?.title || t('Profil Perusahaan', 'Company Profile')}
+              {t('Profil Perusahaan', 'Company Profile')}
             </h1>
             <p className="text-neutral-100 text-xs sm:text-base md:text-lg font-normal leading-relaxed drop-shadow-md">
-              {pageData?.hero?.subtitle ||
-                t(
-                  'PT Holicindo Dasa Anugerah telah berdiri sebagai pemasar mesin makanan industri di Indonesia sejak tahun 2001.',
-                  'PT Holicindo Dasa Anugerah has been established as an industrial food machinery distributor in Indonesia since 2001.'
-                )}
+              {t(
+                'PT Holicindo Dasa Anugerah telah berdiri sebagai pemasar mesin makanan industri di Indonesia sejak tahun 2001.',
+                'PT Holicindo Dasa Anugerah has been established as an industrial food machinery distributor in Indonesia since 2001.'
+              )}
             </p>
           </div>
         </div>
@@ -127,22 +98,20 @@ export function AboutView({ initialData }: AboutViewProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 mb-8 sm:mb-16">
           <div className="lg:col-span-7 p-4 sm:p-10 lg:p-14 border border-neutral-200 bg-white">
             <h2 className="text-xl sm:text-4xl font-bold text-[#2C1810] tracking-tight mb-3 sm:mb-8">
-              {pageData?.history?.title || t('Sejarah Perusahaan', 'Company History')}
+              {t('Sejarah Perusahaan', 'Company History')}
             </h2>
             <div className="space-y-3 sm:space-y-6 text-neutral-600 text-xs sm:text-lg leading-relaxed text-left sm:text-justify">
               <p>
-                {pageData?.history?.paragraph1 ||
-                  t(
-                    'PT. Holicindo Dasa Anugerah telah berdiri sebagai pemasar mesin makanan industri di Indonesia sejak tahun 2001. Perusahaan kami menyediakan berbagai macam mesin makanan, mulai dari sistem pendinginan, peralatan memanggang hingga etalase showcase untuk makanan.',
-                    'PT. Holicindo Dasa Anugerah has been established as an industrial food machinery distributor in Indonesia since 2001. We provide various types of food machinery, from refrigeration systems, baking equipment to food showcases.'
-                  )}
+                {t(
+                  'PT. Holicindo Dasa Anugerah telah berdiri sebagai pemasar mesin makanan industri di Indonesia sejak tahun 2001. Perusahaan kami menyediakan berbagai macam mesin makanan, mulai dari sistem pendinginan, peralatan memanggang hingga etalase showcase untuk makanan.',
+                  'PT. Holicindo Dasa Anugerah has been established as an industrial food machinery distributor in Indonesia since 2001. We provide various types of food machinery, from refrigeration systems, baking equipment to food showcases.'
+                )}
               </p>
               <p>
-                {pageData?.history?.paragraph2 ||
-                  t(
-                    'Sebagai produsen spesialisasi pembuatan khusus kami dapat memanajemen harga etalase showcase untuk makanan. Sebagai produsen spesialisasi pendingin, kami telah merebut kepercayaan konsumen. Perusahaan kami menyediakan pengiriman, pemasangan produk yang disediakan akurat juga, kami juga memahami harga sales service semua produk kami di seluruh Indonesia.',
-                    'As a specialized manufacturer of custom-made equipment, we can manage showcase prices for food displays. As a specialized refrigeration manufacturer, we have earned customer trust. Our company provides delivery, product installation accurately, and we also provide comprehensive sales service for all our products throughout Indonesia.'
-                  )}
+                {t(
+                  'Sebagai produsen spesialisasi pembuatan khusus kami dapat memanajemen harga etalase showcase untuk makanan. Sebagai produsen spesialisasi pendingin, kami telah merebut kepercayaan konsumen. Perusahaan kami menyediakan pengiriman, pemasangan produk yang disediakan akurat juga, kami juga memahami harga sales service semua produk kami di seluruh Indonesia.',
+                  'As a specialized manufacturer of custom-made equipment, we can manage showcase prices for food displays. As a specialized refrigeration manufacturer, we have earned customer trust. Our company provides delivery, product installation accurately, and we also provide comprehensive sales service for all our products throughout Indonesia.'
+                )}
               </p>
             </div>
           </div>
@@ -189,13 +158,13 @@ export function AboutView({ initialData }: AboutViewProps) {
             {/* Kolom Kiri: Badge + Judul */}
             <div>
               <div className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 bg-[#2C1810] text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-8 rounded-sm">
-                {pageData?.vision?.badge || t('VISI', 'VISION')}
+                {t('VISI', 'VISION')}
               </div>
               <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#2C1810] tracking-tight leading-[1.2] mb-0">
-                {pageData?.vision?.title?.line1 || t('Lebih dari sekadar', 'More than')}<br />
-                {pageData?.vision?.title?.line2 || t('distributor mesin', 'a showcase')}<br />
+                {t('Lebih dari sekadar', 'More than')}<br />
+                {t('distributor mesin', 'a showcase')}<br />
                 <span className="text-[#C9A84C]">
-                  {pageData?.vision?.title?.line3 || t('pendingin komersial.', 'manufacturer.')}
+                  {t('pendingin komersial.', 'manufacturer.')}
                 </span>
               </h2>
             </div>
@@ -205,27 +174,24 @@ export function AboutView({ initialData }: AboutViewProps) {
               <div className="w-10 sm:w-12 h-[2px] bg-[#C9A84C]" />
 
               <p className="text-[#2C1810] text-xs sm:text-base font-bold leading-relaxed">
-                {pageData?.vision?.description1 ||
-                  t(
-                    'Holicindo menghadirkan solusi display kustom yang membantu brand makanan mempresentasikan, menjaga, dan menjual produk mereka dengan lebih baik.',
-                    'Holicindo creates custom display solutions that help food brands present, preserve, and sell their products better.'
-                  )}
+                {t(
+                  'Holicindo menghadirkan solusi display kustom yang membantu brand makanan mempresentasikan, menjaga, dan menjual produk mereka dengan lebih baik.',
+                  'Holicindo creates custom display solutions that help food brands present, preserve, and sell their products better.'
+                )}
               </p>
 
               <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed">
-                {pageData?.vision?.description2 ||
-                  t(
-                    'Di setiap proyek, Holicindo memadukan desain, manufaktur, instalasi, dan dukungan purna jual untuk menciptakan sistem display yang dibangun sesuai produk, ruang, dan kebutuhan bisnis setiap pelanggan.',
-                    'With every project, Holicindo brings together design, manufacturing, installation, and after-sales support to create display systems built around each customer\'s products, space, and business needs.'
-                  )}
+                {t(
+                  'Di setiap proyek, Holicindo memadukan desain, manufaktur, instalasi, dan dukungan purna jual untuk menciptakan sistem display yang dibangun sesuai produk, ruang, dan kebutuhan bisnis setiap pelanggan.',
+                  'With every project, Holicindo brings together design, manufacturing, installation, and after-sales support to create display systems built around each customer\'s products, space, and business needs.'
+                )}
               </p>
 
               <p
                 className="text-[#2C1810] text-lg sm:text-3xl leading-snug mt-1 sm:mt-2"
                 style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: 400 }}
               >
-                {pageData?.vision?.tagline ||
-                  t('Menciptakan Pengalaman Display Makanan Terbaik', 'Creating Better Food Display Experiences')}
+                {t('Menciptakan Pengalaman Display Makanan Terbaik', 'Creating Better Food Display Experiences')}
               </p>
             </div>
           </div>
@@ -237,17 +203,16 @@ export function AboutView({ initialData }: AboutViewProps) {
           <div className="relative">
             <div className="max-w-3xl mb-4 sm:mb-8">
               <div className="inline-block px-3 py-0.5 sm:px-3.5 sm:py-1 bg-[#2C1810] text-white text-[9px] font-bold tracking-widest mb-2 sm:mb-6 rounded-full">
-                {pageData?.customization?.badge || t('Kustomisasi', 'Customization')}
+                {t('Kustomisasi', 'Customization')}
               </div>
               <h2 className="text-xl sm:text-5xl font-bold text-[#2C1810] tracking-tight mb-2 sm:mb-6 leading-[1.15]">
-                {pageData?.customization?.title || t('Layanan Kustomisasi Premium', 'Premium Customization Services')}
+                {t('Layanan Kustomisasi Premium', 'Premium Customization Services')}
               </h2>
               <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">
-                {pageData?.customization?.description ||
-                  t(
-                    'Berbekal pengalaman lebih dari 20 tahun, kami menghadirkan layanan pembuatan showcase pendingin kustom dengan spesifikasi yang dirancang khusus untuk memaksimalkan potensi bisnis Anda.',
-                    'With over 20 years of experience, we offer custom refrigerated showcase manufacturing with specifications tailored to maximize your business potential.'
-                  )}
+                {t(
+                  'Berbekal pengalaman lebih dari 20 tahun, kami menghadirkan layanan pembuatan showcase pendingin kustom dengan spesifikasi yang dirancang khusus untuk memaksimalkan potensi bisnis Anda.',
+                  'With over 20 years of experience, we offer custom refrigerated showcase manufacturing with specifications tailored to maximize your business potential.'
+                )}
               </p>
             </div>
 
@@ -255,7 +220,7 @@ export function AboutView({ initialData }: AboutViewProps) {
               <div className="lg:col-span-5">
                 <div className="relative rounded-xl bg-[#2C1810] aspect-square sm:aspect-auto sm:min-h-[500px]">
                   <Image
-                    src={pageData?.customization?.showcaseImage || '/images/about/showcase-hitam-bg3.png'}
+                    src={'/images/about/showcase-hitam-bg3.png'}
                     alt="Showcase dengan Panah Dimension"
                     fill
                     className="object-contain p-4 sm:p-6"
@@ -267,10 +232,7 @@ export function AboutView({ initialData }: AboutViewProps) {
               </div>
 
               <div className="lg:col-span-7 grid grid-cols-2 gap-2.5 sm:gap-6">
-                {(pageData?.customization?.features && pageData.customization.features.length > 0
-                  ? pageData.customization.features
-                  : DEFAULT_FEATURES
-                ).map((feat: any, idx: number, arr: any[]) => (
+                {DEFAULT_FEATURES.map((feat: any, idx: number, arr: any[]) => (
                   <div
                     key={idx}
                     className={`bg-white border-2 border-neutral-200 rounded-xl p-2.5 sm:p-6 hover:border-[#2C1810] transition-all ${
