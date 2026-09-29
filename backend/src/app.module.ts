@@ -8,6 +8,9 @@ import { ContactModule } from './modules/contact/contact.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { PagesModule } from './modules/pages/pages.module';
+import { SiteSettingsModule } from './modules/site-settings/site-settings.module';
+import { ClientsModule } from './modules/clients/clients.module';
+import { ContactSubjectsModule } from './modules/contact-subjects/contact-subjects.module';
 
 @Module({
   imports: [
@@ -45,6 +48,9 @@ import { PagesModule } from './modules/pages/pages.module';
     ContactModule,
     UploadModule,
     PagesModule,
+    SiteSettingsModule,
+    ClientsModule,
+    ContactSubjectsModule,
   ],
 })
 export class AppModule {}

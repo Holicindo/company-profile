@@ -1,35 +1,26 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
-
-const ROW_1 = [
-  { name: 'Gelael Signature', logo: '/clients/gelael.svg' },
-  { name: 'LuLu Hypermarket', logo: '/clients/lulu.svg' },
-  { name: 'Cinema XXI', logo: '/clients/xxi.svg' },
-  { name: 'Holland Bakery', logo: '/clients/holland.svg' },
-  { name: 'Flix Cinema', logo: '/clients/flix.svg' },
-  { name: 'BreadTalk', logo: '/clients/breadtalk.svg' },
-  { name: 'J.CO Donuts', logo: '/clients/jco.svg' },
-  { name: 'Starbucks Indonesia', logo: '/clients/starbucks.svg' },
-];
-
-const ROW_2 = [
-  { name: 'Roti O', logo: '/clients/rotio.svg' },
-  { name: 'Mayora Group', logo: '/clients/mayora.svg' },
-  { name: 'Indomaret', logo: '/clients/indomaret.svg' },
-  { name: 'Alfamart', logo: '/clients/alfamart.svg' },
-  { name: 'Transmart Carrefour', logo: '/clients/transmart.svg' },
-  { name: 'Giant Hypermart', logo: '/clients/giant.svg' },
-  { name: 'Hero Supermarket', logo: '/clients/hero.svg' },
-  { name: 'Ranch Market', logo: '/clients/ranch.svg' },
-  { name: 'Food Hall', logo: '/clients/foodhall.svg' },
-];
+import { apiService, Client } from '@/services/api';
 
 export function ClientsMarquee() {
   const { t } = useLanguage();
-  const row1 = [...ROW_1, ...ROW_1, ...ROW_1];
-  const row2 = [...ROW_2, ...ROW_2, ...ROW_2];
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      const data = await apiService.getClients();
+      setClients(data);
+    };
+    fetchClients();
+  }, []);
+
+  // Split into 2 rows for marquee effect
+  const midpoint = Math.ceil(clients.length / 2);
+  const row1 = [...clients.slice(0, midpoint), ...clients.slice(0, midpoint), ...clients.slice(0, midpoint)];
+  const row2 = [...clients.slice(midpoint), ...clients.slice(midpoint), ...clients.slice(midpoint)];
 
   return (
     <section className="relative py-6 sm:py-8 md:py-10 bg-white overflow-hidden border-t border-neutral-200">
