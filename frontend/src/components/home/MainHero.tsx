@@ -75,11 +75,11 @@ export function MainHero({ initialData }: MainHeroProps) {
       <div className="container-wide relative z-10 w-full text-white flex flex-col items-center text-center px-4">
         <div className="max-w-4xl -mt-2 sm:-mt-6 md:-mt-10">
           <span className="inline-block px-3 py-0.5 sm:px-3.5 sm:py-1 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mb-2.5 sm:mb-6 rounded-full">
-            {initialData?.subtitle || t('Est. 2001', 'Est. 2001')}
+            {t('Est. 2001', 'Est. 2001')}
           </span>
           <h1 className="text-xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.3] sm:leading-[1.5] tracking-tight mb-2 sm:mb-4 drop-shadow-xl text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
-            {initialData?.title?.line1 || t('Spesialis Showcase & Pendingin', 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
-            {initialData?.title?.line2 || t('Komersial Terpercaya Indonesia.', '& Refrigeration Solutions.')}
+            {t('Spesialis Showcase & Pendingin', 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
+            {t('Komersial Terpercaya Indonesia.', '& Refrigeration Solutions.')}
           </h1>
         </div>
       </div>

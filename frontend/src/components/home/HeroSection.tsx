@@ -42,17 +42,16 @@ export function HeroSection({ initialData }: HeroSectionProps) {
         <div className="container-wide relative z-20 w-full">
           <div className="w-full lg:w-1/2 flex flex-col justify-center py-6 sm:py-12 lg:py-16 bg-white lg:bg-transparent p-0 lg:pr-8">
             <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2 sm:mb-4 block flex items-center gap-2 sm:gap-3">
-              <span className="w-6 sm:w-8 h-px bg-neutral-400"></span> {initialData?.badge || t('SHOWCASE & PENDINGIN KOMERSIAL', 'COMMERCIAL SHOWCASE & REFRIGERATION')}
+              <span className="w-6 sm:w-8 h-px bg-neutral-400"></span> {t('SHOWCASE & PENDINGIN KOMERSIAL', 'COMMERCIAL SHOWCASE & REFRIGERATION')}
             </span>
             <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold text-black leading-[1.25] sm:leading-[1.2] mb-3 sm:mb-6 tracking-tight max-w-md">
-              {initialData?.title || t('Tingkatkan Daya Jual dengan Showcase & Chiller Premium.', 'Boost Your Sales with Premium Showcase & Commercial Chiller.')}
+              {t('Tingkatkan Daya Jual dengan Showcase & Chiller Premium.', 'Boost Your Sales with Premium Showcase & Commercial Chiller.')}
             </h2>
             <p className="text-xs sm:text-base text-neutral-600 font-normal leading-relaxed mb-5 sm:mb-12 max-w-md">
-              {initialData?.description ||
-                t(
-                  'Dari cake showcase berlampu LED hingga blast freezer industri — Holicindo menghadirkan solusi pendingin dan display spesifikasi HORECA dengan garansi resmi, siap kirim ke seluruh Indonesia.',
-                  'From LED-lit cake showcases to industrial blast freezers — Holicindo delivers HORECA-grade refrigeration and display solutions with official warranty, ready for nationwide delivery.'
-                )}
+              {t(
+                'Dari cake showcase berlampu LED hingga blast freezer industri — Holicindo menghadirkan solusi pendingin dan display spesifikasi HORECA dengan garansi resmi, siap kirim ke seluruh Indonesia.',
+                'From LED-lit cake showcases to industrial blast freezers — Holicindo delivers HORECA-grade refrigeration and display solutions with official warranty, ready for nationwide delivery.'
+              )}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
