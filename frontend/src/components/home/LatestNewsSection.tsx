@@ -7,7 +7,7 @@ import { useLanguage } from '@/context/LanguageContext';
 const fmt = (d: string, lang: string) => new Date(d).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 
 export function LatestNewsSection({ posts }: { posts: BlogPost[] }) {
-  const { t, language } = useLanguage();
+  const { t, lang } = useLanguage();
   if (!posts.length) return null;
   return (
     <section className="py-12 md:py-16 bg-white">
@@ -32,7 +32,7 @@ export function LatestNewsSection({ posts }: { posts: BlogPost[] }) {
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3">
-                  <Calendar size={13} />{fmt(post.publishedAt, language)}
+                  <Calendar size={13} />{fmt(post.publishedAt, lang.toLowerCase())}
                 </div>
                 <h3 className="font-semibold text-neutral-900 leading-snug line-clamp-2 group-hover:text-brand-600 transition-colors mb-2">{post.title}</h3>
                 {post.excerpt && <p className="text-neutral-500 text-sm line-clamp-2">{post.excerpt.replace(/<[^>]*>/g, '')}</p>}
