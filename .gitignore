@@ -6,9 +6,10 @@ dist/
 *.log
 .DS_Store
 
-# Private keys - NEVER commit these
+# Private keys and credentials - NEVER commit these
 *.pem
 *.key
+*.csv
 
 # User uploaded files - managed per environment, not in repo
 frontend/public/uploads/
