@@ -46,7 +46,19 @@ async function bootstrap() {
   const uploadDir = process.env.UPLOAD_DIR
     ? (require('path').isAbsolute(process.env.UPLOAD_DIR) ? process.env.UPLOAD_DIR : require('path').join(process.cwd(), process.env.UPLOAD_DIR))
     : require('path').join(process.cwd(), '..', 'frontend', 'public', 'uploads');
-  app.use('/uploads', require('express').static(uploadDir));
+  
+  console.log(`📁 Static uploads directory: ${uploadDir}`);
+  console.log(`📁 Directory exists: ${require('fs').existsSync(uploadDir)}`);
+  
+  app.use('/uploads', require('express').static(uploadDir, {
+    maxAge: '1y',
+    etag: true,
+    lastModified: true,
+    setHeaders: (res: any, path: string) => {
+      res.set('Access-Control-Allow-Origin', '*');
+      console.log(`📷 Serving: ${path}`);
+    }
+  }));
 
   const port = process.env.PORT || 3011;
   await app.listen(port);
