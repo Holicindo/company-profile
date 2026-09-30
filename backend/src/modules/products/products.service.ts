@@ -13,8 +13,9 @@ export class ProductsService {
 
   /**
    * Transform WordPress legacy URLs to backend proxy URLs
+   * Direct backend URL without Next.js rewrite for Amplify compatibility
    * Example: https://holicindo.com/wp-content/uploads/2021/11/SRWP-70.png
-   * Becomes: /uploads/2021/11/SRWP-70.png (relative path for Next.js rewrite)
+   * Becomes: http://52.64.193.232:3011/uploads/2021/11/SRWP-70.png
    */
   private transformImageUrl(url: string | null): string | null {
     if (!url) return null;
@@ -24,8 +25,8 @@ export class ProductsService {
       // Extract the path after /wp-content/uploads/
       const match = url.match(/\/wp-content\/uploads\/(.+)$/);
       if (match) {
-        // Return relative path (will be proxied by Next.js to backend)
-        return `/uploads/${match[1]}`;
+        // Return direct backend URL (bypass Next.js rewrite issue)
+        return `http://52.64.193.232:3011/uploads/${match[1]}`;
       }
     }
     
