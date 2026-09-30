@@ -7,6 +7,7 @@ import { createProduct, fetchCategories } from '@/lib/admin-api';
 import { ArrowLeft, Loader2, Save, Wand2 } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { AdminSelect } from '@/components/admin/AdminSelect';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 function slugify(str: string) {
   return str.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
@@ -153,14 +154,12 @@ export default function NewProductPage() {
               <div className="flex items-center gap-2 pb-3 border-b border-[#2C1810]/8">
                 <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
                 <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Deskripsi Lengkap</h2>
-                <span className="ml-auto text-[10px] text-[#2C1810]/40 font-medium bg-[#2C1810]/5 px-2 py-0.5 rounded-full">HTML diperbolehkan</span>
               </div>
-              <textarea
+              <RichTextEditor
                 value={form.description}
-                onChange={e => set('description', e.target.value)}
-                rows={16}
-                placeholder="<p>Deskripsi lengkap produk dalam format HTML...</p>"
-                className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] font-mono text-sm placeholder:text-[#2C1810]/25 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-y min-h-[280px]"
+                onChange={v => set('description', v)}
+                placeholder="Tulis deskripsi lengkap produk... bisa pakai heading, list, tabel, dan lainnya."
+                minHeight="320px"
               />
             </div>
           </div>

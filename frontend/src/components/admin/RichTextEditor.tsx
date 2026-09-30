@@ -7,12 +7,17 @@ import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 import { useEffect, useCallback } from 'react';
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   List, ListOrdered, Quote, Link as LinkIcon, ImageIcon,
   AlignLeft, AlignCenter, AlignRight,
   Heading1, Heading2, Heading3, Minus, Undo, Redo, Code,
+  Table as TableIcon, Plus, Trash2, RowsIcon, Columns,
 } from 'lucide-react';
 
 interface Props {
@@ -22,7 +27,7 @@ interface Props {
   minHeight?: string;
 }
 
-export default function RichTextEditor({ value, onChange, placeholder = 'Tulis konten artikel di sini...', minHeight = '400px' }: Props) {
+export default function RichTextEditor({ value, onChange, placeholder = 'Tulis konten di sini...', minHeight = '400px' }: Props) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -34,6 +39,10 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Tulis k
       Link.configure({ openOnClick: false, autolink: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Placeholder.configure({ placeholder }),
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: value,
     onUpdate: ({ editor }) => {
@@ -75,6 +84,11 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Tulis k
     }
   }, [editor]);
 
+  const insertTable = useCallback(() => {
+    if (!editor) return;
+    editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+  }, [editor]);
+
   if (!editor) return null;
 
   const ToolbarBtn = ({
@@ -98,6 +112,8 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Tulis k
   );
 
   const Divider = () => <div className="w-px h-5 bg-slate-200 mx-1" />;
+
+  const isInTable = editor.isActive('table');
 
   return (
     <div className="border border-neutral-200 rounded-xl overflow-hidden bg-white focus-within:ring-2 focus-within:ring-brand-400 focus-within:border-transparent transition-all">
@@ -181,10 +197,78 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Tulis k
         <ToolbarBtn title="Insert Image (URL)" onClick={addImage}>
           <ImageIcon size={15} />
         </ToolbarBtn>
+
+        <Divider />
+
+        {/* Table */}
+        <ToolbarBtn title="Insert Table (3×3)" active={isInTable} onClick={insertTable}>
+          <TableIcon size={15} />
+        </ToolbarBtn>
+
+        {/* Table context actions — hanya muncul kalau cursor di dalam tabel */}
+        {isInTable && (
+          <>
+            <ToolbarBtn title="Tambah Baris di Bawah" onClick={() => editor.chain().focus().addRowAfter().run()}>
+              <span className="flex items-center gap-0.5 text-[11px] font-semibold"><RowsIcon size={13} /><Plus size={11} /></span>
+            </ToolbarBtn>
+            <ToolbarBtn title="Tambah Kolom di Kanan" onClick={() => editor.chain().focus().addColumnAfter().run()}>
+              <span className="flex items-center gap-0.5 text-[11px] font-semibold"><Columns size={13} /><Plus size={11} /></span>
+            </ToolbarBtn>
+            <ToolbarBtn title="Hapus Baris" onClick={() => editor.chain().focus().deleteRow().run()}>
+              <span className="flex items-center gap-0.5 text-[11px] font-semibold text-red-400"><RowsIcon size={13} /><Trash2 size={11} /></span>
+            </ToolbarBtn>
+            <ToolbarBtn title="Hapus Kolom" onClick={() => editor.chain().focus().deleteColumn().run()}>
+              <span className="flex items-center gap-0.5 text-[11px] font-semibold text-red-400"><Columns size={13} /><Trash2 size={11} /></span>
+            </ToolbarBtn>
+            <ToolbarBtn title="Hapus Tabel" onClick={() => editor.chain().focus().deleteTable().run()}>
+              <span className="flex items-center gap-0.5 text-[11px] font-semibold text-red-500"><TableIcon size={13} /><Trash2 size={11} /></span>
+            </ToolbarBtn>
+          </>
+        )}
       </div>
 
       {/* Editor area */}
       <EditorContent editor={editor} />
+
+      {/* Table styles */}
+      <style jsx global>{`
+        .ProseMirror table {
+          border-collapse: collapse;
+          width: 100%;
+          margin: 1em 0;
+          overflow: hidden;
+          border-radius: 6px;
+        }
+        .ProseMirror td, .ProseMirror th {
+          border: 1px solid #d1d5db;
+          padding: 8px 12px;
+          vertical-align: top;
+          min-width: 80px;
+          position: relative;
+        }
+        .ProseMirror th {
+          background: #f8f9fa;
+          font-weight: 600;
+          text-align: left;
+        }
+        .ProseMirror .selectedCell::after {
+          z-index: 2;
+          position: absolute;
+          content: "";
+          left: 0; right: 0; top: 0; bottom: 0;
+          background: rgba(201, 168, 76, 0.15);
+          pointer-events: none;
+        }
+        .ProseMirror .column-resize-handle {
+          position: absolute;
+          right: -2px;
+          top: 0; bottom: 0;
+          width: 4px;
+          background: #C9A84C;
+          cursor: col-resize;
+          pointer-events: auto;
+        }
+      `}</style>
     </div>
   );
 }
