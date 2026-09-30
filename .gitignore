@@ -19,3 +19,9 @@ uploads/
 # Build artifacts
 backend/tsconfig.tsbuildinfo
 frontend/tsconfig.tsbuildinfo
+
+# Downloaded WordPress images (already copied to frontend/public/uploads)
+downloaded-wp-images/
+download-*.js
+image-urls.txt
+export-image-urls.js
