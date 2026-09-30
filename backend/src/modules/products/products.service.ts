@@ -8,8 +8,42 @@ import { ProductCategory } from './entities/product-category.entity';
 export class ProductsService {
   constructor(
     @InjectRepository(Product) private productRepo: Repository<Product>,
-    @InjectRepository(ProductCategory) private categoryRepo: Repository<ProductCategory>,
+    @antml:parameter name="categoryRepo"> private categoryRepo: Repository<ProductCategory>,
   ) {}
+
+  /**
+   * Transform WordPress legacy URLs to backend proxy URLs
+   * Example: https://holicindo.com/wp-content/uploads/2021/11/SRWP-70.png
+   * Becomes: http://52.64.193.232:3011/uploads/2021/11/SRWP-70.png
+   */
+  private transformImageUrl(url: string | null): string | null {
+    if (!url) return null;
+    
+    // Check if it's a WordPress legacy URL
+    if (url.includes('/wp-content/uploads/')) {
+      // Extract the path after /wp-content/uploads/
+      const match = url.match(/\/wp-content\/uploads\/(.+)$/);
+      if (match) {
+        // Return proxied URL through backend
+        return `http://52.64.193.232:3011/uploads/${match[1]}`;
+      }
+    }
+    
+    return url;
+  }
+
+  /**
+   * Transform product image URLs for display
+   */
+  private transformProduct(product: Product): Product {
+    if (product) {
+      product.imageUrl = this.transformImageUrl(product.imageUrl);
+      if (product.galleryUrls && Array.isArray(product.galleryUrls)) {
+        product.galleryUrls = product.galleryUrls.map(url => this.transformImageUrl(url));
+      }
+    }
+    return product;
+  }
 
   async getCategories() {
     const all = await this.categoryRepo.find({ order: { order: 'ASC', name: 'ASC' } });
@@ -46,17 +80,21 @@ export class ProductsService {
     }
 
     const [items, total] = await qb.orderBy('p.name', 'ASC').skip((page - 1) * limit).take(limit).getManyAndCount();
+    // Transform image URLs
+    items.forEach(item => this.transformProduct(item));
     return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
   async getProductBySlug(slug: string) {
     const p = await this.productRepo.findOne({ where: { slug, isActive: true }, relations: ['category', 'category.parent'] });
     if (!p) throw new NotFoundException('Product not found');
-    return p;
+    return this.transformProduct(p);
   }
 
   async getFeaturedProducts(limit = 8) {
-    return this.productRepo.find({ where: { isFeatured: true, isActive: true }, relations: ['category'], take: limit });
+    const items = await this.productRepo.find({ where: { isFeatured: true, isActive: true }, relations: ['category'], take: limit });
+    items.forEach(item => this.transformProduct(item));
+    return items;
   }
 
   // ── Admin CRUD ───────────────────────────────────────────────────────────────
@@ -70,13 +108,15 @@ export class ProductsService {
     if (search) qb.andWhere('(p.name ILIKE :s OR p.sku ILIKE :s)', { s: `%${search}%` });
     if (category) qb.andWhere('cat.slug = :category', { category });
     const [items, total] = await qb.getManyAndCount();
+    // Transform image URLs for admin panel
+    items.forEach(item => this.transformProduct(item));
     return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
   async getProductById(id: number) {
     const product = await this.productRepo.findOne({ where: { id }, relations: ['category', 'category.parent'] });
     if (!product) throw new NotFoundException('Product not found');
-    return product;
+    return this.transformProduct(product);
   }
 
   async createProduct(dto: any) {
