@@ -14,7 +14,7 @@ export class ProductsService {
   /**
    * Transform WordPress legacy URLs to backend proxy URLs
    * Example: https://holicindo.com/wp-content/uploads/2021/11/SRWP-70.png
-   * Becomes: http://52.64.193.232:3011/uploads/2021/11/SRWP-70.png
+   * Becomes: /uploads/2021/11/SRWP-70.png (relative path for Next.js rewrite)
    */
   private transformImageUrl(url: string | null): string | null {
     if (!url) return null;
@@ -24,8 +24,8 @@ export class ProductsService {
       // Extract the path after /wp-content/uploads/
       const match = url.match(/\/wp-content\/uploads\/(.+)$/);
       if (match) {
-        // Return proxied URL through backend
-        return `http://52.64.193.232:3011/uploads/${match[1]}`;
+        // Return relative path (will be proxied by Next.js to backend)
+        return `/uploads/${match[1]}`;
       }
     }
     
