@@ -59,73 +59,46 @@ export const getPageBySlug = (slug: string) =>
 
 export function getImageUrl(url?: string | null): string {
   if (!url) return '';
-  
+
   // Handle data URLs
   if (url.startsWith('data:')) {
     return url;
   }
-  
-  // Handle WordPress legacy URLs - extract the path and serve from backend
-  if (url.includes('/wp-content/uploads/')) {
-    const backendBase = process.env.NEXT_PUBLIC_API_URL || 
-      (typeof window !== 'undefined' && window.location.origin.includes('localhost') 
-        ? 'http://localhost:3011' 
-        : 'http://52.64.193.232:3011');
-    const cleanBackend = backendBase.replace(/\/+$/, '').replace(/\/api$/, '');
-    
-    // Extract path after wp-content/uploads/ and serve from backend /uploads/
-    const match = url.match(/\/wp-content\/uploads\/(.+)$/);
-    if (match) {
-      return `${cleanBackend}/uploads/${match[1]}`;
-    }
-  }
-  
-  // Handle absolute URLs (including full https://holicindo.com/... URLs)
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    // If it's our own domain with /uploads/, proxy through backend
-    if ((url.includes('holicindo.com/uploads/') || url.includes('holicindo.com/wp-content/')) && !url.includes('52.64.193.232')) {
-      const backendBase = process.env.NEXT_PUBLIC_API_URL || 
-        (typeof window !== 'undefined' && window.location.origin.includes('localhost') 
-          ? 'http://localhost:3011' 
-          : 'http://52.64.193.232:3011');
-      const cleanBackend = backendBase.replace(/\/+$/, '').replace(/\/api$/, '');
-      
-      // Extract path for /uploads/
-      if (url.includes('/uploads/')) {
-        const uploadMatch = url.match(/\/uploads\/(.+)$/);
-        if (uploadMatch) {
-          return `${cleanBackend}/uploads/${uploadMatch[1]}`;
-        }
-      }
-      
-      // Extract path for /wp-content/uploads/
-      if (url.includes('/wp-content/uploads/')) {
-        const wpMatch = url.match(/\/wp-content\/uploads\/(.+)$/);
-        if (wpMatch) {
-          return `${cleanBackend}/uploads/${wpMatch[1]}`;
-        }
-      }
-    }
-    
-    // Other external URLs - return as is
+
+  // Preserve AWS S3 URLs
+  if (url.includes('amazonaws.com') || url.includes('cloudfront.net')) {
     return url;
   }
-  
-  // Handle backend /uploads/ paths
-  const backendBase = process.env.NEXT_PUBLIC_API_URL || 
-    (typeof window !== 'undefined' && window.location.origin.includes('localhost') 
-      ? 'http://localhost:3011' 
-      : 'http://52.64.193.232:3011');
-  const cleanBackend = backendBase.replace(/\/+$/, '').replace(/\/api$/, '');
-  
-  if (url.startsWith('/uploads/')) {
-    return `${cleanBackend}${url}`;
+
+  // Handle WordPress legacy full URLs
+  if (url.includes('/wp-content/uploads/')) {
+    const match = url.match(/\/wp-content\/uploads\/(.+)$/);
+    if (match) {
+      // Fallback to S3 URL for robustness if not served locally
+      return `https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/${match[1]}`;
+    }
   }
-  
+
+  // Relative /uploads/ path → served directly by Next.js static assets
+  if (url.startsWith('/uploads/')) {
+    return url;
+  }
+
+  // Other absolute URLs pointing to holicindo.com/uploads/ → convert to S3
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    if (url.includes('/uploads/')) {
+      const uploadMatch = url.match(/\/uploads\/(.+)$/);
+      if (uploadMatch) return `https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/${uploadMatch[1]}`;
+    }
+    // All other external absolute URLs → return as-is
+    return url;
+  }
+
+  // Relative path with leading slash (e.g. /images/logo.png)
   if (url.startsWith('/')) {
     return url;
   }
-  
-  return `${cleanBackend}/${url}`;
+
+  return `/${url}`;
 }
 

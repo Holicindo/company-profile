@@ -1,8 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const fs = require('fs');
-const path = require('path');
-const mime = require('mime-types'); // Need this or a simple extension mapper
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION || 'ap-southeast-1',
@@ -40,19 +39,35 @@ async function uploadFile(filePath, key) {
   }
 }
 
-async function uploadDirectory(dir, prefix = 'uploads') {
+function getAllFiles(dir, prefix = 'uploads') {
+  let fileList = [];
   const entries = fs.readdirSync(dir, { withFileTypes: true });
 
   for (let entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      await uploadDirectory(fullPath, `${prefix}/${entry.name}`);
+      fileList = fileList.concat(getAllFiles(fullPath, `${prefix}/${entry.name}`));
     } else {
       const key = `${prefix}/${entry.name}`;
-      await uploadFile(fullPath, key);
+      fileList.push({ fullPath, key });
     }
   }
+  return fileList;
+}
+
+async function uploadAll() {
+  const allFiles = getAllFiles(uploadsDir);
+  console.log(`Found ${allFiles.length} files to upload to S3 (${bucketName})...`);
+
+  const CONCURRENCY = 8;
+  for (let i = 0; i < allFiles.length; i += CONCURRENCY) {
+    const chunk = allFiles.slice(i, i + CONCURRENCY);
+    await Promise.all(chunk.map(item => uploadFile(item.fullPath, item.key)));
+    const pct = Math.round(((i + chunk.length) / allFiles.length) * 100);
+    console.log(`Progress: ${i + chunk.length}/${allFiles.length} (${pct}%)`);
+  }
+  console.log('All files uploaded successfully to S3!');
 }
 
 console.log('Starting S3 upload...');
-uploadDirectory(uploadsDir).then(() => console.log('Done!'));
+uploadAll().catch(console.error);
