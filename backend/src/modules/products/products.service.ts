@@ -8,7 +8,7 @@ import { ProductCategory } from './entities/product-category.entity';
 export class ProductsService {
   constructor(
     @InjectRepository(Product) private productRepo: Repository<Product>,
-    @antml:parameter name="categoryRepo"> private categoryRepo: Repository<ProductCategory>,
+    @InjectRepository(ProductCategory) private categoryRepo: Repository<ProductCategory>,
   ) {}
 
   /**
