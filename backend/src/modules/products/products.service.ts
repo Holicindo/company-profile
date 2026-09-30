@@ -87,7 +87,7 @@ export class ProductsService {
       }
     }
 
-    const [items, total] = await qb.orderBy('p.name', 'ASC').skip((page - 1) * limit).take(limit).getManyAndCount();
+    const [items, total] = await qb.orderBy('p.createdAt', 'DESC').skip((page - 1) * limit).take(limit).getManyAndCount();
     // Transform image URLs
     items.forEach(item => this.transformProduct(item));
     return { items, total, page, limit, totalPages: Math.ceil(total / limit) };

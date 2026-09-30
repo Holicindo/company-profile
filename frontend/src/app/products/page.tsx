@@ -55,7 +55,7 @@ export default async function ProductsPage(props: {
   let data = rawData;
   if (!category) {
     const allAllowed = (rawData.items || []).filter((p: any) => isCategoryAllowed(p.category));
-    allAllowed.sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''));
+    allAllowed.sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
     const total = allAllowed.length;
     const totalPages = Math.ceil(total / limit) || 1;
     const start = (page - 1) * limit;
