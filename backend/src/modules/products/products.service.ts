@@ -12,10 +12,10 @@ export class ProductsService {
   ) {}
 
   /**
-   * Transform WordPress legacy URLs to backend proxy URLs
-   * Direct backend URL without Next.js rewrite for Amplify compatibility
+   * Transform WordPress legacy URLs to Amplify static assets
+   * Images are served directly from Amplify's /uploads/ static folder
    * Example: https://holicindo.com/wp-content/uploads/2021/11/SRWP-70.png
-   * Becomes: http://52.64.193.232:3011/uploads/2021/11/SRWP-70.png
+   * Becomes: /uploads/2021/11/SRWP-70.png (served by Amplify from frontend/public/uploads/)
    */
   private transformImageUrl(url: string | null): string | null {
     if (!url) return null;
@@ -25,8 +25,8 @@ export class ProductsService {
       // Extract the path after /wp-content/uploads/
       const match = url.match(/\/wp-content\/uploads\/(.+)$/);
       if (match) {
-        // Return direct backend URL (bypass Next.js rewrite issue)
-        return `http://52.64.193.232:3011/uploads/${match[1]}`;
+        // Return relative path - Amplify will serve from frontend/public/uploads/
+        return `/uploads/${match[1]}`;
       }
     }
     
