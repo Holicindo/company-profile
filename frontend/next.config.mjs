@@ -13,6 +13,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'holicindo.com', pathname: '/**' },
       { protocol: 'https', hostname: '**.holicindo.com', pathname: '/**' },
       { protocol: 'https', hostname: '**.amplifyapp.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'holicindo-web-storage.s3.ap-southeast-1.amazonaws.com', pathname: '/**' },
     ],
     unoptimized: true,
   },
@@ -21,10 +22,6 @@ const nextConfig = {
       {
         source: '/api/:path*',
         destination: `${cleanBackend}/api/:path*`,
-      },
-      {
-        source: '/uploads/:path*',
-        destination: `${cleanBackend}/uploads/:path*`,
       },
     ];
   },

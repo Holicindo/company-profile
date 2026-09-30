@@ -25,8 +25,15 @@ export class ProductsService {
       // Extract the path after /wp-content/uploads/
       const match = url.match(/\/wp-content\/uploads\/(.+)$/);
       if (match) {
-        // Return relative path - Amplify will serve from frontend/public/uploads/
-        return `/uploads/${match[1]}`;
+        // Return full S3 URL
+        const customDomain = process.env.AWS_S3_CUSTOM_DOMAIN;
+        const bucket = process.env.AWS_S3_BUCKET || 'holicindo-web-storage';
+        const region = process.env.AWS_REGION || 'ap-southeast-1';
+        
+        if (customDomain) {
+          return `${customDomain.replace(/\/+$/, '')}/uploads/${match[1]}`;
+        }
+        return `https://${bucket}.s3.${region}.amazonaws.com/uploads/${match[1]}`;
       }
     }
     
