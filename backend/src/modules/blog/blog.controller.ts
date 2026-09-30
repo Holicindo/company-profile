@@ -38,13 +38,22 @@ export class BlogController {
   // ── Public endpoints ─────────────────────────────────────────────────────────
 
   @Get('latest')
-  getLatest(@Query('limit') limit?: string) { return this.svc.getLatestPosts(limit ? +limit : 3); }
+  getLatest(@Query('limit') limit?: string, @Query('lang') lang?: string) { 
+    return this.svc.getLatestPosts(limit ? +limit : 3, lang); 
+  }
 
   @Get()
-  getPosts(@Query('page') page?: string, @Query('limit') limit?: string, @Query('search') search?: string) {
-    return this.svc.getPosts(page ? +page : 1, limit ? +limit : 10, search);
+  getPosts(
+    @Query('page') page?: string, 
+    @Query('limit') limit?: string, 
+    @Query('search') search?: string,
+    @Query('lang') lang?: string
+  ) {
+    return this.svc.getPosts(page ? +page : 1, limit ? +limit : 10, search, lang);
   }
 
   @Get(':slug')
-  getBySlug(@Param('slug') slug: string) { return this.svc.getPostBySlug(slug); }
+  getBySlug(@Param('slug') slug: string, @Query('lang') lang?: string) { 
+    return this.svc.getPostBySlug(slug, lang); 
+  }
 }

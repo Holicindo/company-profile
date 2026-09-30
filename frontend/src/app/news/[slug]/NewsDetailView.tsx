@@ -5,14 +5,51 @@ import Image from 'next/image';
 import { ArrowLeft, Star, MessageSquare } from 'lucide-react';
 import { parseHtmlContent } from '@/lib/content-parser';
 import { useLanguage } from '@/context/LanguageContext';
+import { useEffect, useState } from 'react';
+import { getBlogPostBySlug } from '@/lib/api';
 
 interface NewsDetailViewProps {
   post: any;
   toc: { text: string; id: string }[];
 }
 
-export function NewsDetailView({ post, toc }: NewsDetailViewProps) {
+export function NewsDetailView({ post: initialPost, toc: initialToc }: NewsDetailViewProps) {
   const { t, lang } = useLanguage();
+  const [post, setPost] = useState(initialPost);
+  const [toc, setToc] = useState(initialToc);
+
+  // Refetch when language changes
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const data = await getBlogPostBySlug(initialPost.slug, lang.toLowerCase());
+        setPost(data);
+        
+        // Re-extract TOC from new content
+        const extractToc = (content: string) => {
+          if (!content) return [];
+          const lines = content.split('\n');
+          const headings: { text: string; id: string }[] = [];
+          
+          lines.forEach((line) => {
+            const trimmed = line.trim();
+            if (trimmed.startsWith('### ') || trimmed.startsWith('## ')) {
+              const text = trimmed.replace(/^#+\s*/, '').replace(/\*\*/g, '');
+              const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+              headings.push({ text, id });
+            }
+          });
+          return headings;
+        };
+        
+        setToc(extractToc(data.content || ''));
+      } catch (err) {
+        console.error('Failed to fetch translated post:', err);
+      }
+    };
+    
+    fetchPost();
+  }, [lang, initialPost.slug]);
 
   const fmt = (d: string) => {
     try {

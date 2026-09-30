@@ -22,9 +22,35 @@ export const getPortfolio = (p?: any) => api.get('/portfolio', { params: p }).th
 export const getFeaturedPortfolio = (limit = 6) => api.get('/portfolio/featured', { params: { limit } }).then(r => r.data);
 export const getPortfolioBySlug = (slug: string) => api.get(`/portfolio/${slug}`).then(r => r.data);
 
-export const getBlogPosts = (p?: any) => api.get('/blog', { params: p }).then(r => r.data).catch(e => { console.error('Blog fetch error:', e.message, e.response?.data); throw e; });
-export const getLatestBlogPosts = (limit = 3) => api.get('/blog/latest', { params: { limit } }).then(r => r.data);
-export const getBlogPostBySlug = (slug: string) => api.get(`/blog/${slug}`).then(r => r.data);
+export const getBlogPosts = (p?: any) => {
+  // Add lang parameter if not already present
+  const params = { ...p };
+  if (!params.lang && typeof window !== 'undefined') {
+    const lang = localStorage.getItem('language') || 'ID';
+    params.lang = lang.toLowerCase();
+  }
+  return api.get('/blog', { params }).then(r => r.data).catch(e => { console.error('Blog fetch error:', e.message, e.response?.data); throw e; });
+};
+
+export const getLatestBlogPosts = (limit = 3, lang?: string) => {
+  const params: any = { limit };
+  if (lang) params.lang = lang.toLowerCase();
+  else if (typeof window !== 'undefined') {
+    const storedLang = localStorage.getItem('language') || 'ID';
+    params.lang = storedLang.toLowerCase();
+  }
+  return api.get('/blog/latest', { params }).then(r => r.data);
+};
+
+export const getBlogPostBySlug = (slug: string, lang?: string) => {
+  const params: any = {};
+  if (lang) params.lang = lang.toLowerCase();
+  else if (typeof window !== 'undefined') {
+    const storedLang = localStorage.getItem('language') || 'ID';
+    params.lang = storedLang.toLowerCase();
+  }
+  return api.get(`/blog/${slug}`, { params }).then(r => r.data);
+};
 
 export const submitContact = (data: any) => api.post('/contact', data).then(r => r.data);
 

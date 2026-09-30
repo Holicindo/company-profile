@@ -16,7 +16,22 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAllMobile, setShowAllMobile] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
   const recognitionRef = useRef<any>(null);
+
+  // Refetch posts when language changes
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const { getBlogPosts } = await import('@/lib/api');
+        const data = await getBlogPosts({ page: 1, limit: 20, lang: lang.toLowerCase() });
+        setPosts(data.items || []);
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+      }
+    };
+    fetchPosts();
+  }, [lang]);
 
   const startVoiceSearch = useCallback(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -45,12 +60,12 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
   };
 
   const allArticles = useMemo(() => {
-    const combined = [...initialPosts];
+    const combined = [...posts];
     INSIGHTS_ARTICLES.forEach((draft) => {
       if (!combined.some((p) => p.slug === draft.slug)) combined.push(draft);
     });
     return combined;
-  }, [initialPosts]);
+  }, [posts]);
 
   const categories = [
     { id: 'Semua Topik', label: t('Semua Topik', 'All Topics') },

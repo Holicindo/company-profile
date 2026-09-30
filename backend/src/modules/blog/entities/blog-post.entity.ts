@@ -13,11 +13,20 @@ export class BlogPost {
   @Column()
   title: string;
 
+  @Column({ name: 'title_en', nullable: true })
+  titleEn: string;
+
   @Column({ type: 'text', nullable: true })
   excerpt: string;
 
+  @Column({ name: 'excerpt_en', type: 'text', nullable: true })
+  excerptEn: string;
+
   @Column({ type: 'text' })
   content: string;
+
+  @Column({ name: 'content_en', type: 'text', nullable: true })
+  contentEn: string;
 
   @Column({ name: 'featured_image', nullable: true })
   featuredImage: string;
