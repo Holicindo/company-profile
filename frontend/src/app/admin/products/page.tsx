@@ -42,7 +42,7 @@ export default function AdminProductsPage() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetchAdminProducts(page, LIMIT);
+      const data = await fetchAdminProducts(page, LIMIT, search || undefined, filterCat || undefined);
       setProducts(data.items || []);
       setTotal(data.total || 0);
       setTotalPages(data.totalPages || 1);
@@ -51,9 +51,12 @@ export default function AdminProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page]);
+  }, [page, search, filterCat]);
 
   useEffect(() => { load(); }, [load]);
+
+  // Reset to page 1 when search or category filter changes
+  useEffect(() => { setPage(1); }, [search, filterCat]);
 
   useEffect(() => {
     fetchCategories().then((cats: any[]) => {
@@ -79,11 +82,8 @@ export default function AdminProductsPage() {
     }
   };
 
-  const filteredProducts = products.filter(p => {
-    const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase());
-    const matchCat = !filterCat || String(p.categoryId) === filterCat || p.category?.name === filterCat;
-    return matchSearch && matchCat;
-  });
+  // Filtering is now done server-side; products from API are already filtered
+  const filteredProducts = products;
 
   return (
     <div className="space-y-6">
@@ -116,7 +116,7 @@ export default function AdminProductsPage() {
           placeholder="Semua Kategori"
           options={[
             { value: '', label: 'Semua Kategori' },
-            ...categories.map(c => ({ value: String(c.id), label: c.name })),
+            ...categories.map(c => ({ value: c.slug, label: c.name })),
           ]}
           className="min-w-[180px]"
         />
