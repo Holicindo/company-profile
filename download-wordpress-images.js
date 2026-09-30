@@ -8,12 +8,11 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 
-// List of image URLs from database (get from SQL: SELECT image_url FROM products WHERE image_url LIKE '%wp-content%')
-const imageUrls = [
-  'https://holicindo.com/wp-content/uploads/2021/11/SRWP-70.png',
-  // Add more URLs here from database query result
-  // You can export from database to CSV then paste here
-];
+// Read URLs from file
+const imageUrls = fs.readFileSync('./backend/image-urls.txt', 'utf8')
+  .split('\n')
+  .map(line => line.trim())
+  .filter(line => line && line.startsWith('http'));
 
 const outputDir = './downloaded-wp-images';
 
