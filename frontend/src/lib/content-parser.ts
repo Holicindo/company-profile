@@ -105,9 +105,9 @@ export function extractProjectDetails(descriptionText: string) {
     solution: '',
   };
 
-  const industryRegex = /Industri\/Bisnis:\s*(.+?)(?=Kebutuhan \(Requirement\):|Solusi Holic:|$)/is;
-  const requirementRegex = /Kebutuhan \(Requirement\):\s*(.+?)(?=Industri\/Bisnis:|Solusi Holic:|$)/is;
-  const solutionRegex = /Solusi Holic:\s*(.+?)(?=Industri\/Bisnis:|Kebutuhan \(Requirement\):|$)/is;
+  const industryRegex = /Industri\/Bisnis:\s*([\s\S]+?)(?=Kebutuhan \(Requirement\):|Solusi Holic:|$)/i;
+  const requirementRegex = /Kebutuhan \(Requirement\):\s*([\s\S]+?)(?=Industri\/Bisnis:|Solusi Holic:|$)/i;
+  const solutionRegex = /Solusi Holic:\s*([\s\S]+?)(?=Industri\/Bisnis:|Kebutuhan \(Requirement\):|$)/i;
 
   const m1 = text.match(industryRegex);
   if (m1) extracted.industry = m1[1].trim();
