@@ -26,11 +26,11 @@ export default async function ProductDetailPage({ params }: Props) {
   let product: any;
   try { product = await getProductBySlug(params.slug); } catch { notFound(); }
 
-  let rawGallery = product.galleryUrls || [];
+  let rawGallery: string[] = product.galleryUrls || [];
   if (product.imageUrl) {
     rawGallery = [product.imageUrl, ...rawGallery];
   }
-  const gallery = Array.from(new Set(rawGallery.filter(Boolean)));
+  const gallery = Array.from(new Set(rawGallery.filter(Boolean))) as string[];
   const waText = `Halo Holicindo, saya tertarik dengan produk *${product.name}*. Boleh minta informasi lebih lanjut?`;
 
   return (
