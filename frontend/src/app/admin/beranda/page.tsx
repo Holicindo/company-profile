@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Save, ArrowLeft, Loader2, Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { Toast } from '@/components/admin/Toast';
+import { BilingualInput } from '@/components/admin/BilingualInput';
 import { GoogleSearchPreview } from '@/components/admin/GoogleSearchPreview';
 import { fetchAdminPageBySlug, updateAdminPage, generateAdminSeo } from '@/lib/admin-api';
 
@@ -549,24 +550,23 @@ export default function EditBerandaPage() {
             Mengapa Memilih Kami
           </h2>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Judul</label>
-              <input
-                type="text"
-                value={sections.whyChooseUs.title}
-                onChange={e => setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, title: e.target.value } })}
-                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Subtitle</label>
-              <textarea
-                value={sections.whyChooseUs.subtitle}
-                onChange={e => setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, subtitle: e.target.value } })}
-                rows={2}
-                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-              />
-            </div>
+            <BilingualInput
+              label="Judul (Title)"
+              valueId={sections.whyChooseUs?.titleId || sections.whyChooseUs?.title || ''}
+              valueEn={sections.whyChooseUs?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, titleId: val, title: val } })}
+              onChangeEn={val => setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, titleEn: val } })}
+              placeholderId="Mengapa Memilih Kami"
+            />
+            
+            <BilingualInput
+              label="Subtitle"
+              type="textarea"
+              valueId={sections.whyChooseUs?.subtitleId || sections.whyChooseUs?.subtitle || ''}
+              valueEn={sections.whyChooseUs?.subtitleEn || ''}
+              onChangeId={val => setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, subtitleId: val, subtitle: val } })}
+              onChangeEn={val => setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, subtitleEn: val } })}
+            />
             <div>
               <div className="flex items-center justify-between mb-3">
                 <label className="block text-sm font-semibold text-[#2C1810]">Fitur</label>
