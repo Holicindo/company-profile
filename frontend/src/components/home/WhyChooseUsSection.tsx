@@ -5,7 +5,11 @@ import { useLanguage } from '@/context/LanguageContext';
 interface WhyChooseUsSectionProps {
   initialData?: {
     title?: string;
+    titleId?: string;
+    titleEn?: string;
     subtitle?: string;
+    subtitleId?: string;
+    subtitleEn?: string;
     features?: Array<{ title: string; description?: string; desc?: string }>;
   };
 }
@@ -34,16 +38,16 @@ export function WhyChooseUsSection({ initialData }: WhyChooseUsSectionProps) {
           <div className="md:w-1/3">
             <h2 className="text-xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black mb-1 sm:mb-6">
               {t(
-                initialData?.whyChooseUs?.titleId || initialData?.whyChooseUs?.title || 'Mengapa Memilih Kami',
-                initialData?.whyChooseUs?.titleEn || 'Why Choose Us'
+                initialData?.titleId || initialData?.title || 'Mengapa Memilih Kami',
+                initialData?.titleEn || 'Why Choose Us'
               )}
             </h2>
           </div>
           <div className="md:w-2/3 border-l-2 border-neutral-900 pl-3 sm:pl-8 md:pl-12 flex items-center">
             <p className="text-neutral-800 font-medium text-xs sm:text-lg md:text-xl leading-relaxed max-w-2xl">
               {t(
-                initialData?.whyChooseUs?.subtitleId || initialData?.whyChooseUs?.subtitle || 'Berpengalaman lebih dari 20 tahun sebagai pionir penyedia peralatan dapur komersial dan mesin F&B di Indonesia. Kami menghadirkan presisi, kualitas, dan keandalan pada setiap instalasi bisnis Anda.',
-                initialData?.whyChooseUs?.subtitleEn || 'Over 20 years of experience as a pioneer provider of commercial kitchen equipment and F&B machinery in Indonesia. We deliver precision, quality, and reliability in every installation for your business.'
+                initialData?.subtitleId || initialData?.subtitle || 'Berpengalaman lebih dari 20 tahun sebagai pionir penyedia peralatan dapur komersial dan mesin F&B di Indonesia. Kami menghadirkan presisi, kualitas, dan keandalan pada setiap instalasi bisnis Anda.',
+                initialData?.subtitleEn || 'Over 20 years of experience as a pioneer provider of commercial kitchen equipment and F&B machinery in Indonesia. We deliver precision, quality, and reliability in every installation for your business.'
               )}
             </p>
           </div>
