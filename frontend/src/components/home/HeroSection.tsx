@@ -20,6 +20,12 @@ export function HeroSection({ initialData }: HeroSectionProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const { t } = useLanguage();
 
+  const title = initialData?.title || t('Tingkatkan Daya Jual dengan Showcase & Chiller Premium.', 'Boost Your Sales with Premium Showcase & Commercial Chiller.');
+  const description = initialData?.description || t(
+    'Dari cake showcase berlampu LED hingga blast freezer industri — Holicindo menghadirkan solusi pendingin dan display spesifikasi HORECA dengan garansi resmi, siap kirim ke seluruh Indonesia.',
+    'From LED-lit cake showcases to industrial blast freezers — Holicindo delivers HORECA-grade refrigeration and display solutions with official warranty, ready for nationwide delivery.'
+  );
+
   const videoSrc = initialData?.videoUrl
     ? (initialData.videoUrl.includes('autoplay=1') ? initialData.videoUrl : `${initialData.videoUrl}${initialData.videoUrl.includes('?') ? '&' : '?'}autoplay=1`)
     : 'https://www.youtube.com/embed/SWEAJdRmvqk?autoplay=1';
@@ -45,13 +51,10 @@ export function HeroSection({ initialData }: HeroSectionProps) {
               <span className="w-6 sm:w-8 h-px bg-neutral-400"></span> {t('SHOWCASE & PENDINGIN KOMERSIAL', 'COMMERCIAL SHOWCASE & REFRIGERATION')}
             </span>
             <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold text-black leading-[1.25] sm:leading-[1.2] mb-3 sm:mb-6 tracking-tight max-w-md">
-              {t('Tingkatkan Daya Jual dengan Showcase & Chiller Premium.', 'Boost Your Sales with Premium Showcase & Commercial Chiller.')}
+              {title}
             </h2>
             <p className="text-xs sm:text-base text-neutral-600 font-normal leading-relaxed mb-5 sm:mb-12 max-w-md">
-              {t(
-                'Dari cake showcase berlampu LED hingga blast freezer industri — Holicindo menghadirkan solusi pendingin dan display spesifikasi HORECA dengan garansi resmi, siap kirim ke seluruh Indonesia.',
-                'From LED-lit cake showcases to industrial blast freezers — Holicindo delivers HORECA-grade refrigeration and display solutions with official warranty, ready for nationwide delivery.'
-              )}
+              {description}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">

@@ -78,8 +78,8 @@ export function MainHero({ initialData }: MainHeroProps) {
             {t('Est. 2001', 'Est. 2001')}
           </span>
           <h1 className="text-xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.3] sm:leading-[1.5] tracking-tight mb-2 sm:mb-4 drop-shadow-xl text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
-            {t('Spesialis Showcase & Pendingin', 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
-            {t('Komersial Terpercaya Indonesia.', '& Refrigeration Solutions.')}
+            {initialData?.title?.line1 || t('Spesialis Showcase & Pendingin', 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
+            {initialData?.title?.line2 || t('Komersial Terpercaya Indonesia.', '& Refrigeration Solutions.')}
           </h1>
         </div>
       </div>
