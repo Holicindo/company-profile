@@ -5,6 +5,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Increase body size limit to handle large payloads (e.g., base64 images)
+  app.use(require('express').json({ limit: '50mb' }));
+  app.use(require('express').urlencoded({ limit: '50mb', extended: true }));
+
   // Warn loudly if critical env vars are missing
   if (!process.env.JWT_SECRET) {
     console.warn('⚠️  WARNING: JWT_SECRET is not set. Using insecure default. Set this env var before deploying!');
