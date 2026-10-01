@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Building2, MapPin, ArrowRight } from 'lucide-react';
-import { sanitizeProjectDescription } from '@/lib/content-parser';
+import { ArrowLeft, Building2, MapPin, ArrowRight, Briefcase } from 'lucide-react';
+import { sanitizeProjectDescription, extractProjectDetails } from '@/lib/content-parser';
 import { useLanguage } from '@/context/LanguageContext';
 
 interface ProjectDetailViewProps {
@@ -14,9 +14,12 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
   const { t } = useLanguage();
   const gallery = project.galleryUrls?.length ? project.galleryUrls : project.imageUrl ? [project.imageUrl] : [];
 
+  // Extract structured fields (Industri/Bisnis, Kebutuhan, Solusi Holic) from description
+  const { cleanText, extracted } = extractProjectDetails(project.description || '');
+  const displayDescription = cleanText || sanitizeProjectDescription(project.description, project.title, project.clientName);
+
   return (
     <div className="min-h-screen bg-white">
-
 
       <div className="container-wide py-12">
         <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-brand-600 mb-8 transition-colors">
@@ -49,10 +52,26 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
               {project.title}
             </h1>
 
+            {/* Structured requirement & solution blocks */}
+            {(extracted.requirement || extracted.solution) && (
+              <div className="space-y-4 mb-6">
+                {extracted.requirement && (
+                  <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100">
+                    <p className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">{t('Kebutuhan (Requirement)', 'Requirement')}</p>
+                    <p className="text-neutral-700 text-sm leading-relaxed">{extracted.requirement}</p>
+                  </div>
+                )}
+                {extracted.solution && (
+                  <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
+                    <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-1">{t('Solusi Holic', 'Holic Solution')}</p>
+                    <p className="text-neutral-700 text-sm leading-relaxed">{extracted.solution}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="space-y-4 text-neutral-700 leading-relaxed text-base text-justify">
-              <p>
-                {sanitizeProjectDescription(project.description, project.title, project.clientName)}
-              </p>
+              {displayDescription && <p>{displayDescription}</p>}
             </div>
 
             {/* Additional gallery */}
@@ -89,7 +108,17 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
                 </div>
               )}
 
-
+              {extracted.industry && (
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                    <Briefcase size={15} className="text-amber-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-neutral-400 mb-0.5">{t('Industri/Bisnis', 'Industry/Business')}</p>
+                    <p className="text-sm font-semibold text-neutral-800">{extracted.industry}</p>
+                  </div>
+                </div>
+              )}
 
               {project.location && (
                 <div className="flex items-start gap-3">

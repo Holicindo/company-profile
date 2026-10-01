@@ -10,7 +10,7 @@ interface WhyChooseUsSectionProps {
     subtitle?: string;
     subtitleId?: string;
     subtitleEn?: string;
-    features?: Array<{ title: string; description?: string; desc?: string }>;
+    features?: Array<{ titleId?: string; titleEn?: string; title: string; descriptionId?: string; descriptionEn?: string; description?: string; desc?: string }>;
   };
 }
 
@@ -29,7 +29,10 @@ export function WhyChooseUsSection({ initialData }: WhyChooseUsSectionProps) {
   // Use CMS features if provided, fall back to defaults
   // Normalize: CMS saves 'description', component uses 'desc'
   const features = (initialData?.features && initialData.features.length > 0)
-    ? initialData.features.map(f => ({ title: f.title, desc: f.description || f.desc || '' }))
+    ? initialData.features.map(f => ({
+        title: t(f.titleId || f.title, f.titleEn || f.title),
+        desc: t(f.descriptionId || f.description || f.desc || '', f.descriptionEn || f.description || f.desc || '')
+      }))
     : defaultFeatures;
 
   return (

@@ -95,3 +95,31 @@ export function sanitizeProjectDescription(desc: string | null | undefined, titl
 
   return text;
 }
+
+export function extractProjectDetails(descriptionText: string) {
+  let text = descriptionText || '';
+  
+  const extracted = {
+    industry: '',
+    requirement: '',
+    solution: '',
+  };
+
+  const industryRegex = /Industri\/Bisnis:\s*(.+?)(?=Kebutuhan \(Requirement\):|Solusi Holic:|$)/is;
+  const requirementRegex = /Kebutuhan \(Requirement\):\s*(.+?)(?=Industri\/Bisnis:|Solusi Holic:|$)/is;
+  const solutionRegex = /Solusi Holic:\s*(.+?)(?=Industri\/Bisnis:|Kebutuhan \(Requirement\):|$)/is;
+
+  const m1 = text.match(industryRegex);
+  if (m1) extracted.industry = m1[1].trim();
+
+  const m2 = text.match(requirementRegex);
+  if (m2) extracted.requirement = m2[1].trim();
+
+  const m3 = text.match(solutionRegex);
+  if (m3) extracted.solution = m3[1].trim();
+
+  // Remove these matched parts from the text
+  text = text.replace(industryRegex, '').replace(requirementRegex, '').replace(solutionRegex, '').trim();
+
+  return { cleanText: text, extracted };
+}

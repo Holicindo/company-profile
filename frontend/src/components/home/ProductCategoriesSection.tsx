@@ -10,8 +10,12 @@ interface ProductCategoriesSectionProps {
   categories: ProductCategory[];
   customData?: {
     title?: string;
+    titleId?: string;
+    titleEn?: string;
     subtitle?: string;
-    cards?: Array<{ name: string; slug: string; description: string; image: string }>;
+    subtitleId?: string;
+    subtitleEn?: string;
+    cards?: Array<{ nameId?: string; nameEn?: string; name?: string; slug: string; descriptionId?: string; descriptionEn?: string; description?: string; image: string }>;
   };
 }
 
@@ -45,13 +49,13 @@ export function ProductCategoriesSection({ categories, customData }: ProductCate
   // Use customData from admin if available, otherwise use fallback logic
   let display: any[] = [];
   
-  if (customData?.cards && customData.cards.length > 0 && customData.cards.every(c => c.name && c.slug && c.image)) {
+  if (customData?.cards && customData.cards.length > 0) {
     // Use admin custom data
     display = customData.cards.map(card => ({
       slug: card.slug,
-      name: card.name,
+      name: t(card.nameId || card.name || '', card.nameEn || card.name || ''),
       imageUrl: card.image,
-      description: card.description || '',
+      description: t(card.descriptionId || card.description || '', card.descriptionEn || card.description || ''),
     }));
   } else {
     // Fallback to original logic
@@ -64,10 +68,13 @@ export function ProductCategoriesSection({ categories, customData }: ProductCate
     display = displayCats.length === 3 ? displayCats : (categories.filter(c => !c.parentId).slice(0, 3));
   }
 
-  const sectionTitle = t('Display & Pendingin untuk Bisnis Anda', 'Display & Cooling for Your Business');
+  const sectionTitle = t(
+    customData?.titleId || customData?.title || 'Display & Pendingin untuk Bisnis Anda',
+    customData?.titleEn || 'Display & Cooling for Your Business'
+  );
   const sectionSubtitle = t(
-    'Jika Anda sedang mencari unit showcase untuk kebutuhan restoran, toko roti, hotel, atau pabrik makanan yang memerlukan spesifikasi khusus (bukan ukuran standar rumah tangga), produk dari PT Holicindo bisa menjadi salah satu opsi yang tepat.',
-    'If you are looking for showcase units for restaurant, bakery, hotel, or food factory needs that require special specifications (not standard household sizes), PT Holicindo products could be the right choice.'
+    customData?.subtitleId || customData?.subtitle || 'Jika Anda sedang mencari unit showcase untuk kebutuhan restoran, toko roti, hotel, atau pabrik makanan yang memerlukan spesifikasi khusus (bukan ukuran standar rumah tangga), produk dari PT Holicindo bisa menjadi salah satu opsi yang tepat.',
+    customData?.subtitleEn || 'If you are looking for showcase units for restaurant, bakery, hotel, or food factory needs that require special specifications (not standard household sizes), PT Holicindo products could be the right choice.'
   );
 
   return (

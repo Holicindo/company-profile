@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import translate from 'translate';
 
 export async function POST(req: Request) {
   try {
@@ -9,10 +8,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 });
     }
 
-    // Configure translation engine to use Google (free API)
-    translate.engine = 'google';
+    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)}`);
+    const data = await res.json();
     
-    const translatedText = await translate(text, { from, to });
+    let translatedText = '';
+    if (data && data[0]) {
+      data[0].forEach((item: any) => {
+        if (item[0]) translatedText += item[0];
+      });
+    }
+
+    if (!translatedText) {
+      throw new Error('No translation returned');
+    }
 
     return NextResponse.json({ result: translatedText });
   } catch (error: any) {
