@@ -177,6 +177,26 @@ export default function EditBerandaPage() {
     });
   };
 
+  const addCategory = () => {
+    setSections({
+      ...sections,
+      productCategories: {
+        ...sections.productCategories,
+        cards: [...sections.productCategories.cards, { name: '', slug: '', description: '', image: '' }],
+      },
+    });
+  };
+
+  const removeCategory = (index: number) => {
+    setSections({
+      ...sections,
+      productCategories: {
+        ...sections.productCategories,
+        cards: sections.productCategories.cards.filter((_: any, i: number) => i !== index),
+      },
+    });
+  };
+
   const addCategoryCard = () => {
     setSections({
       ...sections,
@@ -483,17 +503,20 @@ export default function EditBerandaPage() {
                     </div>
                     <div className="space-y-3">
                       <div>
-                        <label className="block text-xs font-semibold text-[#2C1810] mb-1">Nama Kategori</label>
-                        <input
-                          type="text"
-                          value={card.name}
-                          onChange={e => {
+                        <BilingualInput
+                          label="Nama Kategori"
+                          valueId={card.nameId || card.name || ''}
+                          valueEn={card.nameEn || ''}
+                          onChangeId={val => {
                             const newCards = [...sections.productCategories.cards];
-                            newCards[idx].name = e.target.value;
+                            newCards[idx] = { ...newCards[idx], nameId: val, name: val };
                             setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
                           }}
-                          placeholder="Showcase"
-                          className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-[#2C1810] text-sm focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
+                          onChangeEn={val => {
+                            const newCards = [...sections.productCategories.cards];
+                            newCards[idx] = { ...newCards[idx], nameEn: val };
+                            setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
+                          }}
                         />
                       </div>
                       <div>
@@ -511,17 +534,21 @@ export default function EditBerandaPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold text-[#2C1810] mb-1">Deskripsi</label>
-                        <input
-                          type="text"
-                          value={card.description}
-                          onChange={e => {
+                        <BilingualInput
+                          label="Deskripsi"
+                          type="textarea"
+                          valueId={card.descriptionId || card.description || ''}
+                          valueEn={card.descriptionEn || ''}
+                          onChangeId={val => {
                             const newCards = [...sections.productCategories.cards];
-                            newCards[idx].description = e.target.value;
+                            newCards[idx] = { ...newCards[idx], descriptionId: val, description: val };
                             setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
                           }}
-                          placeholder="Display & showcase produk makanan"
-                          className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-[#2C1810] text-sm focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
+                          onChangeEn={val => {
+                            const newCards = [...sections.productCategories.cards];
+                            newCards[idx] = { ...newCards[idx], descriptionEn: val };
+                            setSections({ ...sections, productCategories: { ...sections.productCategories, cards: newCards } });
+                          }}
                         />
                       </div>
                       <div>
@@ -583,28 +610,37 @@ export default function EditBerandaPage() {
                         <Trash2 size={16} />
                       </button>
                     </div>
-                    <div className="space-y-2">
-                      <input
-                        type="text"
-                        value={feature.title}
-                        onChange={e => {
+                    <div className="space-y-4">
+                      <BilingualInput
+                        label="Judul Fitur"
+                        valueId={feature.titleId || feature.title || ''}
+                        valueEn={feature.titleEn || ''}
+                        onChangeId={val => {
                           const newFeatures = [...sections.whyChooseUs.features];
-                          newFeatures[idx].title = e.target.value;
+                          newFeatures[idx] = { ...newFeatures[idx], titleId: val, title: val };
                           setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, features: newFeatures } });
                         }}
-                        placeholder="Judul fitur"
-                        className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold text-[#2C1810]"
+                        onChangeEn={val => {
+                          const newFeatures = [...sections.whyChooseUs.features];
+                          newFeatures[idx] = { ...newFeatures[idx], titleEn: val };
+                          setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, features: newFeatures } });
+                        }}
                       />
-                      <textarea
-                        value={feature.description}
-                        onChange={e => {
+                      <BilingualInput
+                        label="Deskripsi Fitur"
+                        type="textarea"
+                        valueId={feature.descriptionId || feature.description || ''}
+                        valueEn={feature.descriptionEn || ''}
+                        onChangeId={val => {
                           const newFeatures = [...sections.whyChooseUs.features];
-                          newFeatures[idx].description = e.target.value;
+                          newFeatures[idx] = { ...newFeatures[idx], descriptionId: val, description: val };
                           setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, features: newFeatures } });
                         }}
-                        rows={2}
-                        placeholder="Deskripsi fitur"
-                        className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm text-[#2C1810]"
+                        onChangeEn={val => {
+                          const newFeatures = [...sections.whyChooseUs.features];
+                          newFeatures[idx] = { ...newFeatures[idx], descriptionEn: val };
+                          setSections({ ...sections, whyChooseUs: { ...sections.whyChooseUs, features: newFeatures } });
+                        }}
                       />
                     </div>
                   </div>

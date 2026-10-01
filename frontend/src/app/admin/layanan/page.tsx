@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Save, ArrowLeft, Loader2, Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { Toast } from '@/components/admin/Toast';
+import { BilingualInput } from '@/components/admin/BilingualInput';
 import { GoogleSearchPreview } from '@/components/admin/GoogleSearchPreview';
 import { fetchAdminPageBySlug, updateAdminPage, generateAdminSeo } from '@/lib/admin-api';
 
@@ -216,9 +217,28 @@ export default function EditLayananPage() {
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">Hero Section</h2>
           <div className="space-y-4">
-            <input type="text" value={sections.hero.badge} onChange={e => setSections({ ...sections, hero: { ...sections.hero, badge: e.target.value } })} placeholder="Badge" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <input type="text" value={sections.hero.title} onChange={e => setSections({ ...sections, hero: { ...sections.hero, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.hero.description} onChange={e => setSections({ ...sections, hero: { ...sections.hero, description: e.target.value } })} rows={3} placeholder="Deskripsi" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
+            <BilingualInput
+              label="Badge"
+              valueId={sections.hero?.badgeId || sections.hero?.badge || ''}
+              valueEn={sections.hero?.badgeEn || ''}
+              onChangeId={val => setSections({ ...sections, hero: { ...sections.hero, badgeId: val, badge: val } })}
+              onChangeEn={val => setSections({ ...sections, hero: { ...sections.hero, badgeEn: val } })}
+            />
+            <BilingualInput
+              label="Judul"
+              valueId={sections.hero?.titleId || sections.hero?.title || ''}
+              valueEn={sections.hero?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, hero: { ...sections.hero, titleId: val, title: val } })}
+              onChangeEn={val => setSections({ ...sections, hero: { ...sections.hero, titleEn: val } })}
+            />
+            <BilingualInput
+              label="Deskripsi"
+              type="textarea"
+              valueId={sections.hero?.descriptionId || sections.hero?.description || ''}
+              valueEn={sections.hero?.descriptionEn || ''}
+              onChangeId={val => setSections({ ...sections, hero: { ...sections.hero, descriptionId: val, description: val } })}
+              onChangeEn={val => setSections({ ...sections, hero: { ...sections.hero, descriptionEn: val } })}
+            />
             <div>
               <div className="flex items-center justify-between mb-3">
                 <label className="block text-sm font-semibold text-[#2C1810]">Hero Slides</label>
@@ -255,8 +275,21 @@ export default function EditLayananPage() {
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">Layanan</h2>
           <div className="space-y-4">
-            <input type="text" value={sections.services.title} onChange={e => setSections({ ...sections, services: { ...sections.services, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.services.description} onChange={e => setSections({ ...sections, services: { ...sections.services, description: e.target.value } })} rows={2} placeholder="Deskripsi" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
+            <BilingualInput
+              label="Judul"
+              valueId={sections.services?.titleId || sections.services?.title || ''}
+              valueEn={sections.services?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, services: { ...sections.services, titleId: val, title: val } })}
+              onChangeEn={val => setSections({ ...sections, services: { ...sections.services, titleEn: val } })}
+            />
+            <BilingualInput
+              label="Deskripsi"
+              type="textarea"
+              valueId={sections.services?.descriptionId || sections.services?.description || ''}
+              valueEn={sections.services?.descriptionEn || ''}
+              onChangeId={val => setSections({ ...sections, services: { ...sections.services, descriptionId: val, description: val } })}
+              onChangeEn={val => setSections({ ...sections, services: { ...sections.services, descriptionEn: val } })}
+            />
             <div>
               <div className="flex items-center justify-between mb-3">
                 <label className="block text-sm font-semibold text-[#2C1810]">Item Layanan</label>
@@ -273,17 +306,38 @@ export default function EditLayananPage() {
                         <Trash2 size={16} />
                       </button>
                     </div>
-                    <div className="space-y-2">
-                      <input type="text" value={item.title} onChange={e => {
-                        const newItems = [...sections.services.items];
-                        newItems[idx].title = e.target.value;
-                        setSections({ ...sections, services: { ...sections.services, items: newItems } });
-                      }} placeholder="Judul layanan" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold" />
-                      <textarea value={item.description} onChange={e => {
-                        const newItems = [...sections.services.items];
-                        newItems[idx].description = e.target.value;
-                        setSections({ ...sections, services: { ...sections.services, items: newItems } });
-                      }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
+                    <div className="space-y-4">
+                      <BilingualInput
+                        label="Judul Layanan"
+                        valueId={item.titleId || item.title || ''}
+                        valueEn={item.titleEn || ''}
+                        onChangeId={val => {
+                          const newItems = [...sections.services.items];
+                          newItems[idx] = { ...newItems[idx], titleId: val, title: val };
+                          setSections({ ...sections, services: { ...sections.services, items: newItems } });
+                        }}
+                        onChangeEn={val => {
+                          const newItems = [...sections.services.items];
+                          newItems[idx] = { ...newItems[idx], titleEn: val };
+                          setSections({ ...sections, services: { ...sections.services, items: newItems } });
+                        }}
+                      />
+                      <BilingualInput
+                        label="Deskripsi"
+                        type="textarea"
+                        valueId={item.descriptionId || item.description || ''}
+                        valueEn={item.descriptionEn || ''}
+                        onChangeId={val => {
+                          const newItems = [...sections.services.items];
+                          newItems[idx] = { ...newItems[idx], descriptionId: val, description: val };
+                          setSections({ ...sections, services: { ...sections.services, items: newItems } });
+                        }}
+                        onChangeEn={val => {
+                          const newItems = [...sections.services.items];
+                          newItems[idx] = { ...newItems[idx], descriptionEn: val };
+                          setSections({ ...sections, services: { ...sections.services, items: newItems } });
+                        }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -296,9 +350,28 @@ export default function EditLayananPage() {
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">Smart Ecosystem</h2>
           <div className="space-y-4">
-            <input type="text" value={sections.smartEcosystem.badge} onChange={e => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, badge: e.target.value } })} placeholder="Badge" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <input type="text" value={sections.smartEcosystem.title} onChange={e => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.smartEcosystem.description} onChange={e => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, description: e.target.value } })} rows={3} placeholder="Deskripsi" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
+            <BilingualInput
+              label="Badge"
+              valueId={sections.smartEcosystem?.badgeId || sections.smartEcosystem?.badge || ''}
+              valueEn={sections.smartEcosystem?.badgeEn || ''}
+              onChangeId={val => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, badgeId: val, badge: val } })}
+              onChangeEn={val => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, badgeEn: val } })}
+            />
+            <BilingualInput
+              label="Judul"
+              valueId={sections.smartEcosystem?.titleId || sections.smartEcosystem?.title || ''}
+              valueEn={sections.smartEcosystem?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, titleId: val, title: val } })}
+              onChangeEn={val => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, titleEn: val } })}
+            />
+            <BilingualInput
+              label="Deskripsi"
+              type="textarea"
+              valueId={sections.smartEcosystem?.descriptionId || sections.smartEcosystem?.description || ''}
+              valueEn={sections.smartEcosystem?.descriptionEn || ''}
+              onChangeId={val => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, descriptionId: val, description: val } })}
+              onChangeEn={val => setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, descriptionEn: val } })}
+            />
             <ImageUpload
               label="Showcase Image"
               value={sections.smartEcosystem.showcaseImage}
@@ -321,17 +394,38 @@ export default function EditLayananPage() {
                         <Trash2 size={16} />
                       </button>
                     </div>
-                    <div className="space-y-2">
-                      <input type="text" value={feature.title} onChange={e => {
-                        const newFeatures = [...sections.smartEcosystem.features];
-                        newFeatures[idx].title = e.target.value;
-                        setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
-                      }} placeholder="Judul fitur" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold" />
-                      <textarea value={feature.description} onChange={e => {
-                        const newFeatures = [...sections.smartEcosystem.features];
-                        newFeatures[idx].description = e.target.value;
-                        setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
-                      }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
+                    <div className="space-y-4">
+                      <BilingualInput
+                        label="Judul Fitur"
+                        valueId={feature.titleId || feature.title || ''}
+                        valueEn={feature.titleEn || ''}
+                        onChangeId={val => {
+                          const newFeatures = [...sections.smartEcosystem.features];
+                          newFeatures[idx] = { ...newFeatures[idx], titleId: val, title: val };
+                          setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
+                        }}
+                        onChangeEn={val => {
+                          const newFeatures = [...sections.smartEcosystem.features];
+                          newFeatures[idx] = { ...newFeatures[idx], titleEn: val };
+                          setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
+                        }}
+                      />
+                      <BilingualInput
+                        label="Deskripsi"
+                        type="textarea"
+                        valueId={feature.descriptionId || feature.description || ''}
+                        valueEn={feature.descriptionEn || ''}
+                        onChangeId={val => {
+                          const newFeatures = [...sections.smartEcosystem.features];
+                          newFeatures[idx] = { ...newFeatures[idx], descriptionId: val, description: val };
+                          setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
+                        }}
+                        onChangeEn={val => {
+                          const newFeatures = [...sections.smartEcosystem.features];
+                          newFeatures[idx] = { ...newFeatures[idx], descriptionEn: val };
+                          setSections({ ...sections, smartEcosystem: { ...sections.smartEcosystem, features: newFeatures } });
+                        }}
+                      />
                     </div>
                   </div>
                 ))}

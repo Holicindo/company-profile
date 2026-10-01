@@ -27,8 +27,9 @@ export function WhyChooseUsSection({ initialData }: WhyChooseUsSectionProps) {
   ];
 
   // Use CMS features if provided, fall back to defaults
+  // Normalize: CMS saves 'description', component uses 'desc'
   const features = (initialData?.features && initialData.features.length > 0)
-    ? initialData.features
+    ? initialData.features.map(f => ({ title: f.title, desc: f.description || f.desc || '' }))
     : defaultFeatures;
 
   return (

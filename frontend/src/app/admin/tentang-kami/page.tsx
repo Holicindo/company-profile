@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Save, ArrowLeft, Loader2, Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { Toast } from '@/components/admin/Toast';
+import { BilingualInput } from '@/components/admin/BilingualInput';
 import { GoogleSearchPreview } from '@/components/admin/GoogleSearchPreview';
 import { fetchAdminPageBySlug, updateAdminPage, generateAdminSeo } from '@/lib/admin-api';
 
@@ -197,8 +198,22 @@ export default function EditTentangKamiPage() {
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">Hero Section</h2>
           <div className="space-y-4">
-            <input type="text" value={sections.hero.title} onChange={e => setSections({ ...sections, hero: { ...sections.hero, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.hero.subtitle} onChange={e => setSections({ ...sections, hero: { ...sections.hero, subtitle: e.target.value } })} rows={2} placeholder="Subtitle" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
+            <BilingualInput
+              label="Judul"
+              valueId={sections.hero?.titleId || sections.hero?.title || ''}
+              valueEn={sections.hero?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, hero: { ...sections.hero, titleId: val, title: val } })}
+              onChangeEn={val => setSections({ ...sections, hero: { ...sections.hero, titleEn: val } })}
+              placeholderId="Profil Perusahaan"
+            />
+            <BilingualInput
+              label="Subtitle"
+              type="textarea"
+              valueId={sections.hero?.subtitleId || sections.hero?.subtitle || ''}
+              valueEn={sections.hero?.subtitleEn || ''}
+              onChangeId={val => setSections({ ...sections, hero: { ...sections.hero, subtitleId: val, subtitle: val } })}
+              onChangeEn={val => setSections({ ...sections, hero: { ...sections.hero, subtitleEn: val } })}
+            />
             <ImageUpload
               label="Background Image"
               value={sections.hero.backgroundImage}
@@ -211,9 +226,30 @@ export default function EditTentangKamiPage() {
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">Sejarah Perusahaan</h2>
           <div className="space-y-4">
-            <input type="text" value={sections.history.title} onChange={e => setSections({ ...sections, history: { ...sections.history, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.history.paragraph1} onChange={e => setSections({ ...sections, history: { ...sections.history, paragraph1: e.target.value } })} rows={3} placeholder="Paragraf 1" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.history.paragraph2} onChange={e => setSections({ ...sections, history: { ...sections.history, paragraph2: e.target.value } })} rows={3} placeholder="Paragraf 2" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
+            <BilingualInput
+              label="Judul"
+              valueId={sections.history?.titleId || sections.history?.title || ''}
+              valueEn={sections.history?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, history: { ...sections.history, titleId: val, title: val } })}
+              onChangeEn={val => setSections({ ...sections, history: { ...sections.history, titleEn: val } })}
+              placeholderId="Sejarah Perusahaan"
+            />
+            <BilingualInput
+              label="Paragraf 1"
+              type="textarea"
+              valueId={sections.history?.paragraph1Id || sections.history?.paragraph1 || ''}
+              valueEn={sections.history?.paragraph1En || ''}
+              onChangeId={val => setSections({ ...sections, history: { ...sections.history, paragraph1Id: val, paragraph1: val } })}
+              onChangeEn={val => setSections({ ...sections, history: { ...sections.history, paragraph1En: val } })}
+            />
+            <BilingualInput
+              label="Paragraf 2"
+              type="textarea"
+              valueId={sections.history?.paragraph2Id || sections.history?.paragraph2 || ''}
+              valueEn={sections.history?.paragraph2En || ''}
+              onChangeId={val => setSections({ ...sections, history: { ...sections.history, paragraph2Id: val, paragraph2: val } })}
+              onChangeEn={val => setSections({ ...sections, history: { ...sections.history, paragraph2En: val } })}
+            />
             <div>
               <div className="flex items-center justify-between mb-3">
                 <label className="block text-sm font-semibold text-[#2C1810]">Warehouse Slides</label>
@@ -250,13 +286,57 @@ export default function EditTentangKamiPage() {
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">Visi</h2>
           <div className="space-y-4">
-            <input type="text" value={sections.vision.badge} onChange={e => setSections({ ...sections, vision: { ...sections.vision, badge: e.target.value } })} placeholder="Badge (VISI)" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <input type="text" value={sections.vision.title.line1} onChange={e => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line1: e.target.value } } })} placeholder="Judul Baris 1" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <input type="text" value={sections.vision.title.line2} onChange={e => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line2: e.target.value } } })} placeholder="Judul Baris 2" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <input type="text" value={sections.vision.title.line3} onChange={e => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line3: e.target.value } } })} placeholder="Judul Baris 3 (emas)" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.vision.description1} onChange={e => setSections({ ...sections, vision: { ...sections.vision, description1: e.target.value } })} rows={2} placeholder="Deskripsi 1" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.vision.description2} onChange={e => setSections({ ...sections, vision: { ...sections.vision, description2: e.target.value } })} rows={2} placeholder="Deskripsi 2" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <input type="text" value={sections.vision.tagline} onChange={e => setSections({ ...sections, vision: { ...sections.vision, tagline: e.target.value } })} placeholder="Tagline (italic)" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
+            <BilingualInput
+              label="Badge (VISI)"
+              valueId={sections.vision?.badgeId || sections.vision?.badge || ''}
+              valueEn={sections.vision?.badgeEn || ''}
+              onChangeId={val => setSections({ ...sections, vision: { ...sections.vision, badgeId: val, badge: val } })}
+              onChangeEn={val => setSections({ ...sections, vision: { ...sections.vision, badgeEn: val } })}
+            />
+            <BilingualInput
+              label="Judul Baris 1"
+              valueId={sections.vision?.title?.line1Id || sections.vision?.title?.line1 || ''}
+              valueEn={sections.vision?.title?.line1En || ''}
+              onChangeId={val => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line1Id: val, line1: val } } })}
+              onChangeEn={val => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line1En: val } } })}
+            />
+            <BilingualInput
+              label="Judul Baris 2"
+              valueId={sections.vision?.title?.line2Id || sections.vision?.title?.line2 || ''}
+              valueEn={sections.vision?.title?.line2En || ''}
+              onChangeId={val => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line2Id: val, line2: val } } })}
+              onChangeEn={val => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line2En: val } } })}
+            />
+            <BilingualInput
+              label="Judul Baris 3 (emas)"
+              valueId={sections.vision?.title?.line3Id || sections.vision?.title?.line3 || ''}
+              valueEn={sections.vision?.title?.line3En || ''}
+              onChangeId={val => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line3Id: val, line3: val } } })}
+              onChangeEn={val => setSections({ ...sections, vision: { ...sections.vision, title: { ...sections.vision.title, line3En: val } } })}
+            />
+            <BilingualInput
+              label="Deskripsi 1"
+              type="textarea"
+              valueId={sections.vision?.description1Id || sections.vision?.description1 || ''}
+              valueEn={sections.vision?.description1En || ''}
+              onChangeId={val => setSections({ ...sections, vision: { ...sections.vision, description1Id: val, description1: val } })}
+              onChangeEn={val => setSections({ ...sections, vision: { ...sections.vision, description1En: val } })}
+            />
+            <BilingualInput
+              label="Deskripsi 2"
+              type="textarea"
+              valueId={sections.vision?.description2Id || sections.vision?.description2 || ''}
+              valueEn={sections.vision?.description2En || ''}
+              onChangeId={val => setSections({ ...sections, vision: { ...sections.vision, description2Id: val, description2: val } })}
+              onChangeEn={val => setSections({ ...sections, vision: { ...sections.vision, description2En: val } })}
+            />
+            <BilingualInput
+              label="Tagline (italic)"
+              valueId={sections.vision?.taglineId || sections.vision?.tagline || ''}
+              valueEn={sections.vision?.taglineEn || ''}
+              onChangeId={val => setSections({ ...sections, vision: { ...sections.vision, taglineId: val, tagline: val } })}
+              onChangeEn={val => setSections({ ...sections, vision: { ...sections.vision, taglineEn: val } })}
+            />
           </div>
         </section>
 
@@ -264,9 +344,28 @@ export default function EditTentangKamiPage() {
         <section className="bg-white p-6 rounded-2xl border-2 border-[#2C1810]/20">
           <h2 className="text-xl font-bold text-[#2C1810] mb-4 pb-3 border-b-2 border-[#2C1810]/10">Kustomisasi</h2>
           <div className="space-y-4">
-            <input type="text" value={sections.customization.badge} onChange={e => setSections({ ...sections, customization: { ...sections.customization, badge: e.target.value } })} placeholder="Badge" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <input type="text" value={sections.customization.title} onChange={e => setSections({ ...sections, customization: { ...sections.customization, title: e.target.value } })} placeholder="Judul" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
-            <textarea value={sections.customization.description} onChange={e => setSections({ ...sections, customization: { ...sections.customization, description: e.target.value } })} rows={2} placeholder="Deskripsi" className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl" />
+            <BilingualInput
+              label="Badge"
+              valueId={sections.customization?.badgeId || sections.customization?.badge || ''}
+              valueEn={sections.customization?.badgeEn || ''}
+              onChangeId={val => setSections({ ...sections, customization: { ...sections.customization, badgeId: val, badge: val } })}
+              onChangeEn={val => setSections({ ...sections, customization: { ...sections.customization, badgeEn: val } })}
+            />
+            <BilingualInput
+              label="Judul"
+              valueId={sections.customization?.titleId || sections.customization?.title || ''}
+              valueEn={sections.customization?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, customization: { ...sections.customization, titleId: val, title: val } })}
+              onChangeEn={val => setSections({ ...sections, customization: { ...sections.customization, titleEn: val } })}
+            />
+            <BilingualInput
+              label="Deskripsi"
+              type="textarea"
+              valueId={sections.customization?.descriptionId || sections.customization?.description || ''}
+              valueEn={sections.customization?.descriptionEn || ''}
+              onChangeId={val => setSections({ ...sections, customization: { ...sections.customization, descriptionId: val, description: val } })}
+              onChangeEn={val => setSections({ ...sections, customization: { ...sections.customization, descriptionEn: val } })}
+            />
             <ImageUpload
               label="Showcase Image"
               value={sections.customization.showcaseImage}

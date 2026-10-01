@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Languages, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { Languages, Loader2, Wand2 } from 'lucide-react';
 
 interface BilingualInputProps {
   label: string;
@@ -24,27 +24,15 @@ export function BilingualInput({
 }: BilingualInputProps) {
   const [isTranslating, setIsTranslating] = useState(false);
 
-  // Debounced translation
-  useEffect(() => {
-    const handler = setTimeout(async () => {
-      // If Indonesian has value, and English is completely empty, auto translate
-      if (valueId && !valueEn && !isTranslating) {
-        await handleTranslate(valueId);
-      }
-    }, 1000); // 1 second delay
-
-    return () => clearTimeout(handler);
-  }, [valueId, valueEn]); // Removed isTranslating from dependency intentionally to avoid loops
-
-  const handleTranslate = async (textToTranslate: string) => {
-    if (!textToTranslate) return;
+  const handleTranslate = async () => {
+    if (!valueId || isTranslating) return;
     
     setIsTranslating(true);
     try {
       const res = await fetch('/api/translate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: textToTranslate, from: 'id', to: 'en' })
+        body: JSON.stringify({ text: valueId, from: 'id', to: 'en' })
       });
       const data = await res.json();
       if (data.result) {
@@ -60,14 +48,21 @@ export function BilingualInput({
   const inputClasses = "w-full px-4 py-2 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50";
 
   return (
-    <div className="space-y-3 mb-4 p-4 border border-neutral-200 bg-neutral-50/50 rounded-xl">
-      <div className="flex items-center justify-between">
+    <div className="mb-4 p-4 border border-neutral-200 bg-neutral-50/50 rounded-xl">
+      <div className="flex items-center justify-between mb-3">
         <label className="block text-sm font-bold text-[#2C1810]">{label}</label>
-        {isTranslating && (
-          <span className="flex items-center gap-1.5 text-xs text-blue-600 font-medium">
-            <Loader2 size={12} className="animate-spin" /> Auto-translating...
-          </span>
-        )}
+        <button
+          type="button"
+          onClick={handleTranslate}
+          disabled={isTranslating || !valueId}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          title="Auto-translate ID → EN"
+        >
+          {isTranslating
+            ? <><Loader2 size={12} className="animate-spin" /> Translating...</>
+            : <><Wand2 size={12} /> Auto Translate</>
+          }
+        </button>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
