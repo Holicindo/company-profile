@@ -316,26 +316,22 @@ export default function EditBerandaPage() {
                 className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-[#2C1810] mb-2">Judul Baris 1</label>
-                <input
-                  type="text"
-                  value={sections.mainHero.title.line1}
-                  onChange={e => setSections({ ...sections, mainHero: { ...sections.mainHero, title: { ...sections.mainHero.title, line1: e.target.value } } })}
-                  className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-[#2C1810] mb-2">Judul Baris 2</label>
-                <input
-                  type="text"
-                  value={sections.mainHero.title.line2}
-                  onChange={e => setSections({ ...sections, mainHero: { ...sections.mainHero, title: { ...sections.mainHero.title, line2: e.target.value } } })}
-                  className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-                />
-              </div>
-            </div>
+            <BilingualInput
+              label="Judul Baris 1"
+              valueId={sections.mainHero.title.line1Id || sections.mainHero.title.line1 || ''}
+              valueEn={sections.mainHero.title.line1En || ''}
+              onChangeId={val => setSections({ ...sections, mainHero: { ...sections.mainHero, title: { ...sections.mainHero.title, line1: val, line1Id: val } } })}
+              onChangeEn={val => setSections({ ...sections, mainHero: { ...sections.mainHero, title: { ...sections.mainHero.title, line1En: val } } })}
+              placeholderId="Spesialis Showcase & Pendingin"
+            />
+            <BilingualInput
+              label="Judul Baris 2"
+              valueId={sections.mainHero.title.line2Id || sections.mainHero.title.line2 || ''}
+              valueEn={sections.mainHero.title.line2En || ''}
+              onChangeId={val => setSections({ ...sections, mainHero: { ...sections.mainHero, title: { ...sections.mainHero.title, line2: val, line2Id: val } } })}
+              onChangeEn={val => setSections({ ...sections, mainHero: { ...sections.mainHero, title: { ...sections.mainHero.title, line2En: val } } })}
+              placeholderId="Komersial Terpercaya Indonesia."
+            />
             <div>
               <div className="flex items-center justify-between mb-3">
                 <label className="block text-sm font-semibold text-[#2C1810]">Gambar Slides</label>
@@ -383,24 +379,22 @@ export default function EditBerandaPage() {
                 className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
               />
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Judul</label>
-              <input
-                type="text"
-                value={sections.heroSection.title}
-                onChange={e => setSections({ ...sections, heroSection: { ...sections.heroSection, title: e.target.value } })}
-                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Deskripsi</label>
-              <textarea
-                value={sections.heroSection.description}
-                onChange={e => setSections({ ...sections, heroSection: { ...sections.heroSection, description: e.target.value } })}
-                rows={3}
-                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-              />
-            </div>
+            <BilingualInput
+              label="Judul"
+              valueId={sections.heroSection.titleId || sections.heroSection.title || ''}
+              valueEn={sections.heroSection.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, heroSection: { ...sections.heroSection, title: val, titleId: val } })}
+              onChangeEn={val => setSections({ ...sections, heroSection: { ...sections.heroSection, titleEn: val } })}
+              placeholderId="Tingkatkan Daya Jual dengan Showcase & Chiller Premium."
+            />
+            <BilingualInput
+              label="Deskripsi"
+              type="textarea"
+              valueId={sections.heroSection.descriptionId || sections.heroSection.description || ''}
+              valueEn={sections.heroSection.descriptionEn || ''}
+              onChangeId={val => setSections({ ...sections, heroSection: { ...sections.heroSection, description: val, descriptionId: val } })}
+              onChangeEn={val => setSections({ ...sections, heroSection: { ...sections.heroSection, descriptionEn: val } })}
+            />
             <ImageUpload
               label="Gambar Produk"
               value={sections.heroSection.image}
@@ -454,26 +448,23 @@ export default function EditBerandaPage() {
             Kategori Produk (3 Kartu Showcase)
           </h2>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Judul Section</label>
-              <input
-                type="text"
-                value={sections.productCategories?.title || ''}
-                onChange={e => setSections({ ...sections, productCategories: { ...sections.productCategories, title: e.target.value } })}
-                placeholder="Display & Pendingin untuk Bisnis Anda"
-                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-2">Deskripsi</label>
-              <textarea
-                value={sections.productCategories?.subtitle || ''}
-                onChange={e => setSections({ ...sections, productCategories: { ...sections.productCategories, subtitle: e.target.value } })}
-                rows={3}
-                placeholder="Jika Anda sedang mencari unit showcase untuk kebutuhan restoran..."
-                className="w-full px-4 py-3 bg-white border-2 border-[#2C1810]/20 rounded-xl text-[#2C1810] focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50"
-              />
-            </div>
+            <BilingualInput
+              label="Judul Section"
+              valueId={sections.productCategories?.titleId || sections.productCategories?.title || ''}
+              valueEn={sections.productCategories?.titleEn || ''}
+              onChangeId={val => setSections({ ...sections, productCategories: { ...sections.productCategories, title: val, titleId: val } })}
+              onChangeEn={val => setSections({ ...sections, productCategories: { ...sections.productCategories, titleEn: val } })}
+              placeholderId="Display & Pendingin untuk Bisnis Anda"
+            />
+            <BilingualInput
+              label="Deskripsi"
+              type="textarea"
+              valueId={sections.productCategories?.subtitleId || sections.productCategories?.subtitle || ''}
+              valueEn={sections.productCategories?.subtitleEn || ''}
+              onChangeId={val => setSections({ ...sections, productCategories: { ...sections.productCategories, subtitle: val, subtitleId: val } })}
+              onChangeEn={val => setSections({ ...sections, productCategories: { ...sections.productCategories, subtitleEn: val } })}
+              placeholderId="Jika Anda sedang mencari unit showcase..."
+            />
             
             <div>
               <div className="flex items-center justify-between mb-3">
