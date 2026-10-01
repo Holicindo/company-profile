@@ -5,6 +5,7 @@ import { ArrowLeft, Phone, Mail, ShieldCheck, Truck, Wrench } from 'lucide-react
 import { notFound } from 'next/navigation';
 import { getProductBySlug } from '@/lib/api';
 import { parseHtmlContent } from '@/lib/content-parser';
+import ProductGallery from '@/components/products/ProductGallery';
 
 interface Props { params: { slug: string } }
 
@@ -25,7 +26,11 @@ export default async function ProductDetailPage({ params }: Props) {
   let product: any;
   try { product = await getProductBySlug(params.slug); } catch { notFound(); }
 
-  const gallery = product.galleryUrls?.length ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
+  let rawGallery = product.galleryUrls || [];
+  if (product.imageUrl) {
+    rawGallery = [product.imageUrl, ...rawGallery];
+  }
+  const gallery = Array.from(new Set(rawGallery.filter(Boolean)));
   const waText = `Halo Holicindo, saya tertarik dengan produk *${product.name}*. Boleh minta informasi lebih lanjut?`;
 
   return (
@@ -52,37 +57,8 @@ export default async function ProductDetailPage({ params }: Props) {
       <div className="container-wide py-12 lg:py-20">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
           
-          {/* KIRI - Galeri Gambar (Minimalist, White Background) */}
-          <div className="w-full lg:w-1/2">
-            <div className="relative bg-white w-full aspect-square border border-neutral-200">
-              {gallery[0] ? (
-                <Image
-                  src={gallery[0]}
-                  alt={product.name}
-                  fill
-                  className="object-contain p-8"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  unoptimized
-                  priority
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-neutral-300 text-xs uppercase tracking-[0.2em]">No Image Available</span>
-                </div>
-              )}
-            </div>
-
-            {/* Thumbnail gallery */}
-            {gallery.length > 1 && (
-              <div className="flex gap-4 mt-6 overflow-x-auto pb-2 scrollbar-hide">
-                {gallery.map((url: string, i: number) => (
-                  <div key={i} className="relative flex-shrink-0 w-24 h-24 border border-neutral-200 hover:border-black transition-colors cursor-pointer bg-white">
-                    <Image src={url} alt={`Gambar ${i + 1}`} fill className="object-contain p-2" sizes="96px" unoptimized />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* KIRI - Galeri Gambar (Client Component) */}
+          <ProductGallery gallery={gallery} productName={product.name} />
 
           {/* KANAN - Tipografi & Spesifikasi */}
           <div className="w-full lg:w-1/2 flex flex-col justify-start">

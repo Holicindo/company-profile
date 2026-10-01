@@ -23,7 +23,7 @@ export default function EditProductPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [form, setForm] = useState({
     name: '', slug: '', description: '', shortDescription: '',
-    imageUrl: '', sku: '', categoryId: '', isFeatured: false, isActive: true,
+    imageUrl: '', galleryUrls: [] as string[], sku: '', categoryId: '', isFeatured: false, isActive: true,
   });
 
   useEffect(() => {
@@ -48,6 +48,7 @@ export default function EditProductPage() {
           description: found.description || '',
           shortDescription: found.shortDescription || '',
           imageUrl: found.imageUrl || '',
+          galleryUrls: found.galleryUrls || [],
           sku: found.sku || '',
           categoryId: found.categoryId ? String(found.categoryId) : '',
           isFeatured: found.isFeatured || false,
@@ -77,6 +78,7 @@ export default function EditProductPage() {
         ...form,
         categoryId: form.categoryId ? Number(form.categoryId) : undefined,
         imageUrl: form.imageUrl || undefined,
+        galleryUrls: form.galleryUrls.filter(url => url),
         sku: form.sku || undefined,
       };
       await updateProduct(id, payload);
@@ -218,6 +220,32 @@ export default function EditProductPage() {
                 onChange={v => set('imageUrl', v)}
                 hint="Gambar utama yang tampil di katalog."
               />
+
+              <div className="pt-2 border-t border-[#2C1810]/10">
+                <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2 mt-2">Gambar Tambahan 1 (Opsional)</label>
+                <ImageUpload
+                  value={form.galleryUrls[0] || ''}
+                  onChange={v => {
+                    const newGallery = [...form.galleryUrls];
+                    newGallery[0] = v;
+                    set('galleryUrls', newGallery);
+                  }}
+                  hint="Gambar slide ke-2 di halaman detail."
+                />
+              </div>
+
+              <div className="pt-2">
+                <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Gambar Tambahan 2 (Opsional)</label>
+                <ImageUpload
+                  value={form.galleryUrls[1] || ''}
+                  onChange={v => {
+                    const newGallery = [...form.galleryUrls];
+                    newGallery[1] = v;
+                    set('galleryUrls', newGallery);
+                  }}
+                  hint="Gambar slide ke-3 di halaman detail."
+                />
+              </div>
             </div>
 
             {/* Pengaturan */}
