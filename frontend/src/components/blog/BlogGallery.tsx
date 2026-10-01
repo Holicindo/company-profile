@@ -212,8 +212,8 @@ export function BlogGallery({ initialPosts = [] }: BlogGalleryProps) {
                       <Calendar size={9} className="text-white/70 sm:w-3 sm:h-3" /><span>{fmtDate(post.publishedAt)}</span>
                       <span>•</span><Clock size={9} className="text-white/70 sm:w-3 sm:h-3" /><span>4 min</span>
                     </div>
-                    <h3 className="font-bold text-[11px] sm:text-base text-white leading-snug line-clamp-2 mb-1 sm:mb-2 group-hover:text-amber-300 transition-colors">{post.title}</h3>
-                    {post.excerpt && <p className="hidden sm:block text-neutral-300 text-xs line-clamp-2 leading-relaxed opacity-85">{post.excerpt.replace(/<[^>]*>/g, '')}</p>}
+                    <h3 className="font-bold text-[11px] sm:text-base text-white leading-snug line-clamp-2 mb-1 sm:mb-2 group-hover:text-amber-300 transition-colors">{t(post.title, post.titleEn || post.title)}</h3>
+                    {post.excerpt && <p className="hidden sm:block text-neutral-300 text-xs line-clamp-2 leading-relaxed opacity-85">{t(post.excerpt.replace(/<[^>]*>/g, ''), post.excerptEn?.replace(/<[^>]*>/g, '') || post.excerpt.replace(/<[^>]*>/g, ''))}</p>}
                     <div className="mt-1.5 sm:mt-3 pt-1.5 sm:pt-3 border-t border-white/15 flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
                       <span>{t('Baca Artikel', 'Read Article')}</span>
                       <ArrowRight size={10} className="sm:w-3.5 sm:h-3.5 group-hover:translate-x-1 transition-transform" />

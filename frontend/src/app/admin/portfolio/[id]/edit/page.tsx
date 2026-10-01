@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { fetchAdminPortfolio, updatePortfolio } from '@/lib/admin-api';
+import { extractProjectDetails } from '@/lib/content-parser';
 import { ArrowLeft, Loader2, Save, Wand2 } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
 
@@ -21,6 +22,7 @@ export default function EditPortfolioPage() {
   const [form, setForm] = useState({
     title: '', slug: '', description: '', clientName: '',
     projectDate: '', imageUrl: '', location: '', isActive: true,
+    industry: '', requirement: '', solution: '',
   });
 
   useEffect(() => {
@@ -35,15 +37,20 @@ export default function EditPortfolioPage() {
           page++;
         }
         if (!found) throw new Error('Portfolio tidak ditemukan');
+        const parsedDetails = found.description ? extractProjectDetails(found.description) : { cleanText: '', extracted: { industry: '', requirement: '', solution: '' } };
+        
         setForm({
           title: found.title || '',
           slug: found.slug || '',
-          description: found.description || '',
+          description: parsedDetails.cleanText || '',
           clientName: found.clientName || '',
           projectDate: found.projectDate || '',
           imageUrl: found.imageUrl || '',
           location: found.location || '',
           isActive: found.isActive !== false,
+          industry: parsedDetails.extracted.industry || '',
+          requirement: parsedDetails.extracted.requirement || '',
+          solution: parsedDetails.extracted.solution || '',
         });
       } catch (err: any) {
         alert('Gagal memuat portfolio: ' + err.message);
@@ -66,10 +73,18 @@ export default function EditPortfolioPage() {
     // Image URL is optional - use existing value if not changed
     setLoading(true);
     try {
+      let finalDesc = form.description?.trim() || '';
+      if (form.industry || form.requirement || form.solution) {
+        if (finalDesc) finalDesc += '\n\n';
+        if (form.industry) finalDesc += `Industri/Bisnis: ${form.industry}\n\n`;
+        if (form.requirement) finalDesc += `Kebutuhan (Requirement): ${form.requirement}\n\n`;
+        if (form.solution) finalDesc += `Solusi Holic: ${form.solution}`;
+      }
+
       const payload = {
         title: form.title.trim(),
         slug: form.slug.trim(),
-        description: form.description?.trim() || '',
+        description: finalDesc || '',
         clientName: form.clientName?.trim() || '',
         projectDate: form.projectDate?.trim() || '',
         location: form.location?.trim() || '',
@@ -180,10 +195,42 @@ export default function EditPortfolioPage() {
               <textarea
                 value={form.description}
                 onChange={e => set('description', e.target.value)}
-                rows={14}
-                placeholder="Ceritakan detail proyek, solusi yang diberikan, hasil yang dicapai..."
-                className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/25 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-y min-h-[240px]"
+                rows={8}
+                placeholder="Ceritakan detail proyek..."
+                className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/25 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-y"
               />
+              <div className="pt-4 border-t border-[#2C1810]/10 space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Industri/Bisnis</label>
+                  <input
+                    type="text"
+                    value={form.industry}
+                    onChange={e => set('industry', e.target.value)}
+                    placeholder="Contoh: Restoran Jepang"
+                    className="w-full px-3.5 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Kebutuhan (Requirement)</label>
+                  <textarea
+                    value={form.requirement}
+                    onChange={e => set('requirement', e.target.value)}
+                    rows={3}
+                    placeholder="Contoh: Klien membutuhkan showcase..."
+                    className="w-full px-3.5 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Solusi Holic</label>
+                  <textarea
+                    value={form.solution}
+                    onChange={e => set('solution', e.target.value)}
+                    rows={3}
+                    placeholder="Contoh: Tim Holicindo melakukan desain kustom..."
+                    className="w-full px-3.5 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 

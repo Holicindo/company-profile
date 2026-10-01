@@ -17,6 +17,7 @@ export default function NewPortfolioPage() {
   const [form, setForm] = useState({
     title: '', slug: '', description: '', clientName: '',
     projectDate: '', imageUrl: '', location: '', isActive: true,
+    industry: '', requirement: '', solution: '',
   });
 
   const set = (k: string, v: any) => setForm(f => ({ ...f, [k]: v }));
@@ -29,14 +30,25 @@ export default function NewPortfolioPage() {
     }
     setLoading(true);
     try {
+      let finalDesc = form.description?.trim() || '';
+      if (form.industry || form.requirement || form.solution) {
+        if (finalDesc) finalDesc += '\n\n';
+        if (form.industry) finalDesc += `Industri/Bisnis: ${form.industry}\n\n`;
+        if (form.requirement) finalDesc += `Kebutuhan (Requirement): ${form.requirement}\n\n`;
+        if (form.solution) finalDesc += `Solusi Holic: ${form.solution}`;
+      }
+
       const payload = {
         ...form,
         imageUrl: form.imageUrl || undefined,
         clientName: form.clientName || undefined,
         projectDate: form.projectDate || undefined,
         location: form.location || undefined,
-        description: form.description || undefined,
+        description: finalDesc || undefined,
       };
+      delete (payload as any).industry;
+      delete (payload as any).requirement;
+      delete (payload as any).solution;
       await createPortfolio(payload);
       router.push('/admin/portfolio');
     } catch (err: any) {
@@ -137,10 +149,42 @@ export default function NewPortfolioPage() {
               <textarea
                 value={form.description}
                 onChange={e => set('description', e.target.value)}
-                rows={14}
-                placeholder="Ceritakan detail proyek, solusi yang diberikan, hasil yang dicapai..."
-                className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/25 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-y min-h-[240px]"
+                rows={8}
+                placeholder="Ceritakan detail proyek..."
+                className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/25 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-y"
               />
+              <div className="pt-4 border-t border-[#2C1810]/10 space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Industri/Bisnis</label>
+                  <input
+                    type="text"
+                    value={form.industry}
+                    onChange={e => set('industry', e.target.value)}
+                    placeholder="Contoh: Restoran Jepang"
+                    className="w-full px-3.5 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Kebutuhan (Requirement)</label>
+                  <textarea
+                    value={form.requirement}
+                    onChange={e => set('requirement', e.target.value)}
+                    rows={3}
+                    placeholder="Contoh: Klien membutuhkan showcase..."
+                    className="w-full px-3.5 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Solusi Holic</label>
+                  <textarea
+                    value={form.solution}
+                    onChange={e => set('solution', e.target.value)}
+                    rows={3}
+                    placeholder="Contoh: Tim Holicindo melakukan desain kustom..."
+                    className="w-full px-3.5 py-2.5 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-sm placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 

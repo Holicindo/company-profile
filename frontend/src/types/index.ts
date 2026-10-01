@@ -17,8 +17,8 @@ export interface Portfolio {
   location?: string; isActive: boolean; createdAt: string;
 }
 export interface BlogPost {
-  id: number; slug: string; title: string;
-  excerpt?: string; content: string; featuredImage?: string;
+  id: number; slug: string; title: string; titleEn?: string;
+  excerpt?: string; excerptEn?: string; content: string; contentEn?: string; featuredImage?: string;
   status: 'draft' | 'published' | 'PUBLISHED'; author?: string;
   category?: string;
   tags?: string[]; publishedAt: string; createdAt?: string;

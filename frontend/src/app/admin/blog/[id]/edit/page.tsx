@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { fetchAdminBlogs, updateBlog } from '@/lib/admin-api';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import { AdminSelect } from '@/components/admin/AdminSelect';
+import { BilingualInput } from '@/components/admin/BilingualInput';
 import dynamic from 'next/dynamic';
 import ImageUpload from '@/components/admin/ImageUpload';
 
@@ -21,7 +22,7 @@ export default function EditBlogPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    title: '', slug: '', excerpt: '', content: '',
+    title: '', titleEn: '', slug: '', excerpt: '', excerptEn: '', content: '', contentEn: '',
     featuredImage: '', author: '', tags: '', status: 'draft',
   });
 
@@ -42,9 +43,12 @@ export default function EditBlogPage() {
         if (found) {
           setForm({
             title: found.title || '',
+            titleEn: found.titleEn || '',
             slug: found.slug || '',
             excerpt: found.excerpt || '',
+            excerptEn: found.excerptEn || '',
             content: found.content || '',
+            contentEn: found.contentEn || '',
             featuredImage: found.featuredImage || '',
             author: found.author || '',
             tags: Array.isArray(found.tags) ? found.tags.join(', ') : (found.tags || ''),
@@ -70,9 +74,12 @@ export default function EditBlogPage() {
     try {
       await updateBlog(parseInt(id), {
         title: form.title,
+        titleEn: form.titleEn,
         slug: form.slug,
         excerpt: form.excerpt || null,
+        excerptEn: form.excerptEn || null,
         content: form.content,
+        contentEn: form.contentEn || null,
         featuredImage: form.featuredImage || null,
         author: form.author || 'Holicindo',
         tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
@@ -121,12 +128,14 @@ export default function EditBlogPage() {
               <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
               <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Judul Artikel</h2>
             </div>
-            <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Judul <span className="text-red-400">*</span></label>
-            <input
-              type="text" value={form.title}
-              onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
-              className="w-full px-4 py-3 border-2 border-[#2C1810]/15 rounded-xl text-[#2C1810] text-lg font-semibold placeholder:text-[#2C1810]/25 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
-              required
+            <BilingualInput
+              label="Judul Artikel *"
+              valueId={form.title}
+              valueEn={form.titleEn}
+              onChangeId={v => setForm(p => ({ ...p, title: v }))}
+              onChangeEn={v => setForm(p => ({ ...p, titleEn: v }))}
+              placeholderId="Contoh: 5 Tips Memilih Showcase F&B"
+              placeholderEn="Example: 5 Tips for Choosing F&B Showcase"
             />
             <div className="mt-3 flex items-center gap-2">
               <span className="text-[10px] font-semibold text-[#2C1810]/40 uppercase tracking-wider">Slug:</span>
@@ -142,7 +151,38 @@ export default function EditBlogPage() {
               <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
               <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Konten Artikel</h2>
             </div>
-            <RichTextEditor value={form.content} onChange={v => set('content', v)} />
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-2">Konten (Indonesia) <span className="text-red-400">*</span></label>
+                <RichTextEditor value={form.content} onChange={v => set('content', v)} />
+              </div>
+              <div className="pt-4 border-t border-[#2C1810]/10">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider">Konten (English)</label>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!form.content) return;
+                      try {
+                        const res = await fetch('/api/translate', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ text: form.content, from: 'id', to: 'en' })
+                        });
+                        const data = await res.json();
+                        if (data.result) set('contentEn', data.result);
+                      } catch (e) {
+                        console.error('Translation failed', e);
+                      }
+                    }}
+                    className="text-[10px] font-semibold text-blue-600 hover:text-blue-800 transition"
+                  >
+                    Auto Translate Content
+                  </button>
+                </div>
+                <RichTextEditor value={form.contentEn} onChange={v => set('contentEn', v)} />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -164,11 +204,14 @@ export default function EditBlogPage() {
               <div className="w-1 h-5 bg-[#C9A84C] rounded-full" />
               <h2 className="text-sm font-bold text-[#2C1810] uppercase tracking-wider">Informasi Artikel</h2>
             </div>
-            <div>
-              <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-1.5">Excerpt</label>
-              <textarea value={form.excerpt} onChange={e => set('excerpt', e.target.value)} rows={3}
-                className="w-full px-3 py-2 border-2 border-[#2C1810]/10 rounded-xl text-sm text-[#2C1810] placeholder:text-[#2C1810]/30 focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition resize-none" />
-            </div>
+              <BilingualInput
+                label="Excerpt"
+                type="textarea"
+                valueId={form.excerpt}
+                valueEn={form.excerptEn}
+                onChangeId={v => setForm(p => ({ ...p, excerpt: v }))}
+                onChangeEn={v => setForm(p => ({ ...p, excerptEn: v }))}
+              />
             <div>
               <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-1.5">Author</label>
               <input type="text" value={form.author} onChange={e => set('author', e.target.value)}
