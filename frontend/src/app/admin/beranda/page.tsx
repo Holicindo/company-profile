@@ -176,6 +176,26 @@ export default function EditBerandaPage() {
     });
   };
 
+  const addCategoryCard = () => {
+    setSections({
+      ...sections,
+      productCategories: {
+        ...sections.productCategories,
+        cards: [...(sections.productCategories?.cards || []), { name: '', slug: '', description: '', image: '' }],
+      },
+    });
+  };
+
+  const removeCategoryCard = (index: number) => {
+    setSections({
+      ...sections,
+      productCategories: {
+        ...sections.productCategories,
+        cards: sections.productCategories.cards.filter((_: any, i: number) => i !== index),
+      },
+    });
+  };
+
   const autoGenerateSEO = async () => {
     try {
       setGenerating(true);
@@ -435,11 +455,31 @@ export default function EditBerandaPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-semibold text-[#2C1810] mb-3">3 Kartu Kategori</label>
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-semibold text-[#2C1810]">Kartu Kategori</label>
+                <button
+                  type="button"
+                  onClick={addCategoryCard}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#B8941E] bg-[#B8941E]/10 rounded-lg hover:bg-[#B8941E]/20 transition-colors"
+                >
+                  <Plus size={14} />
+                  Tambah Kartu
+                </button>
+              </div>
               <div className="space-y-4">
                 {sections.productCategories?.cards?.map((card: any, idx: number) => (
                   <div key={idx} className="p-4 bg-[#FAF7F0] rounded-xl border border-[#2C1810]/10">
-                    <p className="text-xs font-bold text-[#2C1810] mb-3 uppercase tracking-wider">Kartu {idx + 1}</p>
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-xs font-bold text-[#2C1810] uppercase tracking-wider">Kartu {idx + 1}</p>
+                      <button
+                        type="button"
+                        onClick={() => removeCategoryCard(idx)}
+                        className="text-red-500 hover:text-red-700 p-1"
+                        title="Hapus Kartu"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                     <div className="space-y-3">
                       <div>
                         <label className="block text-xs font-semibold text-[#2C1810] mb-1">Nama Kategori</label>

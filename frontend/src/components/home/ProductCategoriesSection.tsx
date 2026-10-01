@@ -45,7 +45,7 @@ export function ProductCategoriesSection({ categories, customData }: ProductCate
   // Use customData from admin if available, otherwise use fallback logic
   let display: any[] = [];
   
-  if (customData?.cards && customData.cards.length === 3 && customData.cards.every(c => c.name && c.slug && c.image)) {
+  if (customData?.cards && customData.cards.length > 0 && customData.cards.every(c => c.name && c.slug && c.image)) {
     // Use admin custom data
     display = customData.cards.map(card => ({
       slug: card.slug,
@@ -85,7 +85,7 @@ export function ProductCategoriesSection({ categories, customData }: ProductCate
             {t('Lihat Semua', 'View All')} <ArrowRight size={14} strokeWidth={1.75} />
           </Link>
         </div>
-        <div className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory md:grid md:grid-cols-3 gap-3 sm:gap-6 pb-3 md:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className={`flex overflow-x-auto hide-scrollbar snap-x snap-mandatory md:grid ${display.length === 4 ? 'md:grid-cols-4' : display.length === 2 ? 'md:grid-cols-2' : display.length === 1 ? 'md:grid-cols-1' : 'md:grid-cols-3'} gap-3 sm:gap-6 pb-3 md:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0`}>
           {display.map((cat: any) => (
             <Link key={cat.slug} href={`/products/category/${cat.slug}`} className="group relative flex-shrink-0 w-[75vw] sm:w-[60vw] md:w-auto snap-center overflow-hidden h-56 sm:h-96 bg-neutral-100 transition-all duration-500 border border-neutral-200 active:scale-[0.99]">
               {cat.imageUrl
