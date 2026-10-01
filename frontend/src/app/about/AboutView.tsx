@@ -82,12 +82,15 @@ export function AboutView({ initialData }: AboutViewProps) {
         <div className="relative z-10 w-full flex items-center justify-center">
           <div className="text-center px-4 sm:px-6 max-w-3xl">
             <h1 className="text-2xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-2 sm:mb-6 leading-[1.15] drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
-              {initialData?.hero?.title || t('Profil Perusahaan', 'Company Profile')}
+              {t(
+                initialData?.hero?.titleId || initialData?.hero?.title || 'Profil Perusahaan',
+                initialData?.hero?.titleEn || 'Company Profile'
+              )}
             </h1>
             <p className="text-neutral-100 text-xs sm:text-base md:text-lg font-normal leading-relaxed drop-shadow-md">
-              {initialData?.hero?.subtitle || t(
-                'PT Holicindo Dasa Anugerah telah berdiri sebagai pemasar mesin makanan industri di Indonesia sejak tahun 2001.',
-                'PT Holicindo Dasa Anugerah has been established as an industrial food machinery distributor in Indonesia since 2001.'
+              {t(
+                initialData?.hero?.subtitleId || initialData?.hero?.subtitle || 'PT Holicindo Dasa Anugerah telah berdiri sebagai pemasar mesin makanan industri di Indonesia sejak tahun 2001.',
+                initialData?.hero?.subtitleEn || 'PT Holicindo Dasa Anugerah has been established as an industrial food machinery distributor in Indonesia since 2001.'
               )}
             </p>
           </div>
@@ -100,14 +103,23 @@ export function AboutView({ initialData }: AboutViewProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 mb-8 sm:mb-16">
           <div className="lg:col-span-7 p-4 sm:p-10 lg:p-14 border border-neutral-200 bg-white">
             <h2 className="text-xl sm:text-4xl font-bold text-[#2C1810] tracking-tight mb-3 sm:mb-8">
-              {initialData?.history?.title || t('Sejarah Perusahaan', 'Company History')}
+              {t(
+                initialData?.history?.titleId || initialData?.history?.title || 'Sejarah Perusahaan',
+                initialData?.history?.titleEn || 'Company History'
+              )}
             </h2>
             <div className="space-y-3 sm:space-y-6 text-neutral-600 text-xs sm:text-lg leading-relaxed text-left sm:text-justify">
-              {(initialData?.history?.paragraph1 || initialData?.history?.paragraph2)
+              {(initialData?.history?.paragraph1Id || initialData?.history?.paragraph1En || initialData?.history?.paragraph1 || initialData?.history?.paragraph2)
                 ? (
                   <>
-                    {initialData.history.paragraph1 && <p>{initialData.history.paragraph1}</p>}
-                    {initialData.history.paragraph2 && <p>{initialData.history.paragraph2}</p>}
+                    <p>{t(
+                      initialData.history.paragraph1Id || initialData.history.paragraph1 || '',
+                      initialData.history.paragraph1En || initialData.history.paragraph1 || ''
+                    )}</p>
+                    {(initialData.history.paragraph2Id || initialData.history.paragraph2En || initialData.history.paragraph2) && <p>{t(
+                      initialData.history.paragraph2Id || initialData.history.paragraph2 || '',
+                      initialData.history.paragraph2En || initialData.history.paragraph2 || ''
+                    )}</p>}
                   </>
                 )
                 : (

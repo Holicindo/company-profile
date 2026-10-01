@@ -9,7 +9,11 @@ interface HeroSectionProps {
   initialData?: {
     badge?: string;
     title?: string;
+    titleId?: string;
+    titleEn?: string;
     description?: string;
+    descriptionId?: string;
+    descriptionEn?: string;
     image?: string;
     stats?: { products?: string; warranty?: string; support?: string };
     videoUrl?: string;
@@ -20,10 +24,13 @@ export function HeroSection({ initialData }: HeroSectionProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const { t } = useLanguage();
 
-  const title = initialData?.title || t('Tingkatkan Daya Jual dengan Showcase & Chiller Premium.', 'Boost Your Sales with Premium Showcase & Commercial Chiller.');
-  const description = initialData?.description || t(
-    'Dari cake showcase berlampu LED hingga blast freezer industri — Holicindo menghadirkan solusi pendingin dan display spesifikasi HORECA dengan garansi resmi, siap kirim ke seluruh Indonesia.',
-    'From LED-lit cake showcases to industrial blast freezers — Holicindo delivers HORECA-grade refrigeration and display solutions with official warranty, ready for nationwide delivery.'
+  const title = t(
+    initialData?.titleId || initialData?.title || 'Tingkatkan Daya Jual dengan Showcase & Chiller Premium.',
+    initialData?.titleEn || initialData?.title || 'Boost Your Sales with Premium Showcase & Commercial Chiller.'
+  );
+  const description = t(
+    initialData?.descriptionId || initialData?.description || 'Dari cake showcase berlampu LED hingga blast freezer industri — Holicindo menghadirkan solusi pendingin dan display spesifikasi HORECA dengan garansi resmi, siap kirim ke seluruh Indonesia.',
+    initialData?.descriptionEn || initialData?.description || 'From LED-lit cake showcases to industrial blast freezers — Holicindo delivers HORECA-grade refrigeration and display solutions with official warranty, ready for nationwide delivery.'
   );
 
   const videoSrc = initialData?.videoUrl

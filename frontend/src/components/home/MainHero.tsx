@@ -7,7 +7,9 @@ import { useLanguage } from '@/context/LanguageContext';
 interface MainHeroProps {
   initialData?: {
     subtitle?: string;
-    title?: { line1?: string; line2?: string };
+    subtitleId?: string;
+    subtitleEn?: string;
+    title?: { line1?: string; line2?: string; line1Id?: string; line1En?: string; line2Id?: string; line2En?: string };
     slides?: string[];
   };
 }
@@ -78,8 +80,8 @@ export function MainHero({ initialData }: MainHeroProps) {
             {t('Est. 2001', 'Est. 2001')}
           </span>
           <h1 className="text-xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.3] sm:leading-[1.5] tracking-tight mb-2 sm:mb-4 drop-shadow-xl text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 via-neutral-400 to-white animate-shimmer-text">
-            {initialData?.title?.line1 || t('Spesialis Showcase & Pendingin', 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
-            {initialData?.title?.line2 || t('Komersial Terpercaya Indonesia.', '& Refrigeration Solutions.')}
+            {t(initialData?.title?.line1Id || initialData?.title?.line1 || 'Spesialis Showcase & Pendingin', initialData?.title?.line1En || initialData?.title?.line1 || 'Specialist in Commercial Showcase')} <br className="hidden sm:inline" />
+            {t(initialData?.title?.line2Id || initialData?.title?.line2 || 'Komersial Terpercaya Indonesia.', initialData?.title?.line2En || initialData?.title?.line2 || '& Refrigeration Solutions.')}
           </h1>
         </div>
       </div>
