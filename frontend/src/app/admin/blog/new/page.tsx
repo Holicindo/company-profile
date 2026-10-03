@@ -9,6 +9,9 @@ import { AdminSelect } from '@/components/admin/AdminSelect';
 import { BilingualInput } from '@/components/admin/BilingualInput';
 import dynamic from 'next/dynamic';
 import ImageUpload from '@/components/admin/ImageUpload';
+import themeSwal from '@/lib/sweetalert';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 // Lazy load editor (SSR incompatible)
 const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), { ssr: false });
@@ -22,7 +25,7 @@ export default function NewBlogPage() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     title: '', titleEn: '', slug: '', excerpt: '', excerptEn: '', content: '', contentEn: '',
-    featuredImage: '', author: 'Holicindo', tags: '', status: 'draft',
+    featuredImage: '', author: 'Holicindo', tags: '', status: 'draft', publishedAt: '',
   });
 
   const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
@@ -33,8 +36,8 @@ export default function NewBlogPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title.trim()) return alert('Judul wajib diisi.');
-    if (!form.slug.trim()) return alert('Slug wajib diisi.');
+    if (!form.title.trim()) return themeSwal.fire('Error', 'Judul wajib diisi.', 'error');
+    if (!form.slug.trim()) return themeSwal.fire('Error', 'Slug wajib diisi.', 'error');
     setSaving(true);
     try {
       await createBlog({
@@ -49,10 +52,12 @@ export default function NewBlogPage() {
         author: form.author || 'Holicindo',
         tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
         status: form.status,
+        publishedAt: form.publishedAt ? new Date(form.publishedAt).toISOString() : undefined,
       });
       router.push('/admin/blog');
+      themeSwal.fire('Sukses', 'Artikel berhasil disimpan.', 'success');
     } catch (err: any) {
-      alert('Gagal menyimpan: ' + err.message);
+      themeSwal.fire('Gagal', 'Gagal menyimpan: ' + err.message, 'error');
     } finally {
       setSaving(false);
     }
@@ -182,6 +187,18 @@ export default function NewBlogPage() {
                 onChangeId={v => setForm(p => ({ ...p, excerpt: v }))}
                 onChangeEn={v => setForm(p => ({ ...p, excerptEn: v }))}
               />
+
+            <div>
+              <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-1.5">Tanggal Publikasi</label>
+              <DatePicker
+                selected={form.publishedAt ? new Date(form.publishedAt) : null}
+                onChange={(date: Date | null) => set('publishedAt', date ? date.toISOString() : '')}
+                className="w-full px-3 py-2 border-2 border-[#2C1810]/10 rounded-xl text-sm text-[#2C1810] focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                placeholderText="Pilih Tanggal"
+                dateFormat="dd MMMM yyyy"
+              />
+              <p className="text-[10px] text-neutral-400 mt-1">Kosongkan untuk menggunakan waktu saat ini ketika status diubah menjadi Published.</p>
+            </div>
 
             <div>
               <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-1.5">Author</label>

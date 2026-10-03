@@ -8,19 +8,6 @@ import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 export class BlogService {
   constructor(@InjectRepository(BlogPost) private repo: Repository<BlogPost>) {}
 
-  // Helper to transform post based on language
-  private transformPostByLanguage(post: BlogPost, lang?: string): any {
-    if (lang === 'en' || lang === 'EN') {
-      return {
-        ...post,
-        title: post.titleEn || post.title,
-        excerpt: post.excerptEn || post.excerpt,
-        content: post.contentEn || post.content,
-      };
-    }
-    return post;
-  }
-
   async getPosts(page = 1, limit = 10, search?: string, lang?: string) {
     const qb = this.repo.createQueryBuilder('p')
       .where('p.status = :s', { s: PostStatus.PUBLISHED })
@@ -29,7 +16,7 @@ export class BlogService {
     if (search) qb.andWhere('(p.title ILIKE :q OR p.excerpt ILIKE :q OR p.titleEn ILIKE :q OR p.excerptEn ILIKE :q)', { q: `%${search}%` });
     const [items, total] = await qb.getManyAndCount();
     return { 
-      items: items.map(post => this.transformPostByLanguage(post, lang)), 
+      items, 
       total, 
       page, 
       limit, 
@@ -40,18 +27,18 @@ export class BlogService {
   async getPostBySlug(slug: string, lang?: string) {
     const post = await this.repo.findOne({ where: { slug, status: PostStatus.PUBLISHED } });
     if (!post) throw new NotFoundException('Post not found');
-    return this.transformPostByLanguage(post, lang);
+    return post;
   }
 
   async getLatestPosts(limit = 3, lang?: string) {
     const posts = await this.repo.find({ where: { status: PostStatus.PUBLISHED }, order: { publishedAt: 'DESC' }, take: limit });
-    return posts.map(post => this.transformPostByLanguage(post, lang));
+    return posts;
   }
 
   async createPost(dto: CreateBlogPostDto) {
     const post = this.repo.create({
       ...dto,
-      publishedAt: dto.status === PostStatus.PUBLISHED ? new Date() : null,
+      publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : (dto.status === PostStatus.PUBLISHED ? new Date() : null),
     });
     return this.repo.save(post);
   }
@@ -59,7 +46,9 @@ export class BlogService {
   async updatePost(id: number, dto: Partial<CreateBlogPostDto>) {
     const post = await this.repo.findOne({ where: { id } });
     if (!post) throw new NotFoundException('Post not found');
-    if (dto.status === PostStatus.PUBLISHED && post.status !== PostStatus.PUBLISHED) {
+    if (dto.publishedAt) {
+      (dto as any).publishedAt = new Date(dto.publishedAt);
+    } else if (dto.status === PostStatus.PUBLISHED && post.status !== PostStatus.PUBLISHED) {
       (dto as any).publishedAt = new Date();
     }
     Object.assign(post, dto);

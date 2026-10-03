@@ -9,6 +9,9 @@ import { AdminSelect } from '@/components/admin/AdminSelect';
 import { BilingualInput } from '@/components/admin/BilingualInput';
 import dynamic from 'next/dynamic';
 import ImageUpload from '@/components/admin/ImageUpload';
+import themeSwal from '@/lib/sweetalert';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), { ssr: false });
 
@@ -23,7 +26,7 @@ export default function EditBlogPage() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     title: '', titleEn: '', slug: '', excerpt: '', excerptEn: '', content: '', contentEn: '',
-    featuredImage: '', author: '', tags: '', status: 'draft',
+    featuredImage: '', author: '', tags: '', status: 'draft', publishedAt: '',
   });
 
   const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
@@ -53,13 +56,14 @@ export default function EditBlogPage() {
             author: found.author || '',
             tags: Array.isArray(found.tags) ? found.tags.join(', ') : (found.tags || ''),
             status: found.status || 'draft',
+            publishedAt: found.publishedAt ? new Date(found.publishedAt).toISOString().split('T')[0] : '',
           });
         } else {
-          alert('Artikel tidak ditemukan');
+          themeSwal.fire('Error', 'Artikel tidak ditemukan', 'error');
           router.push('/admin/blog');
         }
       } catch (err: any) {
-        alert('Gagal memuat artikel: ' + err.message);
+        themeSwal.fire('Gagal', 'Gagal memuat artikel: ' + err.message, 'error');
       } finally {
         setLoading(false);
       }
@@ -84,10 +88,12 @@ export default function EditBlogPage() {
         author: form.author || 'Holicindo',
         tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
         status: form.status,
+        publishedAt: form.publishedAt ? new Date(form.publishedAt).toISOString() : undefined,
       });
       router.push('/admin/blog');
+      themeSwal.fire('Sukses', 'Artikel berhasil diupdate.', 'success');
     } catch (err: any) {
-      alert('Gagal menyimpan: ' + err.message);
+      themeSwal.fire('Gagal', 'Gagal menyimpan: ' + err.message, 'error');
     } finally {
       setSaving(false);
     }
@@ -212,6 +218,17 @@ export default function EditBlogPage() {
                 onChangeId={v => setForm(p => ({ ...p, excerpt: v }))}
                 onChangeEn={v => setForm(p => ({ ...p, excerptEn: v }))}
               />
+            <div>
+              <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-1.5">Tanggal Publikasi</label>
+              <DatePicker
+                selected={form.publishedAt ? new Date(form.publishedAt) : null}
+                onChange={(date: Date | null) => set('publishedAt', date ? date.toISOString() : '')}
+                className="w-full px-3 py-2 border-2 border-[#2C1810]/10 rounded-xl text-sm text-[#2C1810] focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
+                placeholderText="Pilih Tanggal"
+                dateFormat="dd MMMM yyyy"
+              />
+              <p className="text-[10px] text-neutral-400 mt-1">Ubah jika ingin memodifikasi tanggal publikasi artikel.</p>
+            </div>
             <div>
               <label className="block text-xs font-semibold text-[#2C1810]/60 uppercase tracking-wider mb-1.5">Author</label>
               <input type="text" value={form.author} onChange={e => set('author', e.target.value)}

@@ -90,7 +90,7 @@ export function NewsDetailView({ post: initialPost, toc: initialToc }: NewsDetai
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2C1810] leading-tight tracking-tight mb-6">
-              {post.title}
+              {t(post.title, post.titleEn || post.title)}
             </h1>
 
             <div className="flex items-center justify-between border-y border-neutral-100 py-4 mb-8 text-xs text-neutral-500">
@@ -106,12 +106,12 @@ export function NewsDetailView({ post: initialPost, toc: initialToc }: NewsDetai
             </div>
 
             {post.featuredImage && (
-              <div className="relative h-72 sm:h-[420px] rounded-2xl overflow-hidden mb-10 bg-neutral-900 shadow-md">
-                <Image src={post.featuredImage} alt={post.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 800px" unoptimized priority />
+              <div className="relative rounded-2xl overflow-hidden mb-10 bg-neutral-900 shadow-md">
+                <img src={post.featuredImage} alt={post.title} className="w-full h-auto object-cover" />
               </div>
             )}
 
-            <div className="prose-content max-w-none text-neutral-700 leading-relaxed text-base sm:text-lg" dangerouslySetInnerHTML={{ __html: parseHtmlContent(post.content) }} />
+            <div className="prose-content max-w-none text-neutral-700 leading-relaxed text-base sm:text-lg" dangerouslySetInnerHTML={{ __html: parseHtmlContent(t(post.content, post.contentEn || post.content)) }} />
 
             {post.tags?.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-12 pt-6 border-t border-neutral-100">

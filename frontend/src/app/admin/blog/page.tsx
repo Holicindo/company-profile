@@ -7,6 +7,7 @@ import {
   Plus, Pencil, Trash2, Loader2, FileText, Search,
   ChevronLeft, ChevronRight, Eye, EyeOff, ChevronDown,
 } from 'lucide-react';
+import themeSwal from '@/lib/sweetalert';
 
 interface BlogPost {
   id: number;
@@ -40,7 +41,7 @@ export default function AdminBlogPage() {
       setPosts(data.items || []);
       setTotal(data.total || 0);
     } catch (err: any) {
-      alert('Gagal memuat data blog: ' + err.message);
+      themeSwal.fire({ title: 'Gagal', text: 'Gagal memuat data blog: ' + err.message, icon: 'error' });
     } finally {
       setLoading(false);
     }
@@ -83,13 +84,24 @@ export default function AdminBlogPage() {
   }, [filteredPosts, page]);
 
   const handleDelete = async (id: number, title: string) => {
-    if (!confirm(`Hapus artikel "${title}"? Tindakan ini tidak bisa dibatalkan.`)) return;
+    const result = await themeSwal.fire({
+      title: 'Hapus Artikel?',
+      text: `Hapus artikel "${title}"? Tindakan ini tidak bisa dibatalkan.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal'
+    });
+    
+    if (!result.isConfirmed) return;
+    
     setDeleting(id);
     try {
       await deleteBlog(id);
       await load();
+      themeSwal.fire('Terhapus!', 'Artikel berhasil dihapus.', 'success');
     } catch (err: any) {
-      alert('Gagal menghapus: ' + err.message);
+      themeSwal.fire('Error', 'Gagal menghapus: ' + err.message, 'error');
     } finally {
       setDeleting(null);
     }

@@ -13,4 +13,5 @@ export class CreateBlogPostDto {
   @IsOptional() @IsEnum(PostStatus) status?: PostStatus;
   @IsOptional() @IsString() author?: string;
   @IsOptional() @IsArray() tags?: string[];
+  @IsOptional() publishedAt?: Date;
 }

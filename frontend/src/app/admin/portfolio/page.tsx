@@ -7,6 +7,7 @@ import {
   Plus, Pencil, Trash2, Loader2, Image,
   ChevronLeft, ChevronRight, CheckCircle, XCircle,
 } from 'lucide-react';
+import themeSwal from '@/lib/sweetalert';
 
 interface Portfolio {
   id: number;
@@ -37,7 +38,7 @@ export default function AdminPortfolioPage() {
       setTotal(data.total || 0);
       setTotalPages(data.totalPages || 1);
     } catch (err: any) {
-      alert('Gagal memuat portfolio: ' + err.message);
+      themeSwal.fire('Error', 'Gagal memuat portfolio: ' + err.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -46,13 +47,24 @@ export default function AdminPortfolioPage() {
   useEffect(() => { load(); }, [load]);
 
   const handleDelete = async (id: number, title: string) => {
-    if (!confirm(`Hapus portfolio "${title}"? Tindakan ini tidak bisa dibatalkan.`)) return;
+    const result = await themeSwal.fire({
+      title: 'Hapus Portfolio?',
+      text: `Hapus portfolio "${title}"? Tindakan ini tidak bisa dibatalkan.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal'
+    });
+    
+    if (!result.isConfirmed) return;
+    
     setDeleting(id);
     try {
       await deletePortfolio(id);
       await load();
+      themeSwal.fire('Terhapus!', 'Portfolio berhasil dihapus.', 'success');
     } catch (err: any) {
-      alert('Gagal menghapus: ' + err.message);
+      themeSwal.fire('Error', 'Gagal menghapus: ' + err.message, 'error');
     } finally {
       setDeleting(null);
     }
