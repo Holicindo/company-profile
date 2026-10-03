@@ -187,13 +187,16 @@
   border-bottom: 1px solid rgba(201, 168, 76, 0.3);
   padding: 12px 8px 8px;
 }
-.react-datepicker__current-month,
-.react-datepicker__day-name {
-  color: #C9A84C;
+.react-datepicker__current-month {
+  color: white !important;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
-.react-datepicker__day-name { color: rgba(201, 168, 76, 0.7); font-size: 0.7rem; }
+.react-datepicker__day-name { 
+  color: rgba(255, 255, 255, 0.8); 
+  font-weight: 600;
+  font-size: 0.75rem; 
+}
 .react-datepicker__day {
   color: #2C1810;
   font-size: 0.8rem;
@@ -202,40 +205,102 @@
   transition: all 0.15s ease;
 }
 .react-datepicker__day:hover {
-  background-color: rgba(201, 168, 76, 0.15);
+  background-color: rgba(44, 24, 16, 0.15);
   color: #2C1810;
   border-radius: 0.5rem;
 }
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected {
-  background-color: #C9A84C !important;
+  background-color: #2C1810 !important;
   color: white !important;
   font-weight: 700;
   border-radius: 0.5rem;
 }
 .react-datepicker__day--today {
-  border: 1.5px solid #C9A84C;
+  background-color: rgba(44, 24, 16, 0.15);
   border-radius: 0.5rem;
   font-weight: 700;
+  color: #2C1810;
 }
 .react-datepicker__navigation-icon::before {
-  border-color: #C9A84C;
+  border-color: white !important;
 }
 .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
-  border-color: #b08f3b;
+  border-color: rgba(255, 255, 255, 0.7) !important;
 }
 .react-datepicker__month-select,
 .react-datepicker__year-select {
-  background: #2C1810;
-  color: #C9A84C;
-  border: 1px solid rgba(201,168,76,0.3);
+  background-color: #2C1810 !important;
+  color: white !important;
+  border: 1px solid rgba(201,168,76,0.5) !important;
   border-radius: 0.4rem;
   font-size: 0.8rem;
   padding: 2px 4px;
+  outline: none;
+  cursor: pointer;
+}
+.react-datepicker__month-select option,
+.react-datepicker__year-select option {
+  background-color: white !important;
+  color: #2C1810 !important;
 }
 .react-datepicker__day--outside-month {
   color: rgba(44, 24, 16, 0.3);
 }
+
+/* -- Year & Month Dropdown Compact Styling -- */
+.react-datepicker__year-dropdown,
+.react-datepicker__month-dropdown {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #C9A84C rgba(44, 24, 16, 0.1);
+  border: 2px solid rgba(44, 24, 16, 0.12) !important;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.15);
+}
+
+.react-datepicker__year-dropdown::-webkit-scrollbar,
+.react-datepicker__month-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.react-datepicker__year-dropdown::-webkit-scrollbar-track,
+.react-datepicker__month-dropdown::-webkit-scrollbar-track {
+  background: rgba(44, 24, 16, 0.05);
+  border-radius: 4px;
+}
+
+.react-datepicker__year-dropdown::-webkit-scrollbar-thumb,
+.react-datepicker__month-dropdown::-webkit-scrollbar-thumb {
+  background: #C9A84C;
+  border-radius: 4px;
+}
+
+.react-datepicker__year-dropdown::-webkit-scrollbar-thumb:hover,
+.react-datepicker__month-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #b08f3b;
+}
+
+.react-datepicker__year-option,
+.react-datepicker__month-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.react-datepicker__year-option:hover,
+.react-datepicker__month-option:hover {
+  background-color: rgba(201, 168, 76, 0.15) !important;
+}
+
+.react-datepicker__year-option--selected,
+.react-datepicker__month-option--selected {
+  background-color: #C9A84C !important;
+  color: white !important;
+  font-weight: 700;
+}
+
 
 /* ── SweetAlert2 - Holic Brown/Gold Theme ── */
 .swal2-popup {
@@ -278,3 +343,5 @@
 .swal2-icon.swal2-success { border-color: #2C7A3F !important; }
 .swal2-icon.swal2-success [class^='swal2-success-line'] { background-color: #2C7A3F !important; }
 .swal2-icon.swal2-success .swal2-success-ring { border-color: rgba(44, 122, 63, 0.3) !important; }
+
+.prose-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 1.5rem auto; display: block; }

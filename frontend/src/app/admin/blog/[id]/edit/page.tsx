@@ -226,6 +226,9 @@ export default function EditBlogPage() {
                 className="w-full px-3 py-2 border-2 border-[#2C1810]/10 rounded-xl text-sm text-[#2C1810] focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/20 transition"
                 placeholderText="Pilih Tanggal"
                 dateFormat="dd MMMM yyyy"
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
               />
               <p className="text-[10px] text-neutral-400 mt-1">Ubah jika ingin memodifikasi tanggal publikasi artikel.</p>
             </div>
