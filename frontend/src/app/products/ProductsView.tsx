@@ -195,7 +195,6 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
                       { name: 'Semua Showcase', slug: 'showcase' },
                       { name: 'Cold Case', slug: 'cold-case' },
                       { name: 'Undercounter', slug: 'showcase-undercounter' },
-                      { name: 'Show Case', slug: 'show-case' },
                     ];
 
                     const isSubSelected = subItems.some(s => s.slug === category && s.slug !== 'showcase');
@@ -247,7 +246,6 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
                       { name: 'Semua Showcase', slug: 'showcase' },
                       { name: 'Cold Case', slug: 'cold-case' },
                       { name: 'Undercounter', slug: 'showcase-undercounter' },
-                      { name: 'Show Case', slug: 'show-case' },
                     ].map(sub => {
                       const isSubActive = category === sub.slug;
                       return (
