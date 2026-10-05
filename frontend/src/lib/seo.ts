@@ -12,13 +12,16 @@ export async function generatePageMetadata(
   fallback?: Metadata
 ): Promise<Metadata> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/slug/${slug}`, {
-      next: { revalidate: 3600 }, // Cache for 1 hour
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000); // 3s timeout
 
-    if (!res.ok) {
-      return fallback || {};
-    }
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/slug/${slug}`, {
+      next: { revalidate: 3600 },
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) return fallback || {};
 
     const page = await res.json();
     const seo: PageSEO = page.metadata || {};
@@ -42,8 +45,13 @@ export async function generatePageMetadata(
         images: seo.ogImage ? [seo.ogImage] : [],
       },
     };
-  } catch (error) {
-    console.error('Failed to fetch page metadata:', error);
+  } catch (error: any) {
+    // Sembunyikan error saat backend tidak berjalan (dev mode)
+    const isConnRefused = error?.cause?.code === 'ECONNREFUSED' || error?.name === 'AbortError';
+    if (!isConnRefused) {
+      console.error('Failed to fetch page metadata:', error);
+    }
     return fallback || {};
   }
 }
+

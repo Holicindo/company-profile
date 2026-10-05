@@ -233,7 +233,9 @@ export default function AdminContactsPage() {
                               </button>
                             )}
                             <a
-                              href={`mailto:${item.email}?subject=Re: ${encodeURIComponent(item.subject)}`}
+                              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(item.email)}&su=Re%3A%20${encodeURIComponent(item.subject)}&body=${encodeURIComponent(`\n\n---\nPesan dari ${item.name} (${item.email}):\n${item.message}`)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               onClick={e => e.stopPropagation()}
                               className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-[#2C1810]/70 bg-[#2C1810]/5 hover:bg-[#2C1810]/10 rounded-lg border border-[#2C1810]/20 transition"
                             >

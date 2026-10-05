@@ -48,14 +48,19 @@ export function AboutView({ initialData }: AboutViewProps) {
     ? initialData.history.warehouseSlides
     : DEFAULT_WAREHOUSE_SLIDES;
 
+  // Mobile: single slideshow
   const [currentSlide, setCurrentSlide] = useState(0);
+  // Desktop: Opsi A — pasangan bergantian [0,1] → [2,3] → [0,1]
+  const totalPairs = Math.ceil(warehouseSlides.length / 2);
+  const [currentPair, setCurrentPair] = useState(0);
+  const topSlide    = (currentPair * 2) % warehouseSlides.length;
+  const bottomSlide = (currentPair * 2 + 1) % warehouseSlides.length;
 
   useEffect(() => {
-    if (currentSlide >= warehouseSlides.length) {
-      setCurrentSlide(0);
-    }
+    if (currentSlide >= warehouseSlides.length) setCurrentSlide(0);
   }, [warehouseSlides.length, currentSlide]);
 
+  // Mobile auto-advance
   useEffect(() => {
     if (warehouseSlides.length <= 1) return;
     const interval = setInterval(() => {
@@ -63,6 +68,15 @@ export function AboutView({ initialData }: AboutViewProps) {
     }, 5000);
     return () => clearInterval(interval);
   }, [warehouseSlides.length]);
+
+  // Desktop: ganti pasangan setiap 5 detik
+  useEffect(() => {
+    if (totalPairs <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentPair((prev) => (prev + 1) % totalPairs);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [totalPairs]);
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900">
@@ -132,40 +146,79 @@ export function AboutView({ initialData }: AboutViewProps) {
             </div>
           </div>
 
-          <div className="lg:col-span-5 relative bg-neutral-100 border border-neutral-300 rounded-xl overflow-hidden shadow-sm">
-            {warehouseSlides.map((slide: string, index: number) => (
-              <div
-                key={index}
-                className={`transition-opacity duration-1000 ${
-                  index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'
-                }`}
-              >
+          <div className="lg:col-span-5">
+
+            {/* ── Mobile: single slideshow ── */}
+            <div className="lg:hidden relative bg-neutral-100 border border-neutral-300 rounded-xl overflow-hidden shadow-sm">
+              {warehouseSlides.map((slide: string, index: number) => (
+                <div
+                  key={index}
+                  className={`transition-opacity duration-1000 ${
+                    index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'
+                  }`}
+                >
+                  <Image
+                    src={slide}
+                    alt={`Warehouse ${index + 1}`}
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    quality={100}
+                    unoptimized
+                    className="w-full h-auto block"
+                  />
+                </div>
+              ))}
+              {warehouseSlides.length > 1 && (
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                  {warehouseSlides.map((_: any, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`h-1.5 rounded-full transition-all ${
+                        index === currentSlide ? 'bg-white w-5' : 'bg-white/50 w-1.5'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* ── Desktop: Opsi A — pasangan bergantian ── */}
+            <div className="hidden lg:flex flex-col gap-3">
+              {/* Slot Atas */}
+              <div className="rounded-xl overflow-hidden border border-neutral-200 shadow-sm bg-neutral-100">
                 <Image
-                  src={slide}
-                  alt={`Warehouse ${index + 1}`}
+                  key={`top-${currentPair}`}
+                  src={warehouseSlides[topSlide]}
+                  alt={`Warehouse ${topSlide + 1}`}
                   width={0}
                   height={0}
-                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  sizes="42vw"
                   quality={100}
                   unoptimized
-                  className="w-full h-auto block"
+                  className="w-full h-auto block animate-slide-reveal"
                 />
               </div>
-            ))}
-            {warehouseSlides.length > 1 && (
-              <div className="absolute bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 flex gap-1.5 sm:gap-2 z-10">
-                {warehouseSlides.map((_: any, index: number) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`h-1.5 sm:h-2 rounded-full transition-all ${
-                      index === currentSlide ? 'bg-white w-5 sm:w-8' : 'bg-white/50 w-1.5 sm:w-2'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
+              {/* Slot Bawah — hanya tampil jika ada gambar ke-2 dalam pasangan */}
+              {warehouseSlides.length > 1 && (
+                <div className="rounded-xl overflow-hidden border border-neutral-200 shadow-sm bg-neutral-100">
+                  <Image
+                    key={`bottom-${currentPair}`}
+                    src={warehouseSlides[bottomSlide]}
+                    alt={`Warehouse ${bottomSlide + 1}`}
+                    width={0}
+                    height={0}
+                    sizes="42vw"
+                    quality={100}
+                    unoptimized
+                    className="w-full h-auto block animate-slide-reveal"
                   />
-                ))}
-              </div>
-            )}
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
 

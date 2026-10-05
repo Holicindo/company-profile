@@ -4,7 +4,7 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-@Controller('api/clients')
+@Controller('clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 

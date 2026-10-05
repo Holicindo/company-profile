@@ -13,12 +13,25 @@ export default function ContactPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [showMap, setShowMap] = useState(false);
+  const [showSubjectDropdown, setShowSubjectDropdown] = useState(false);
+  
+  const subjectOptions = [
+    t('Inquiry Produk', 'Product Inquiry'),
+    t('Request Penawaran', 'Request Quotation'),
+    t('Konsultasi Teknis', 'Technical Consultation'),
+    t('After Sales Service', 'After Sales Service'),
+    t('Lainnya', 'Other'),
+  ];
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm(p => ({ ...p, [e.target.name]: e.target.value }));
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.subject) {
+      setError(t('Silakan pilih subjek.', 'Please select a subject.'));
+      return;
+    }
     setLoading(true); setError('');
     try {
       await submitContact(form);
@@ -200,29 +213,57 @@ export default function ContactPage() {
                   ))}
                 </div>
 
-                <div>
-                  <label htmlFor="subject" className="block text-[9px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-3">
+                <div className="relative">
+                  <label className="block text-[9px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-3">
                     {t('Subjek', 'Subject')} <span className="text-neutral-900">*</span>
                   </label>
-                  <select
-                    id="subject" name="subject" required
-                    value={form.subject} onChange={onChange}
-                    className="w-full px-0 py-3 border-b border-neutral-300 bg-transparent text-neutral-900 text-sm focus:outline-none focus:border-[#2C1810] transition-all appearance-none cursor-pointer"
+                  <div 
+                    className="relative"
+                    tabIndex={0}
+                    onBlur={(e) => {
+                      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                        setShowSubjectDropdown(false);
+                      }
+                    }}
                   >
-                    <option value="" disabled hidden className="bg-white">
-                      {t('Pilih subjek', 'Select subject')}
-                    </option>
-                    {[
-                      t('Inquiry Produk', 'Product Inquiry'),
-                      t('Request Penawaran', 'Request Quotation'),
-                      t('Konsultasi Teknis', 'Technical Consultation'),
-                      t('After Sales Service', 'After Sales Service'),
-                      t('Lainnya', 'Other'),
-                    ].map(s => (
-                      <option key={s} value={s} className="bg-white">{s}</option>
-                    ))}
-                  </select>
+                    <div
+                      onClick={() => setShowSubjectDropdown(!showSubjectDropdown)}
+                      className="w-full px-0 py-3 border-b-2 border-neutral-300 bg-transparent text-sm transition-all cursor-pointer pr-6 flex items-center justify-between"
+                      style={{ 
+                        color: form.subject ? '#171717' : '#9ca3af',
+                        borderColor: showSubjectDropdown ? '#2C1810' : '#d4d4d8' 
+                      }}
+                    >
+                      <span>{form.subject || t('Pilih subjek', 'Select subject')}</span>
+                      <span className="text-[#2C1810] transition-transform duration-300" style={{ transform: showSubjectDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L1 3h10z"/></svg>
+                      </span>
+                    </div>
+
+                    {showSubjectDropdown && (
+                      <div className="absolute top-full left-0 min-w-[220px] w-max mt-1 bg-white border-2 border-[#2C1810] shadow-xl z-50 rounded-sm overflow-hidden">
+                        {subjectOptions.map(s => (
+                          <div
+                            key={s}
+                            tabIndex={0}
+                            onClick={() => {
+                              setForm(p => ({ ...p, subject: s }));
+                              setShowSubjectDropdown(false);
+                            }}
+                            className={`px-5 py-3 text-sm cursor-pointer transition-colors ${
+                              form.subject === s 
+                                ? 'bg-[#2C1810] text-[#C9A84C] font-bold' 
+                                : 'text-neutral-700 hover:bg-[#2C1810] hover:text-[#C9A84C]'
+                            }`}
+                          >
+                            {s}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
+
 
                 <div>
                   <label htmlFor="message" className="block text-[9px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-3">

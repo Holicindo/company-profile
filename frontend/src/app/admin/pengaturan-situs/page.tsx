@@ -72,7 +72,7 @@ export default function SiteSettingsPage() {
     setMessage('');
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('holic_admin_token');
       const res = await fetch(`${BACKEND_URL}/api/site-settings`, {
         method: 'PUT',
         headers: {

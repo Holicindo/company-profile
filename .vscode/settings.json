@@ -1,2 +1,11 @@
 {
+  "css.validate": false,
+  "scss.validate": false,
+  "css.customData": [],
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  }
 }

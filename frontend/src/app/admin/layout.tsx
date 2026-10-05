@@ -18,6 +18,7 @@ import {
   Home,
   Users,
   Wrench,
+  Star,
 } from 'lucide-react';
 
 const navItems = [
@@ -28,6 +29,7 @@ const navItems = [
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/products', label: 'Produk', icon: Package },
   { href: '/admin/portfolio', label: 'Portofolio', icon: ImageIcon },
+  { href: '/admin/klien', label: 'Klien', icon: Star },
   { href: '/admin/contacts', label: 'Pesan Masuk', icon: MessageSquare },
 ];
 
