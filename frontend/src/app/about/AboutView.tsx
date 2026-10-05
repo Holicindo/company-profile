@@ -132,22 +132,23 @@ export function AboutView({ initialData }: AboutViewProps) {
             </div>
           </div>
 
-          <div className="lg:col-span-5 relative bg-neutral-900 border border-neutral-300 rounded-xl overflow-hidden shadow-sm aspect-[4/3] sm:aspect-auto sm:min-h-[500px]">
+          <div className="lg:col-span-5 relative bg-neutral-100 border border-neutral-300 rounded-xl overflow-hidden shadow-sm">
             {warehouseSlides.map((slide: string, index: number) => (
               <div
                 key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentSlide ? 'opacity-100' : 'opacity-0'
+                className={`transition-opacity duration-1000 ${
+                  index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'
                 }`}
               >
                 <Image
                   src={slide}
                   alt={`Warehouse ${index + 1}`}
-                  fill
-                  className="object-cover"
+                  width={0}
+                  height={0}
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   quality={100}
                   unoptimized
+                  className="w-full h-auto block"
                 />
               </div>
             ))}
