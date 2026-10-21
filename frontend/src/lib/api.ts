@@ -108,6 +108,7 @@ export function getImageUrl(url?: string | null): string {
 export const getIndustryCategories = () => api.get('/industry-categories').then(r => r.data);
 export const getIndustryCategoryBySlug = (slug: string) => api.get(`/industry-categories/slug/${slug}`).then(r => r.data);
 export const getProductsByIndustryCategory = (slug: string) => api.get(`/industry-categories/slug/${slug}/products`).then(r => r.data);
+export const getIndustryCategoryProducts = (id: number) => api.get(`/industry-categories/${id}/products`).then(r => r.data);
 
 
 // ========================================
