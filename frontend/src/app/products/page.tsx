@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { getProductCategories, getProducts } from '@/lib/api';
+import { getProductCategories, getProducts, getIndustryCategories } from '@/lib/api';
 import { getCategorySeo } from '@/lib/seo-keywords';
 import { ProductsView } from './ProductsView';
 
-export async function generateMetadata(props: { searchParams: Promise<{ category?: string }> | { category?: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { searchParams: Promise<{ category?: string; solution?: string }> | { category?: string; solution?: string } }): Promise<Metadata> {
   const resolvedParams = await props.searchParams;
   const category = typeof resolvedParams?.category === 'string' ? resolvedParams.category : undefined;
   const seo = getCategorySeo(category);
@@ -23,21 +23,22 @@ function isCategoryAllowed(cat: any): boolean {
 }
 
 export default async function ProductsPage(props: {
-  searchParams: Promise<{ page?: string; search?: string; category?: string }> | { page?: string; search?: string; category?: string };
+  searchParams: Promise<{ page?: string; search?: string; category?: string; solution?: string }> | { page?: string; search?: string; category?: string; solution?: string };
 }) {
   const searchParams = await props.searchParams;
   const page = searchParams?.page ? parseInt(String(searchParams.page), 10) || 1 : 1;
   const category = typeof searchParams?.category === 'string' ? searchParams.category : undefined;
   const search = typeof searchParams?.search === 'string' ? searchParams.search : undefined;
+  const solution = typeof searchParams?.solution === 'string' ? searchParams.solution : undefined;
 
   const seoInfo = getCategorySeo(category);
   const limit = 24;
 
-  const [categories, rawData] = await Promise.all([
+  const [categories, rawData, industryCategories] = await Promise.all([
     getProductCategories().catch(() => []),
-    // When no category filter: fetch paginated allowed products directly from API
     getProducts({ page, limit, search, category })
       .catch(() => ({ items: [], total: 0, totalPages: 0 })),
+    getIndustryCategories().catch(() => []),
   ]);
 
   // Sidebar: hanya kategori utama yang allowed (Refrigerator & Showcase) beserta children-nya
@@ -51,7 +52,6 @@ export default async function ProductsPage(props: {
   });
 
   // When no specific category: client-side filter by allowed categories
-  // then re-paginate using the filtered subset
   let data = rawData;
   if (!category) {
     const allAllowed = (rawData.items || []).filter((p: any) => isCategoryAllowed(p.category));
@@ -59,9 +59,18 @@ export default async function ProductsPage(props: {
     const total = allAllowed.length;
     const totalPages = Math.ceil(total / limit) || 1;
     const start = (page - 1) * limit;
-    // total here is the accurate filtered count — no misleading numbers
     data = { items: allAllowed.slice(start, start + limit), total, totalPages };
   }
 
-  return <ProductsView data={data} roots={roots} category={category} page={page} seoInfo={seoInfo} />;
+  return (
+    <ProductsView 
+      data={data} 
+      roots={roots} 
+      category={category} 
+      page={page} 
+      seoInfo={seoInfo}
+      industryCategories={industryCategories}
+      solution={solution}
+    />
+  );
 }

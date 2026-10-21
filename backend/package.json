@@ -13,8 +13,12 @@
     "seed": "npx ts-node -r tsconfig-paths/register src/seeder/seed.ts",
     "seed:insights": "npx ts-node -r tsconfig-paths/register src/seeder/seed-insights.ts",
     "seed:pages": "npx ts-node -r tsconfig-paths/register src/seeder/seed-pages.ts",
+    "seed:industry-categories": "npx ts-node -r tsconfig-paths/register src/seeder/seed-industry-categories.ts",
+    "seed:solutions": "npx ts-node -r tsconfig-paths/register src/seeder/seed-solutions.ts",
     "update:views": "npx ts-node -r tsconfig-paths/register src/seeder/update-views.ts",
-    "update:categories": "npx ts-node -r tsconfig-paths/register src/seeder/update-categories.ts"
+    "update:categories": "npx ts-node -r tsconfig-paths/register src/seeder/update-categories.ts",
+    "migration:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/ormconfig.ts",
+    "migration:revert": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/ormconfig.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1136.0",
@@ -31,6 +35,7 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "dotenv": "^18.0.8",
     "multer": "^2.2.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

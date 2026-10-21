@@ -1,20 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
 import { ClientsMarquee } from '@/components/home/ClientsMarquee';
 import { useLanguage } from '@/context/LanguageContext';
 
 interface AboutViewProps {
   initialData?: any;
 }
-
-const DEFAULT_WAREHOUSE_SLIDES = [
-  '/images/about/warehouse-slide-01.jpg',
-  '/images/about/warehouse-slide-02.jpg',
-  '/images/about/warehouse-slide-03.jpg',
-  '/images/about/warehouse-slide-04.jpg',
-];
 
 const getDefaultFeatures = (t: any) => [
   {
@@ -43,40 +35,6 @@ export function AboutView({ initialData }: AboutViewProps) {
   const { t } = useLanguage();
   
   const DEFAULT_FEATURES = getDefaultFeatures(t);
-
-  const warehouseSlides = (initialData?.history?.warehouseSlides && initialData.history.warehouseSlides.length > 0)
-    ? initialData.history.warehouseSlides
-    : DEFAULT_WAREHOUSE_SLIDES;
-
-  // Mobile: single slideshow
-  const [currentSlide, setCurrentSlide] = useState(0);
-  // Desktop: Opsi A — pasangan bergantian [0,1] → [2,3] → [0,1]
-  const totalPairs = Math.ceil(warehouseSlides.length / 2);
-  const [currentPair, setCurrentPair] = useState(0);
-  const topSlide    = (currentPair * 2) % warehouseSlides.length;
-  const bottomSlide = (currentPair * 2 + 1) % warehouseSlides.length;
-
-  useEffect(() => {
-    if (currentSlide >= warehouseSlides.length) setCurrentSlide(0);
-  }, [warehouseSlides.length, currentSlide]);
-
-  // Mobile auto-advance
-  useEffect(() => {
-    if (warehouseSlides.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % warehouseSlides.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [warehouseSlides.length]);
-
-  // Desktop: ganti pasangan setiap 5 detik
-  useEffect(() => {
-    if (totalPairs <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentPair((prev) => (prev + 1) % totalPairs);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [totalPairs]);
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900">
@@ -113,8 +71,9 @@ export function AboutView({ initialData }: AboutViewProps) {
 
       {/* ── Main Container ── */}
       <div className="container-wide py-6 sm:py-10">
-        {/* ── Sejarah Perusahaan & Slideshow ── */}
+        {/* ── Sejarah Perusahaan & Visi ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 mb-8 sm:mb-16">
+          {/* Left Column: Sejarah Perusahaan */}
           <div className="lg:col-span-7 p-4 sm:p-10 lg:p-14 border border-neutral-200 bg-white">
             <h2 className="text-xl sm:text-4xl font-bold text-[#2C1810] tracking-tight mb-3 sm:mb-8">
               {t(
@@ -122,7 +81,7 @@ export function AboutView({ initialData }: AboutViewProps) {
                 initialData?.history?.titleEn || 'Company History'
               )}
             </h2>
-            <div className="space-y-3 sm:space-y-6 text-neutral-600 text-xs sm:text-lg leading-relaxed text-left sm:text-justify">
+            <div className="space-y-3 sm:space-y-6 text-neutral-800 text-xs sm:text-lg leading-relaxed text-left sm:text-justify font-semibold">
               {(initialData?.history?.paragraph1Id || initialData?.history?.paragraph1En || initialData?.history?.paragraph1 || initialData?.history?.paragraph2)
                 ? (
                   <>
@@ -146,124 +105,41 @@ export function AboutView({ initialData }: AboutViewProps) {
             </div>
           </div>
 
-          <div className="lg:col-span-5">
+          {/* Right Column: Visi (Compact, Cream Background) */}
+          <div className="lg:col-span-5 bg-[#F6F1E6] p-6 sm:p-8 lg:p-10 border border-neutral-200 rounded-xl">
+            <div className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 bg-[#2C1810] text-white text-xs sm:text-sm font-bold uppercase tracking-widest mb-4 sm:mb-6 rounded-sm">
+              {t('VISI', 'VISION')}
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C1810] tracking-tight leading-[1.2] mb-4 sm:mb-6">
+              {t('Lebih dari sekadar', 'More than')}<br />
+              {t('distributor mesin', 'a showcase')}<br />
+              <span className="text-[#C9A84C]">
+                {t('pendingin komersial.', 'manufacturer.')}
+              </span>
+            </h2>
 
-            {/* ── Mobile: single slideshow ── */}
-            <div className="lg:hidden relative bg-neutral-100 border border-neutral-300 rounded-xl overflow-hidden shadow-sm">
-              {warehouseSlides.map((slide: string, index: number) => (
-                <div
-                  key={index}
-                  className={`transition-opacity duration-1000 ${
-                    index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'
-                  }`}
-                >
-                  <Image
-                    src={slide}
-                    alt={`Warehouse ${index + 1}`}
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    quality={100}
-                    unoptimized
-                    className="w-full h-auto block"
-                  />
-                </div>
-              ))}
-              {warehouseSlides.length > 1 && (
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {warehouseSlides.map((_: any, index: number) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`h-1.5 rounded-full transition-all ${
-                        index === currentSlide ? 'bg-white w-5' : 'bg-white/50 w-1.5'
-                      }`}
-                      aria-label={`Go to slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
+            <div className="w-10 sm:w-12 h-[2px] bg-[#C9A84C] mb-4 sm:mb-5" />
+
+            <p className="text-[#2C1810] text-sm sm:text-base lg:text-lg font-bold leading-relaxed mb-4">
+              {t(
+                'Holicindo menghadirkan solusi display kustom yang membantu brand makanan mempresentasikan, menjaga, dan menjual produk mereka dengan lebih baik.',
+                'Holicindo creates custom display solutions that help food brands present, preserve, and sell their products better.'
               )}
-            </div>
+            </p>
 
-            {/* ── Desktop: Opsi A — pasangan bergantian ── */}
-            <div className="hidden lg:flex flex-col gap-3">
-              {/* Slot Atas */}
-              <div className="rounded-xl overflow-hidden border border-neutral-200 shadow-sm bg-neutral-100">
-                <Image
-                  key={`top-${currentPair}`}
-                  src={warehouseSlides[topSlide]}
-                  alt={`Warehouse ${topSlide + 1}`}
-                  width={0}
-                  height={0}
-                  sizes="42vw"
-                  quality={100}
-                  unoptimized
-                  className="w-full h-auto block animate-slide-reveal"
-                />
-              </div>
-              {/* Slot Bawah — hanya tampil jika ada gambar ke-2 dalam pasangan */}
-              {warehouseSlides.length > 1 && (
-                <div className="rounded-xl overflow-hidden border border-neutral-200 shadow-sm bg-neutral-100">
-                  <Image
-                    key={`bottom-${currentPair}`}
-                    src={warehouseSlides[bottomSlide]}
-                    alt={`Warehouse ${bottomSlide + 1}`}
-                    width={0}
-                    height={0}
-                    sizes="42vw"
-                    quality={100}
-                    unoptimized
-                    className="w-full h-auto block animate-slide-reveal"
-                  />
-                </div>
+            <p className="text-neutral-600 text-sm sm:text-base leading-relaxed mb-5">
+              {t(
+                'Di setiap proyek, Holicindo memadukan desain, manufaktur, instalasi, dan dukungan purna jual untuk menciptakan sistem display yang dibangun sesuai produk, ruang, dan kebutuhan bisnis setiap pelanggan.',
+                'With every project, Holicindo brings together design, manufacturing, installation, and after-sales support to create display systems built around each customer\'s products, space, and business needs.'
               )}
-            </div>
+            </p>
 
-          </div>
-        </div>
-
-        {/* ── Visi ── */}
-        <div className="mb-8 sm:mb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-16 items-start mb-4 sm:mb-8">
-            {/* Kolom Kiri: Badge + Judul */}
-            <div>
-              <div className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 bg-[#2C1810] text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-8 rounded-sm">
-                {t('VISI', 'VISION')}
-              </div>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#2C1810] tracking-tight leading-[1.2] mb-0">
-                {t('Lebih dari sekadar', 'More than')}<br />
-                {t('distributor mesin', 'a showcase')}<br />
-                <span className="text-[#C9A84C]">
-                  {t('pendingin komersial.', 'manufacturer.')}
-                </span>
-              </h2>
-            </div>
-
-            {/* Kolom Kanan: Garis + Deskripsi + Tagline */}
-            <div className="flex flex-col gap-3 sm:gap-5 pt-0 lg:pt-14">
-              <div className="w-10 sm:w-12 h-[2px] bg-[#C9A84C]" />
-
-              <p className="text-[#2C1810] text-xs sm:text-base font-bold leading-relaxed">
-                {t(
-                  'Holicindo menghadirkan solusi display kustom yang membantu brand makanan mempresentasikan, menjaga, dan menjual produk mereka dengan lebih baik.',
-                  'Holicindo creates custom display solutions that help food brands present, preserve, and sell their products better.'
-                )}
-              </p>
-
-              <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed">
-                {t(
-                  'Di setiap proyek, Holicindo memadukan desain, manufaktur, instalasi, dan dukungan purna jual untuk menciptakan sistem display yang dibangun sesuai produk, ruang, dan kebutuhan bisnis setiap pelanggan.',
-                  'With every project, Holicindo brings together design, manufacturing, installation, and after-sales support to create display systems built around each customer\'s products, space, and business needs.'
-                )}
-              </p>
-
-              <p
-                className="text-[#2C1810] text-lg sm:text-3xl leading-snug mt-1 sm:mt-2"
-                style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: 400 }}
-              >
-                {t('Menciptakan Pengalaman Display Makanan Terbaik', 'Creating Better Food Display Experiences')}
-              </p>
-            </div>
+            <p
+              className="text-[#2C1810] text-lg sm:text-xl lg:text-2xl leading-snug italic"
+              style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+            >
+              {t('Menciptakan Pengalaman Display Makanan Terbaik', 'Creating Better Food Display Experiences')}
+            </p>
           </div>
         </div>
 
@@ -272,28 +148,34 @@ export function AboutView({ initialData }: AboutViewProps) {
           <div className="absolute -left-4 top-0 w-72 h-72 bg-[#2C1810]/5 rounded-full blur-3xl"></div>
           <div className="relative">
             <div className="max-w-3xl mb-4 sm:mb-8">
-              <div className="inline-block px-3 py-0.5 sm:px-3.5 sm:py-1 bg-[#2C1810] text-white text-[9px] font-bold tracking-widest mb-2 sm:mb-6 rounded-full">
-                {t('Kustomisasi', 'Customization')}
+              <div className="inline-block px-3 py-0.5 sm:px-3.5 sm:py-1 bg-[#2C1810] text-white text-xs sm:text-sm font-bold tracking-widest mb-2 sm:mb-6 rounded-full">
+                {t(
+                  initialData?.customization?.badgeId || initialData?.customization?.badge || 'Kustomisasi',
+                  initialData?.customization?.badgeEn || 'Customization'
+                )}
               </div>
               <h2 className="text-xl sm:text-5xl font-bold text-[#2C1810] tracking-tight mb-2 sm:mb-6 leading-[1.15]">
-                {t('Layanan Kustomisasi Premium', 'Premium Customization Services')}
+                {t(
+                  initialData?.customization?.titleId || initialData?.customization?.title || 'Layanan Kustomisasi Premium',
+                  initialData?.customization?.titleEn || 'Premium Customization Services'
+                )}
               </h2>
               <p className="text-neutral-600 text-xs sm:text-base leading-relaxed">
                 {t(
-                  'Berbekal pengalaman lebih dari 20 tahun, kami menghadirkan layanan pembuatan showcase pendingin kustom dengan spesifikasi yang dirancang khusus untuk memaksimalkan potensi bisnis Anda.',
-                  'With over 20 years of experience, we offer custom refrigerated showcase manufacturing with specifications tailored to maximize your business potential.'
+                  initialData?.customization?.descriptionId || initialData?.customization?.description || 'Berbekal pengalaman lebih dari 20 tahun, kami menghadirkan layanan pembuatan showcase pendingin kustom dengan spesifikasi yang dirancang khusus untuk memaksimalkan potensi bisnis Anda.',
+                  initialData?.customization?.descriptionEn || 'With over 20 years of experience, we offer custom refrigerated showcase manufacturing with specifications tailored to maximize your business potential.'
                 )}
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8">
               <div className="lg:col-span-5">
-                <div className="relative rounded-xl bg-[#2C1810] aspect-square sm:aspect-auto sm:min-h-[500px]">
+                <div className="relative rounded-xl bg-[#F6F1E6] h-full min-h-[400px] sm:min-h-full overflow-hidden">
                   <Image
-                    src={'/images/about/showcase-hitam-bg3.png'}
+                    src={initialData?.customization?.showcaseImage || '/images/about/showcase-hitam-bg3.png'}
                     alt="Showcase dengan Panah Dimension"
                     fill
-                    className="object-contain p-4 sm:p-6"
+                    className="object-contain p-6 sm:p-8"
                     sizes="(max-width: 1024px) 100vw, 42vw"
                     quality={100}
                     unoptimized
@@ -301,19 +183,22 @@ export function AboutView({ initialData }: AboutViewProps) {
                 </div>
               </div>
 
-              <div className="lg:col-span-7 grid grid-cols-2 gap-2.5 sm:gap-6">
-                {DEFAULT_FEATURES.map((feat: any, idx: number, arr: any[]) => (
+              <div className="lg:col-span-7 grid grid-cols-2 gap-2.5 sm:gap-6 auto-rows-fr">
+                {((initialData?.customization?.features && initialData.customization.features.length > 0) 
+                  ? initialData.customization.features 
+                  : DEFAULT_FEATURES
+                ).map((feat: any, idx: number, arr: any[]) => (
                   <div
                     key={idx}
-                    className={`bg-white border-2 border-neutral-200 rounded-xl p-2.5 sm:p-6 hover:border-[#2C1810] transition-all ${
+                    className={`bg-white border-2 border-neutral-200 rounded-xl p-2.5 sm:p-6 hover:border-[#2C1810] transition-all flex flex-col ${
                       idx === arr.length - 1 && arr.length % 2 !== 0 ? 'col-span-2' : ''
                     }`}
                   >
                     <h3 className="font-bold text-[#2C1810] text-[11px] sm:text-lg mb-1 sm:mb-3">
-                      {feat.title}
+                      {t(feat.titleId || feat.title, feat.titleEn || feat.title)}
                     </h3>
-                    <p className="text-neutral-600 text-[10px] sm:text-base leading-snug sm:leading-relaxed">
-                      {feat.description || feat.desc}
+                    <p className="text-neutral-600 text-[10px] sm:text-base leading-snug sm:leading-relaxed flex-1">
+                      {t(feat.descriptionId || feat.description || feat.desc, feat.descriptionEn || feat.description || feat.desc)}
                     </p>
                   </div>
                 ))}

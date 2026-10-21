@@ -11,6 +11,8 @@ import { PagesModule } from './modules/pages/pages.module';
 import { SiteSettingsModule } from './modules/site-settings/site-settings.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { ContactSubjectsModule } from './modules/contact-subjects/contact-subjects.module';
+import { IndustryCategoriesModule } from './modules/industry-categories/industry-categories.module';
+import { SolutionsModule } from './modules/solutions/solutions.module';
 
 @Module({
   imports: [
@@ -51,6 +53,8 @@ import { ContactSubjectsModule } from './modules/contact-subjects/contact-subjec
     SiteSettingsModule,
     ClientsModule,
     ContactSubjectsModule,
+    IndustryCategoriesModule,
+    SolutionsModule,
   ],
 })
 export class AppModule {}

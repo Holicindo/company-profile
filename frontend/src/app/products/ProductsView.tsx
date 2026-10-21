@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Settings, Grid } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { CategoryGrid } from '@/components/products/CategoryGrid';
 
 import { useState } from 'react';
 
@@ -44,7 +45,7 @@ function isAllowedCategory(cat: any): boolean {
   );
 }
 
-export function ProductsView({ data, roots, category, page, seoInfo }: any) {
+export function ProductsView({ data, roots, category, page, seoInfo, industryCategories, solution }: any) {
   const { t } = useLanguage();
   const isShowcaseRelated = category === 'showcase' || ['cold-case', 'showcase-undercounter', 'show-case'].includes(category);
   const [showcaseOpen, setShowcaseOpen] = useState(true);
@@ -57,6 +58,11 @@ export function ProductsView({ data, roots, category, page, seoInfo }: any) {
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900">
+
+      {/* ── Category Grid (Landing) ── */}
+      {!category && !solution && industryCategories && industryCategories.length > 0 && (
+        <CategoryGrid categories={industryCategories} />
+      )}
 
       {/* ── Fokus Industri Kami ── */}
       <div id="industri" className="bg-dark-metallic border-b border-[#C9A84C]/20 py-8 sm:py-24">

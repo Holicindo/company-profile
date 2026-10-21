@@ -102,3 +102,44 @@ export function getImageUrl(url?: string | null): string {
   return `/${url}`;
 }
 
+
+
+// ================== INDUSTRY CATEGORIES ==================
+export const getIndustryCategories = () => api.get('/industry-categories').then(r => r.data);
+export const getIndustryCategoryBySlug = (slug: string) => api.get(`/industry-categories/slug/${slug}`).then(r => r.data);
+export const getProductsByIndustryCategory = (slug: string) => api.get(`/industry-categories/slug/${slug}/products`).then(r => r.data);
+
+
+// ========================================
+// Solutions API
+// ========================================
+
+export const getSolutions = async (): Promise<any[]> => {
+  const res = await api.get('/solutions');
+  return res.data;
+};
+
+export const getSolutionById = async (id: number): Promise<any> => {
+  const res = await api.get(`/solutions/${id}`);
+  return res.data;
+};
+
+export const getSolutionBySlug = async (slug: string): Promise<any> => {
+  const res = await api.get(`/solutions/slug/${slug}`);
+  return res.data;
+};
+
+export const getSolutionProducts = async (id: number): Promise<any[]> => {
+  const res = await api.get(`/solutions/${id}/products`);
+  return res.data;
+};
+
+export const getSolutionProductsBySlug = async (slug: string): Promise<any[]> => {
+  const res = await api.get(`/solutions/slug/${slug}/products`);
+  return res.data;
+};
+
+export const getLinkedProductIdsBySolution = async (id: number): Promise<number[]> => {
+  const res = await api.get(`/solutions/${id}/linked-products`);
+  return res.data;
+};

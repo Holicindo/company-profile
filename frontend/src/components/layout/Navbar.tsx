@@ -8,20 +8,54 @@ import { Menu, X, ChevronDown, Globe } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useLanguage } from '@/context/LanguageContext';
 
+type NavLink = {
+  label: string;
+  href?: string;
+  isHeader?: boolean;
+  children?: NavLink[];
+};
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
+  const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const { lang, setLang, t } = useLanguage();
   const pathname = usePathname();
 
-  const navLinks = [
+  const navLinks: NavLink[] = [
     { label: t('Beranda', 'Home'), href: '/' },
-    { label: t('Tentang Kami', 'About Us'), href: '/about' },
-    { label: t('Produk', 'Products'), href: '/products' },
-    { label: t('Layanan', 'Services'), href: '/services' },
-    { label: t('Pengalaman Proyek', 'Project Experiences'), href: '/projects' },
-    { label: t('Holic Insights', 'Holic Insights'), href: '/news' },
+    { 
+      label: t('Tentang Kami', 'About Us'), 
+      href: '/about',
+      children: [
+        { label: t('Layanan', 'Services'), href: '/services' },
+        { label: t('Pengalaman Proyek', 'Project Experiences'), href: '/projects' },
+      ]
+    },
+    { 
+      label: t('Katalog', 'Catalog'), 
+      href: '/products',
+      children: [
+        { 
+          label: t('PRODUK BY KATEGORI', 'PRODUCTS BY CATEGORY'),
+          isHeader: true,
+        },
+        { label: t('Bakery & Pastry', 'Bakery & Pastry'), href: '/products/industry/bakery-pastry' },
+        { label: t('Café & Beverage', 'Café & Beverage'), href: '/products/industry/cafe-beverage' },
+        { label: t('Restaurant & Hotel', 'Restaurant & Hotel'), href: '/products/industry/restaurant-hotel' },
+        { label: t('Retail & Supermarket', 'Retail & Supermarket'), href: '/products/industry/retail-supermarket' },
+        { 
+          label: t('SOLUSI BY INDUSTRI', 'SOLUTIONS BY INDUSTRY'),
+          isHeader: true,
+        },
+        { label: t('Estetika Display & Presisi Suhu', 'Display Aesthetics & Temperature Precision'), href: '/products?solution=estetika-display' },
+        { label: t('Ketahanan Dapur Komersial', 'Commercial Kitchen Durability'), href: '/products?solution=ketahanan-dapur' },
+        { label: t('Visibilitas & Kapasitas Ekstra', 'Visibility & Extra Capacity'), href: '/products?solution=visibilitas-kapasitas' },
+        { label: t('Kekuatan Produksi Massal', 'Mass Production Power'), href: '/products?solution=produksi-massal' },
+      ]
+    },
+    { label: t('Insights', 'Insights'), href: '/news' },
   ];
 
   useEffect(() => {
@@ -57,17 +91,62 @@ export function Navbar() {
             <div className="hidden md:flex items-center gap-5 lg:gap-7 justify-center flex-1">
               {navLinks.map(link => {
                 const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href));
+                const hasChildren = link.children && link.children.length > 0;
+                const isDropdownOpen = dropdown === link.href;
+                
                 return (
-                  <div key={link.href} className="relative"
-                    onMouseEnter={() => (link as any).children && setDropdown(link.href)}
-                    onMouseLeave={() => setDropdown(null)}>
-                    <Link href={link.href}
+                  <div 
+                    key={link.href} 
+                    className="relative"
+                    onMouseEnter={() => hasChildren && setDropdown(link.href)}
+                    onMouseLeave={() => setDropdown(null)}
+                  >
+                    <Link 
+                      href={link.href}
                       className={clsx(
                         "text-xs sm:text-[13px] md:text-sm font-bold uppercase tracking-wider transition-colors py-1.5 flex items-center gap-1 relative whitespace-nowrap",
                         isActive ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#C9A84C]" : "text-neutral-300 hover:text-white"
-                      )}>
-                      {link.label} {(link as any).children && <ChevronDown size={14} strokeWidth={2} />}
+                      )}
+                    >
+                      {link.label} 
+                      {hasChildren && <ChevronDown size={14} strokeWidth={2} className={clsx("transition-transform", isDropdownOpen && "rotate-180")} />}
                     </Link>
+
+                    {/* Dropdown Menu */}
+                    {hasChildren && isDropdownOpen && (
+                      <div className="absolute top-full left-0 pt-2 z-50">
+                        <div className="min-w-[280px] bg-[#2C1810] border border-[#C9A84C]/30 rounded-lg shadow-2xl overflow-hidden">
+                          {link.children.map((child, idx) => {
+                            if (child.isHeader) {
+                              return (
+                                <div
+                                  key={idx}
+                                  className="px-6 py-3 text-xs font-black uppercase tracking-[0.15em] text-[#C9A84C] bg-black/40 border-t border-[#C9A84C]/20 first:border-t-0"
+                                >
+                                  {child.label}
+                                </div>
+                              );
+                            }
+
+                            const isChildActive = child.href && pathname === child.href;
+                            return (
+                              <Link
+                                key={child.href}
+                                href={child.href!}
+                                className={clsx(
+                                  "block px-6 py-3.5 text-sm font-semibold transition-all",
+                                  isChildActive 
+                                    ? "bg-[#C9A84C] text-[#2C1810]" 
+                                    : "text-white hover:bg-[#C9A84C]/20 hover:pl-8"
+                                )}
+                              >
+                                {child.label}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -132,22 +211,74 @@ export function Navbar() {
         {/* Mobile Menu Drawer */}
         {open && (
           <div className="md:hidden absolute top-full left-0 right-0 w-full bg-dark-metallic border-t border-gold-subtle shadow-2xl z-50 flex flex-col justify-between overflow-y-auto max-h-[calc(100vh-60px)]">
-            <div className="py-2 flex flex-col divide-y divide-white/10">
+            <div className="py-2 flex flex-col">
               {navLinks.map(link => {
                 const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href));
+                const hasChildren = link.children && link.children.length > 0;
+                const isDropdownOpen = mobileDropdown === link.href;
+                
                 return (
-                  <Link 
-                    key={link.href} 
-                    href={link.href} 
-                    onClick={() => setOpen(false)}
-                    className={clsx(
-                      "px-6 py-4 text-xs font-bold uppercase tracking-widest flex items-center justify-between transition-all active:bg-white/10",
-                      isActive ? "text-white bg-white/10 border-l-[3px] border-[#C9A84C] pl-5" : "text-neutral-300 hover:text-white"
+                  <div key={link.href}>
+                    {/* Parent Link */}
+                    <div className="flex items-center border-t border-white/10">
+                      <Link 
+                        href={link.href} 
+                        onClick={(e) => {
+                          if (hasChildren) {
+                            e.preventDefault();
+                            setMobileDropdown(isDropdownOpen ? null : link.href);
+                          } else {
+                            setOpen(false);
+                          }
+                        }}
+                        className={clsx(
+                          "flex-1 px-6 py-4 text-xs font-bold uppercase tracking-widest flex items-center justify-between transition-all active:bg-white/10",
+                          isActive ? "text-white bg-white/10 border-l-[3px] border-[#C9A84C] pl-5" : "text-neutral-300"
+                        )}
+                      >
+                        <span>{link.label}</span>
+                        <div className="flex items-center gap-2">
+                          {isActive && !hasChildren && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          {hasChildren && <ChevronDown size={16} strokeWidth={2} className={clsx("transition-transform text-neutral-400", isDropdownOpen && "rotate-180")} />}
+                        </div>
+                      </Link>
+                    </div>
+
+                    {/* Dropdown Children */}
+                    {hasChildren && isDropdownOpen && (
+                      <div className="bg-black/20 border-t border-white/5">
+                        {link.children.map((child, idx) => {
+                          if (child.isHeader) {
+                            return (
+                              <div
+                                key={idx}
+                                className="px-6 py-3 pl-10 text-[11px] font-black uppercase tracking-[0.12em] text-[#C9A84C]"
+                              >
+                                {child.label}
+                              </div>
+                            );
+                          }
+
+                          const isChildActive = child.href && pathname === child.href;
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href!}
+                              onClick={() => setOpen(false)}
+                              className={clsx(
+                                "block px-6 py-3.5 pl-10 text-[13px] font-semibold transition-all active:bg-white/10 border-l-[3px]",
+                                isChildActive 
+                                  ? "text-white bg-white/10 border-[#C9A84C]" 
+                                  : "text-neutral-200 hover:text-white border-transparent"
+                              )}
+                            >
+                              {child.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
                     )}
-                  >
-                    <span>{link.label}</span>
-                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
-                  </Link>
+                  </div>
                 );
               })}
             </div>

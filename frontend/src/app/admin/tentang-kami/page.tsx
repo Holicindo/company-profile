@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Save, ArrowLeft, Loader2, Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
+import { Save, ArrowLeft, Loader2, Eye, EyeOff, Plus, Trash2, Languages } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { Toast } from '@/components/admin/Toast';
 import { BilingualInput } from '@/components/admin/BilingualInput';
@@ -33,6 +33,20 @@ export default function EditTentangKamiPage() {
   useEffect(() => {
     fetchPage();
   }, []);
+
+  // Helper function for translation
+  const translateText = async (text: string): Promise<string> => {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, from: 'id', to: 'en' })
+    });
+    const data = await res.json();
+    if (!data.result) {
+      throw new Error('Translation failed');
+    }
+    return data.result;
+  };
 
   const fetchPage = async () => {
     try {
@@ -99,7 +113,7 @@ export default function EditTentangKamiPage() {
       ...sections,
       customization: {
         ...sections.customization,
-        features: [...sections.customization.features, { title: '', description: '' }],
+        features: [...sections.customization.features, { titleId: '', titleEn: '', descriptionId: '', descriptionEn: '' }],
       },
     });
   };
@@ -387,17 +401,112 @@ export default function EditTentangKamiPage() {
                         <Trash2 size={16} />
                       </button>
                     </div>
-                    <div className="space-y-2">
-                      <input type="text" value={feature.title} onChange={e => {
-                        const newFeatures = [...sections.customization.features];
-                        newFeatures[idx].title = e.target.value;
-                        setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
-                      }} placeholder="Judul fitur" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold" />
-                      <textarea value={feature.description} onChange={e => {
-                        const newFeatures = [...sections.customization.features];
-                        newFeatures[idx].description = e.target.value;
-                        setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
-                      }} rows={2} placeholder="Deskripsi" className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm" />
+                    <div className="space-y-3">
+                      {/* Bilingual Title with Auto Translate */}
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className="block text-xs font-bold text-[#2C1810]/70 uppercase tracking-wide">Judul Fitur</label>
+                          <button
+                            onClick={async () => {
+                              const titleId = feature.titleId || feature.title || '';
+                              if (!titleId.trim()) {
+                                alert('Isi judul Indonesia terlebih dahulu');
+                                return;
+                              }
+                              try {
+                                const translated = await translateText(titleId);
+                                const newFeatures = [...sections.customization.features];
+                                newFeatures[idx].titleEn = translated;
+                                setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                              } catch (error) {
+                                console.error('Translation error:', error);
+                                alert('Gagal menerjemahkan. Coba lagi.');
+                              }
+                            }}
+                            className="flex items-center gap-1 px-2 py-1 bg-blue-500 text-white rounded text-xs font-bold hover:bg-blue-600 transition"
+                          >
+                            <Languages size={12} /> Auto Translate
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <input 
+                            type="text" 
+                            value={feature.titleId || feature.title || ''} 
+                            onChange={e => {
+                              const newFeatures = [...sections.customization.features];
+                              newFeatures[idx].titleId = e.target.value;
+                              newFeatures[idx].title = e.target.value; // backward compat
+                              setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                            }} 
+                            placeholder="Judul (ID)" 
+                            className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold focus:border-[#C9A84C] focus:outline-none" 
+                          />
+                          <input 
+                            type="text" 
+                            value={feature.titleEn || ''} 
+                            onChange={e => {
+                              const newFeatures = [...sections.customization.features];
+                              newFeatures[idx].titleEn = e.target.value;
+                              setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                            }} 
+                            placeholder="Title (EN)" 
+                            className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm font-semibold focus:border-[#C9A84C] focus:outline-none" 
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Bilingual Description with Auto Translate */}
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className="block text-xs font-bold text-[#2C1810]/70 uppercase tracking-wide">Deskripsi</label>
+                          <button
+                            onClick={async () => {
+                              const descId = feature.descriptionId || feature.description || '';
+                              if (!descId.trim()) {
+                                alert('Isi deskripsi Indonesia terlebih dahulu');
+                                return;
+                              }
+                              try {
+                                const translated = await translateText(descId);
+                                const newFeatures = [...sections.customization.features];
+                                newFeatures[idx].descriptionEn = translated;
+                                setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                              } catch (error) {
+                                console.error('Translation error:', error);
+                                alert('Gagal menerjemahkan. Coba lagi.');
+                              }
+                            }}
+                            className="flex items-center gap-1 px-2 py-1 bg-blue-500 text-white rounded text-xs font-bold hover:bg-blue-600 transition"
+                          >
+                            <Languages size={12} /> Auto Translate
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <textarea 
+                            value={feature.descriptionId || feature.description || ''} 
+                            onChange={e => {
+                              const newFeatures = [...sections.customization.features];
+                              newFeatures[idx].descriptionId = e.target.value;
+                              newFeatures[idx].description = e.target.value; // backward compat
+                              setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                            }} 
+                            rows={3} 
+                            placeholder="Deskripsi (ID)" 
+                            className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm focus:border-[#C9A84C] focus:outline-none resize-none" 
+                          />
+                          <textarea 
+                            value={feature.descriptionEn || ''} 
+                            onChange={e => {
+                              const newFeatures = [...sections.customization.features];
+                              newFeatures[idx].descriptionEn = e.target.value;
+                              setSections({ ...sections, customization: { ...sections.customization, features: newFeatures } });
+                            }} 
+                            rows={3} 
+                            placeholder="Description (EN)" 
+                            className="w-full px-3 py-2 bg-white border border-[#2C1810]/20 rounded-lg text-sm focus:border-[#C9A84C] focus:outline-none resize-none" 
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}

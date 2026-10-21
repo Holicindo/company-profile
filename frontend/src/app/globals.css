@@ -355,3 +355,28 @@
 .animate-slide-reveal {
   animation: slideReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* ── Swiper Custom Styling for About Page ── */
+.swiper-pagination-bullet {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: white !important;
+  width: 20px !important;
+}
+
+/* Ensure smooth fade transitions */
+.swiper-slide {
+  opacity: 0 !important;
+  transition: opacity 0.6s ease-in-out !important;
+}
+
+.swiper-slide-active {
+  opacity: 1 !important;
+}
