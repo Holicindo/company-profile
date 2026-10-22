@@ -145,8 +145,8 @@ export default function KategoriIndustriPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#2C1810] mb-2">Kategori Industri</h1>
-        <p className="text-[#2C1810]/60">Kelola kategori industri dan link produk terkait</p>
+        <h1 className="text-3xl font-bold text-[#2C1810] mb-2">Dropdown Solusi Industri</h1>
+        <p className="text-[#2C1810]/60">Kelola judul dan produk terkait untuk 3 kategori solusi di Dropdown Katalog</p>
       </div>
 
       {/* Categories Grid */}

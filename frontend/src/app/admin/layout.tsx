@@ -20,6 +20,7 @@ import {
   Wrench,
   Star,
   Lightbulb,
+  BookOpen,
 } from 'lucide-react';
 
 const navItems = [
@@ -29,8 +30,8 @@ const navItems = [
   { href: '/admin/layanan', label: 'Layanan', icon: Wrench },
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/products', label: 'Produk', icon: Package },
-  { href: '/admin/kategori-industri', label: 'Kategori Industri', icon: Package },
-  { href: '/admin/solusi-industri', label: 'Solusi Industri', icon: Lightbulb },
+  { href: '/admin/katalog', label: 'Katalog', icon: BookOpen },
+  { href: '/admin/kategori-industri', label: 'Dropdown Solusi Industri', icon: Lightbulb },
   { href: '/admin/portfolio', label: 'Portofolio', icon: ImageIcon },
   { href: '/admin/klien', label: 'Klien', icon: Star },
   { href: '/admin/contacts', label: 'Pesan Masuk', icon: MessageSquare },

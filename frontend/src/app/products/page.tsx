@@ -13,7 +13,7 @@ export async function generateMetadata(props: { searchParams: Promise<{ category
 export const revalidate = 3600; // ISR: revalidate every hour
 
 // Kata kunci nama kategori yang diizinkan (case-insensitive)
-const ALLOWED_KEYWORDS = ['showcase', 'refrigerator', 'blast freezer', 'blast-freezer', 'freezer', 'under', 'cold'];
+const ALLOWED_KEYWORDS = ['showcase', 'refrigerator', 'blast freezer', 'blast-freezer', 'freezer', 'under', 'cold', 'ice', 'bar'];
 
 function isCategoryAllowed(cat: any): boolean {
   if (!cat) return false;
@@ -41,12 +41,17 @@ export default async function ProductsPage(props: {
     getIndustryCategories().catch(() => []),
   ]);
 
-  // Sidebar: hanya kategori utama yang allowed (Refrigerator & Showcase) beserta children-nya
+  // Sidebar/Filter: hanya kategori utama yang allowed (Showcase, Refrigerator, Ice Maker, Bar System)
   const roots: any[] = [];
   categories.forEach((c: any) => {
     const slug = (c.slug || '').toLowerCase();
     const name = (c.name || '').toLowerCase();
-    if (slug === 'refrigerator' || name === 'refrigerator' || slug === 'showcase' || name === 'showcase') {
+    if (
+      slug === 'refrigerator' || name === 'refrigerator' || 
+      slug === 'showcase' || name === 'showcase' ||
+      slug === 'icemaker' || slug === 'ice-maker' || name.includes('ice maker') ||
+      slug === 'bar-system' || slug === 'bar-systems' || name.includes('bar')
+    ) {
       roots.push(c);
     }
   });

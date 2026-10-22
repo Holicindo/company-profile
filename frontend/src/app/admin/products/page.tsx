@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { AdminSelect } from '@/components/admin/AdminSelect';
 
+import { useSearchParams } from 'next/navigation';
+
 interface Product {
   id: number;
   name: string;
@@ -28,6 +30,9 @@ interface Category {
 }
 
 export default function AdminProductsPage() {
+  const searchParams = useSearchParams();
+  const urlCategory = searchParams?.get('category') || '';
+
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [total, setTotal] = useState(0);
@@ -36,7 +41,13 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<number | null>(null);
   const [search, setSearch] = useState('');
-  const [filterCat, setFilterCat] = useState('');
+  const [filterCat, setFilterCat] = useState(urlCategory);
+
+  useEffect(() => {
+    if (urlCategory) {
+      setFilterCat(urlCategory);
+    }
+  }, [urlCategory]);
   const LIMIT = 15;
 
   const load = useCallback(async () => {
@@ -98,28 +109,58 @@ export default function AdminProductsPage() {
         </Link>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C1810]/40" />
-          <input
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Cari produk..."
-            className="w-full pl-10 pr-4 py-2.5 border-2 border-[#2C1810]/20 rounded-xl text-sm text-[#2C1810] placeholder:text-[#2C1810]/40 focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50 focus:border-[#B8941E]/50 transition bg-white"
+      {/* Category Tabs & Search */}
+      <div className="space-y-3">
+        {/* Horizontal Category Tabs */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {[
+            { slug: '', label: 'Semua Produk' },
+            { slug: 'showcase', label: 'Showcase' },
+            { slug: 'refrigerator', label: 'Refrigerator' },
+            { slug: 'icemaker', label: 'Ice Maker' },
+            { slug: 'bar-system', label: 'Bar System' },
+          ].map((cat) => {
+            const isActive = filterCat === cat.slug;
+            return (
+              <button
+                key={cat.slug}
+                type="button"
+                onClick={() => setFilterCat(cat.slug)}
+                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl transition-all border-2 ${
+                  isActive
+                    ? 'bg-[#2C1810] text-[#C9A84C] border-[#2C1810] shadow-md'
+                    : 'bg-white text-[#2C1810]/70 border-[#2C1810]/20 hover:border-[#2C1810] hover:text-[#2C1810]'
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Search & Sub-category Select */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C1810]/40" />
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Cari produk..."
+              className="w-full pl-10 pr-4 py-2.5 border-2 border-[#2C1810]/20 rounded-xl text-sm text-[#2C1810] placeholder:text-[#2C1810]/40 focus:outline-none focus:ring-2 focus:ring-[#B8941E]/50 focus:border-[#B8941E]/50 transition bg-white"
+            />
+          </div>
+          <AdminSelect
+            value={filterCat}
+            onChange={val => { setFilterCat(val); }}
+            placeholder="Pilih Spesifik Kategori..."
+            options={[
+              { value: '', label: 'Semua Kategori' },
+              ...categories.map(c => ({ value: c.slug, label: c.name })),
+            ]}
+            className="min-w-[200px]"
           />
         </div>
-        <AdminSelect
-          value={filterCat}
-          onChange={val => { setFilterCat(val); }}
-          placeholder="Semua Kategori"
-          options={[
-            { value: '', label: 'Semua Kategori' },
-            ...categories.map(c => ({ value: c.slug, label: c.name })),
-          ]}
-          className="min-w-[180px]"
-        />
       </div>
 
       <div className="bg-gradient-to-br from-[#FAF7F0] to-[#F5F1E8] rounded-2xl border-2 border-[#2C1810] shadow-2xl overflow-hidden">
