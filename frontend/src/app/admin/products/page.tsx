@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { fetchAdminProducts, fetchCategories, deleteProduct } from '@/lib/admin-api';
 import {
@@ -29,7 +29,7 @@ interface Category {
   slug: string;
 }
 
-export default function AdminProductsPage() {
+function AdminProductsContent() {
   const searchParams = useSearchParams();
   const urlCategory = searchParams?.get('category') || '';
 
@@ -268,5 +268,17 @@ export default function AdminProductsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#C9A84C]" />
+      </div>
+    }>
+      <AdminProductsContent />
+    </Suspense>
   );
 }
