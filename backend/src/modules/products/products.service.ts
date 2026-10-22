@@ -114,7 +114,17 @@ export class ProductsService {
       .skip((page - 1) * limit)
       .take(limit);
     if (search) qb.andWhere('(p.name ILIKE :s OR p.sku ILIKE :s)', { s: `%${search}%` });
-    if (category) qb.andWhere('cat.slug = :category', { category });
+    if (category) {
+      const allCats = await this.categoryRepo.find();
+      const cat = allCats.find(c => c.slug === category);
+      if (cat) {
+        const childIds = allCats.filter(c => c.parentId === cat.id).map(c => c.id);
+        const ids = [cat.id, ...childIds];
+        qb.andWhere('p.categoryId IN (:...ids)', { ids });
+      } else {
+        qb.andWhere('cat.slug = :category', { category });
+      }
+    }
     const [items, total] = await qb.getManyAndCount();
     // Transform image URLs for admin panel
     items.forEach(item => this.transformProduct(item));

@@ -35,24 +35,23 @@ export function Navbar() {
     },
     { 
       label: t('Katalog', 'Catalog'), 
-      href: '/products',
+      href: '/catalog',
       children: [
         { 
           label: t('PRODUK BY KATEGORI', 'PRODUCTS BY CATEGORY'),
           isHeader: true,
         },
-        { label: t('Bakery & Pastry', 'Bakery & Pastry'), href: '/products/industry/bakery-pastry' },
-        { label: t('Café & Beverage', 'Café & Beverage'), href: '/products/industry/cafe-beverage' },
-        { label: t('Restaurant & Hotel', 'Restaurant & Hotel'), href: '/products/industry/restaurant-hotel' },
-        { label: t('Retail & Supermarket', 'Retail & Supermarket'), href: '/products/industry/retail-supermarket' },
+        { label: t('Showcase', 'Showcase'), href: '/products?category=showcase' },
+        { label: t('Refrigerator', 'Refrigerator'), href: '/products?category=refrigerator' },
+        { label: t('Ice Maker', 'Ice Maker'), href: '/products?category=icemaker' },
+        { label: t('Bar System', 'Bar System'), href: '/products?category=bar-system' },
         { 
           label: t('SOLUSI BY INDUSTRI', 'SOLUTIONS BY INDUSTRY'),
           isHeader: true,
         },
-        { label: t('Estetika Display & Presisi Suhu', 'Display Aesthetics & Temperature Precision'), href: '/products?solution=estetika-display' },
-        { label: t('Ketahanan Dapur Komersial', 'Commercial Kitchen Durability'), href: '/products?solution=ketahanan-dapur' },
-        { label: t('Visibilitas & Kapasitas Ekstra', 'Visibility & Extra Capacity'), href: '/products?solution=visibilitas-kapasitas' },
-        { label: t('Kekuatan Produksi Massal', 'Mass Production Power'), href: '/products?solution=produksi-massal' },
+        { label: t('Bakery and Pastry Brands', 'Bakery and Pastry Brands'), href: '/products/industry/bakery-pastry' },
+        { label: t('Coffee Chains & Dessert Boutique', 'Coffee Chains & Dessert Boutique'), href: '/products/industry/coffee-dessert' },
+        { label: t('Retail Supermarket & Food Service', 'Retail Supermarket & Food Service'), href: '/products/industry/retail-supermarket' },
       ]
     },
     { label: t('Insights', 'Insights'), href: '/news' },
