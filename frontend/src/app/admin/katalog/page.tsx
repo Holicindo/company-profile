@@ -1,29 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
   BookOpen,
   Eye,
   ExternalLink,
-  RefreshCw,
-  Store,
-  Coffee,
-  ShoppingBag,
-  Archive,
-  Zap,
-  Wine,
-  ThermometerSnowflake,
-  ChevronDown,
-  ChevronRight,
+  Save,
   CheckCircle2,
   Sparkles,
   Info,
-  Layers,
+  Loader2,
+  SlidersHorizontal,
+  ChevronRight,
+  Store,
+  Coffee,
+  ShoppingBag,
+  Zap,
+  Wine,
+  Archive,
+  ThermometerSnowflake,
+  Upload,
 } from 'lucide-react';
-
-// ── Types ──────────────────────────────────────────────────────────────────────
+import ImageUpload from '@/components/admin/ImageUpload';
 
 type Sector = 'bakery' | 'cafe' | 'supermarket';
 type Priority = 'display' | 'storage' | 'ice' | 'bar';
@@ -42,555 +42,767 @@ interface RecommendedCard {
   sampleProductsCount: string;
 }
 
-// ── Static Data (mirrors CatalogView.tsx) ─────────────────────────────────────
-
-const sectors = [
-  { id: 'bakery' as Sector, label: 'Bakery & Pastry', sub: 'Cake, roti & artisan pastry', icon: Store },
-  { id: 'cafe' as Sector, label: 'Coffee Shop & Beverage', sub: 'Specialty cafe, bar & lounge', icon: Coffee },
-  { id: 'supermarket' as Sector, label: 'Supermarket & Food Service', sub: 'Retail swalayan, resto & hotel', icon: ShoppingBag },
-];
-
-const priorities = [
-  { id: 'display' as Priority, label: 'Display & Estetika Visual', desc: 'Showcase kaca bening anti-embun untuk display produk', icon: Eye, cat: 'Showcase' },
-  { id: 'storage' as Priority, label: 'Penyimpanan Dapur (Storage)', desc: 'Chiller / freezer SUS304 tangguh untuk stok bahan baku', icon: Archive, cat: 'Refrigerator' },
-  { id: 'ice' as Priority, label: 'Produksi Es Otomatis', desc: 'Mesin es higienis kristal kubus / flake continue', icon: Zap, cat: 'Ice Maker' },
-  { id: 'bar' as Priority, label: 'Bar Counter & Station', desc: 'Undercounter modular untuk workstation barista/bartender', icon: Wine, cat: 'Bar System' },
-];
-
-const scales = [
-  { id: 'compact' as Scale, label: 'Outlet Compact', desc: '1 - 2 Meter Counter' },
-  { id: 'medium' as Scale, label: 'Kapasitas Sedang', desc: 'Operasional Harian Aktif' },
-  { id: 'high' as Scale, label: 'Kapasitas Besar / Chain', desc: 'High Volume Continuous' },
-];
-
-// ── Recommendation Matrix (matches CatalogView.tsx exactly) ───────────────────
-
-function getRecommendation(priority: Priority, sector: Sector, scale: Scale): RecommendedCard {
-  if (priority === 'ice') {
-    if (scale === 'compact') return {
-      categoryTitle: 'Ice Maker Series', categorySlug: 'icemaker',
-      unitName: 'Commercial Compact Ice Maker 35-50 kg', unitModel: 'Model: AC-80X Compact Series',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/AC80X.png',
-      tag: 'Kapasitas Compact (Outlet Kecil)', temp: '-2°C ~ 0°C Output Es',
-      highlightSpecs: ['Produksi harian 35 - 50 kg/24 jam, hemat daya & space', 'Bin penyimpanan es terintegrasi (kapasitas 15-20 kg)', 'Siklus pembekuan cepat & auto-cleaning higienis'],
-      description: 'Sangat ideal untuk coffee shop compact, booth minuman, dan cafe dengan kebutuhan es harian ringan.',
-      sampleProductsCount: '37+ Unit Model Tersedia',
-    };
-    if (scale === 'medium') return {
-      categoryTitle: 'Ice Maker Series', categorySlug: 'icemaker',
-      unitName: 'Commercial Modular Ice Maker 80-120 kg', unitModel: 'Model: AP-0.6 Ice Maker Series',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/12/Ap-0.6-Ice-maker.png',
-      tag: 'Kapasitas Sedang (Resto & Coffee Shop)', temp: '-2°C ~ 0°C Output Es Kristal',
-      highlightSpecs: ['Produksi es 80 - 120 kg/24 jam untuk pesanan tinggi', 'Evaporator Food-Grade SUS304 anti-karat & higienis', 'Alarm sensor otomatis bila air habis atau bin penuh'],
-      description: 'Pilihan standar untuk restoran, cafe aktif, dan bar dengan aliran pesanan minuman dingin terus-menerus.',
-      sampleProductsCount: '37+ Unit Model Tersedia',
-    };
-    return {
-      categoryTitle: 'Ice Maker Series', categorySlug: 'icemaker',
-      unitName: 'Industrial Scale / Flake Ice Machine 600 kg', unitModel: 'Model: Industrial Ice Flake SUS304 (600kg/24h)',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/12/Ap-0.6-Ice-maker.png',
-      tag: 'Kapasitas Besar / Chain (Heavy Duty)', temp: '-3°C ~ 0°C High Output',
-      highlightSpecs: ['Kapasitas masif 600 kg / 24 jam produksi non-stop', 'Heavy-duty kompresor industri untuk operasional 24 jam', 'Cocok untuk central kitchen, supermarket segar, & hotel'],
-      description: 'Mesin es kapasitas ekstra besar untuk menyuplai cabang usaha, display seafood supermarket, atau hotel.',
-      sampleProductsCount: '37+ Unit Model Tersedia',
-    };
-  }
-
-  if (priority === 'bar') {
-    if (scale === 'compact') return {
-      categoryTitle: 'Bar System & Station', categorySlug: 'bar-system',
-      unitName: 'Bar Undercounter Chiller 1 Door (150 L)', unitModel: 'Model: Bar Refrigerator CA-50 Compact',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/Bar-Refrigerator-CA-50-e1640740274919.png',
-      tag: 'Kapasitas Compact (Barista Station 1-2m)', temp: '+2°C ~ +8°C Chiller Section',
-      highlightSpecs: ['Dimensi ramping 900mm menghemat area counter bar', 'Drainage otomatis dengan frost auto-evaporation tanpa buang air', 'Pintu solid atau kaca display dengan interior LED'],
-      description: 'Dirancang pas untuk bar counter kecil, coffee booth, dan lounge dengan area terbatas.',
-      sampleProductsCount: 'Pilihan Modular Compact',
-    };
-    if (scale === 'medium') return {
-      categoryTitle: 'Bar System & Station', categorySlug: 'bar-system',
-      unitName: 'Bar Undercounter Chiller 2 Door (220 L)', unitModel: 'Model: Bar Refrigerator CA-90 Standard',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/Bar-Refrigerator-CA-90.png',
-      tag: 'Kapasitas Sedang (Alur Kerja Barista Efisien)', temp: '+2°C ~ +8°C Chiller Section',
-      highlightSpecs: ['Kapasitas 220 Liter dengan 2 pintu modular SUS304', 'Worktop stainless datar dapat difungsikan meja prep & grinder', 'Sistem hembusan dingin merata menjaga susu & garnish segar'],
-      description: 'Konfigurasi terfavorit untuk coffee shop dan bar komersial dengan alur kerja dua barista.',
-      sampleProductsCount: '3 Unit Model Bar System',
-    };
-    return {
-      categoryTitle: 'Bar System & Station', categorySlug: 'bar-system',
-      unitName: 'Custom Ergonomic High-Capacity Bar Station 3 Door', unitModel: 'Model: Multi-Station Integrated Bar System SUS304',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/Bar-Refrigerator-CA-90.png',
-      tag: 'Kapasitas Besar / Chain (Multi-Barista Station)', temp: '+2°C ~ +8°C (Multi-Compartment)',
-      highlightSpecs: ['Panjang counter 1.8m - 2.4m dengan 3 kompartemen pendingin', 'Dapat diintegrasikan dengan sink, ice well, blender station, & speed rail', 'Material Full SUS304 tebal tahan benturan jam kerja sibuk'],
-      description: 'Stasiun bar komplit untuk gerai minuman high-volume chain, beach club, atau hotel lounge.',
-      sampleProductsCount: 'Kustom Modular Sesuai Layout',
-    };
-  }
-
-  if (priority === 'display' || sector === 'bakery') {
-    if (scale === 'compact') return {
-      categoryTitle: 'Showcase Series', categorySlug: 'showcase',
-      unitName: 'Arc Display Case 3 Layer (900mm Compact)', unitModel: 'Model: Arc Display Case 3 Layer',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/1791187983563-618972.png',
-      tag: 'Kapasitas Compact (Panjang 90cm)', temp: '+2°C ~ +6°C (Cake) / +16°C ~ +18°C (Chocolate)',
-      highlightSpecs: ['Dimensi kompak lebar 900mm dengan 3 tingkat rak display', 'Kaca lengkung berpemanas (anti-fog) jernih dari segala sudut', 'Sirkulasi lembut anti-kering untuk menjaga kelembutan cake'],
-      description: 'Sangat cocok untuk outlet pastry minimalis, dessert boutique, atau counter kasir cafe.',
-      sampleProductsCount: '57+ Unit Model Showcase',
-    };
-    if (scale === 'medium') return {
-      categoryTitle: 'Showcase Series', categorySlug: 'showcase',
-      unitName: 'OI Standalone Curved Glass Display Case (1200-1500mm)', unitModel: 'Model: OI Curved Double Glass 1200mm',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/1790837974818-591994.png',
-      tag: 'Kapasitas Sedang (Panjang 1.2 - 1.5 Meter)', temp: '+2°C ~ +8°C Presisi Kelembapan Tinggi',
-      highlightSpecs: ['Kapasitas pajang luas 1200mm - 1500mm dengan 3-4 layer rak', 'Pencahayaan LED warm premium memikat mata pelanggan', 'Double-glazed heated glass tahan kondensasi iklim tropis'],
-      description: 'Standar pilihan bakery dan coffee shop modern untuk memajang puluhan varian cake & pastry.',
-      sampleProductsCount: '57+ Unit Model Showcase',
-    };
-    return {
-      categoryTitle: 'Showcase Series', categorySlug: 'showcase',
-      unitName: 'M5 Standalone Rectangular Display Case [Front Door]', unitModel: 'Model: M5 High-Capacity Front-Door Heavy Duty',
-      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/1790839236901-852207.png',
-      tag: 'Kapasitas Besar / Chain (Panjang 1.8 Meter)', temp: '+2°C ~ +8°C (Display Komersial)',
-      highlightSpecs: ['Panjang 1800mm dengan volume pajang masif untuk ratusan produk', 'Sistem bukaan pintu depan/belakang mempermudah refill staf', 'Struktur stainless steel SUS304 kokoh berstandar supermarket & chain'],
-      description: 'Dirancang untuk bakery ternama, supermarket modern, dan gerai pastry dengan varian menu berlimpah.',
-      sampleProductsCount: '57+ Unit Model Showcase',
-    };
-  }
-
-  // Refrigerator / Storage
-  if (scale === 'compact') return {
-    categoryTitle: 'Commercial Refrigerator', categorySlug: 'refrigerator',
-    unitName: 'Under Counter Chiller 2 Door 320/230 Liter', unitModel: 'Model: LREP-120 Undercounter SUS304',
-    unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/LREP-120-1.png',
-    tag: 'Kapasitas Compact (Undercounter Dapur 2 Pintu)', temp: '-2°C ~ +8°C (Chiller Penyimpanan)',
-    highlightSpecs: ['Hemat tempat dengan fungsi ganda meja persiapan bahan baku', 'Konstruksi full Stainless Steel SUS304 luar-dalam', 'Digital controller presisi dengan sistem defrost otomatis'],
-    description: 'Solusi penyimpanan dapur kompak untuk menyimpan dairy, saus, dan sayuran tepat di bawah meja masak.',
-    sampleProductsCount: '56+ Unit Model Refrigerator',
+interface KatalogSections {
+  hero: {
+    badge: string;
+    title: string;
+    description: string;
   };
-  if (scale === 'medium') return {
-    categoryTitle: 'Commercial Refrigerator', categorySlug: 'refrigerator',
-    unitName: 'Upright Chiller / Freezer 2 Door (600 L)', unitModel: 'Model: SRWP-70 Upright Commercial',
-    unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/SRWP-70.png',
-    tag: 'Kapasitas Sedang (Upright 2 Pintu 600 Liter)', temp: '-2°C ~ +8°C (Chiller) / -18°C ~ -22°C (Freezer)',
-    highlightSpecs: ['Kapasitas 600 Liter dengan rak kawat heavy-duty berlapis PE', 'Kompresor tropikalisasi handal di suhu dapur panas hingga +43°C', 'Pintu self-closing dengan gasket magnetik kedap suhu'],
-    description: 'Standar utama dapur restoran dan kafe untuk stok harian bahan baku daging, unggas, dan bahan segar.',
-    sampleProductsCount: '56+ Unit Model Refrigerator',
-  };
-  return {
-    categoryTitle: 'Commercial Refrigerator', categorySlug: 'refrigerator',
-    unitName: 'Upright Chiller / Freezer 4 Door (1050 - 1350 L)', unitModel: 'Model: SRWP-140 / CT-SEP-120 4-Doors',
-    unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/SRWP-140.png',
-    tag: 'Kapasitas Besar / Chain (Upright 4 Pintu 1050+ Liter)', temp: '-18°C ~ -22°C (Freezer) / -2°C ~ +8°C (Chiller)',
-    highlightSpecs: ['Kapasitas masif 1050 - 1350 Liter dengan 4 pintu terpisah hemat energi', 'Dual-zone kompartemen independen untuk chiller dan freezer', 'Sistem pendingin sirkulasi paksa (ventilated cooling) super cepat'],
-    description: 'Pendingin kapasitas masif untuk central kitchen, hotel berbintang, dan restoran berkapasitas ratusan porsi per hari.',
-    sampleProductsCount: '56+ Unit Model Refrigerator',
-  };
+  sectors: Array<{ id: string; label: string; sub: string }>;
+  priorities: Array<{ id: string; label: string; desc: string; cat: string }>;
+  scales: Array<{ id: string; label: string; desc: string }>;
+  recommendations: Record<string, RecommendedCard>;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+const defaultSections: KatalogSections = {
+  hero: {
+    badge: 'KATALOG & ADVISOR PERALATAN 2026',
+    title: 'Temukan Unit Pendingin Tepat untuk Kebutuhan Bisnis Anda.',
+    description:
+      'Pilih sektor usaha, prioritas operasional, dan kapasitas outlet Anda. Sistem rekomendasi kami akan menampilkan pilihan unit commercial display & refrigeration paling ideal.',
+  },
+  sectors: [
+    { id: 'bakery', label: 'Bakery & Pastry', sub: 'Cake, roti & artisan pastry' },
+    { id: 'cafe', label: 'Coffee Shop & Beverage', sub: 'Specialty cafe, bar & lounge' },
+    { id: 'supermarket', label: 'Supermarket & Food Service', sub: 'Retail swalayan, resto & hotel' },
+  ],
+  priorities: [
+    { id: 'display', label: 'Display & Estetika Visual', desc: 'Showcase kaca bening anti-embun untuk display produk', cat: 'Showcase' },
+    { id: 'storage', label: 'Penyimpanan Dapur (Storage)', desc: 'Chiller / freezer SUS304 tangguh untuk stok bahan baku', cat: 'Refrigerator' },
+    { id: 'ice', label: 'Produksi Es Otomatis', desc: 'Mesin es higienis kristal kubus / flake continue', cat: 'Ice Maker' },
+    { id: 'bar', label: 'Bar Counter & Station', desc: 'Undercounter modular untuk workstation barista/bartender', cat: 'Bar System' },
+  ],
+  scales: [
+    { id: 'compact', label: 'Outlet Compact', desc: '1 - 2 Meter Counter' },
+    { id: 'medium', label: 'Kapasitas Sedang', desc: 'Operasional Harian Aktif' },
+    { id: 'high', label: 'Kapasitas Besar / Chain', desc: 'High Volume Continuous' },
+  ],
+  recommendations: {},
+};
 
 export default function AdminKatalogPage() {
-  const [sector, setSector] = useState<Sector>('cafe');
-  const [priority, setPriority] = useState<Priority>('display');
-  const [scale, setScale] = useState<Scale>('medium');
-  const [expandedSection, setExpandedSection] = useState<string | null>('hero');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [pageId, setPageId] = useState<number | null>(null);
+  const [status, setStatus] = useState<'published' | 'draft'>('published');
+  const [sections, setSections] = useState<KatalogSections>(defaultSections);
 
-  const recommendation = getRecommendation(priority, sector, scale);
+  // Active Simulator/Editor Selector State
+  const [selectedSector, setSelectedSector] = useState<Sector>('cafe');
+  const [selectedPriority, setSelectedPriority] = useState<Priority>('display');
+  const [selectedScale, setSelectedScale] = useState<Scale>('medium');
 
-  const toggleSection = (key: string) =>
-    setExpandedSection(prev => (prev === key ? null : key));
+  // Active tab in edit form
+  const [activeTab, setActiveTab] = useState<'advisor' | 'hero' | 'sectors' | 'priorities'>('advisor');
 
-  const SectionHeader = ({ id, title, icon: Icon, badge }: { id: string; title: string; icon: any; badge?: string }) => (
-    <button
-      type="button"
-      onClick={() => toggleSection(id)}
-      className="w-full flex items-center justify-between p-4 text-left hover:bg-[#3d2817]/20 transition-colors rounded-xl"
-    >
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-[#C9A84C]/10 rounded-lg">
-          <Icon size={16} className="text-[#C9A84C]" />
-        </div>
-        <div>
-          <p className="font-semibold text-[#2C1810] text-sm">{title}</p>
-          {badge && <p className="text-xs text-neutral-500 mt-0.5">{badge}</p>}
-        </div>
+  // Fetch Page Data from Backend
+  useEffect(() => {
+    fetchPageData();
+  }, []);
+
+  const fetchPageData = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/pages/slug/katalog');
+      if (res.ok) {
+        const data = await res.json();
+        setPageId(data.id);
+        setStatus(data.status || 'published');
+        if (data.sections) {
+          setSections({
+            hero: { ...defaultSections.hero, ...(data.sections.hero || {}) },
+            sectors: data.sections.sectors || defaultSections.sectors,
+            priorities: data.sections.priorities || defaultSections.priorities,
+            scales: data.sections.scales || defaultSections.scales,
+            recommendations: data.sections.recommendations || {},
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load katalog page data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Recommendation lookup helper
+  const recKey = `${selectedPriority}-${selectedScale}`;
+  const recKeyWithSector = `${selectedPriority}-${selectedSector}-${selectedScale}`;
+  const currentKey = sections.recommendations?.[recKeyWithSector] ? recKeyWithSector : recKey;
+
+  const currentRec: RecommendedCard = sections.recommendations?.[currentKey] ||
+    sections.recommendations?.[recKeyWithSector] ||
+    sections.recommendations?.[recKey] || {
+      categoryTitle: 'Commercial Equipment',
+      categorySlug: 'showcase',
+      unitName: 'Unit Komersial Holicindo',
+      unitModel: 'Model Standar',
+      unitImage: 'https://holicindo-web-storage.s3.ap-southeast-1.amazonaws.com/uploads/2021/11/cake-showcase-curved.png',
+      tag: 'Kapasitas Sedang',
+      temp: '+2°C ~ +8°C',
+      highlightSpecs: ['Pendinginan cepat & merata', 'Material food-grade SUS304', 'Garansi resmi 1 tahun'],
+      description: 'Unit pendingin komersial standar dengan efisiensi tinggi untuk kebutuhan outlet Anda.',
+      sampleProductsCount: '50+ Unit Model Tersedia',
+    };
+
+  const handleUpdateCurrentRec = (fields: Partial<RecommendedCard>) => {
+    const targetKey =
+      selectedPriority === 'ice' || selectedPriority === 'bar'
+        ? `${selectedPriority}-${selectedScale}`
+        : `${selectedPriority}-${selectedSector}-${selectedScale}`;
+
+    setSections((prev) => ({
+      ...prev,
+      recommendations: {
+        ...prev.recommendations,
+        [targetKey]: {
+          ...currentRec,
+          ...fields,
+        },
+      },
+    }));
+  };
+
+  const handleHighlightSpecChange = (index: number, val: string) => {
+    const newSpecs = [...(currentRec.highlightSpecs || ['', '', ''])];
+    newSpecs[index] = val;
+    handleUpdateCurrentRec({ highlightSpecs: newSpecs });
+  };
+
+  // Save changes to backend
+  const handleSave = async () => {
+    if (!pageId) {
+      alert('Halaman katalog belum terinisialisasi. Silakan refresh halaman.');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      const token = typeof window !== 'undefined' ? localStorage.getItem('holic_admin_token') : '';
+      const res = await fetch(`/api/pages/${pageId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          sections,
+          status,
+        }),
+      });
+
+      if (res.ok) {
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      } else {
+        const err = await res.json();
+        alert(`Gagal menyimpan: ${err.message || 'Unknown error'}`);
+      }
+    } catch (err: any) {
+      alert(`Error saat menyimpan: ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
+        <Loader2 className="animate-spin text-[#C9A84C]" size={36} />
+        <p className="text-sm text-neutral-500 font-medium">Memuat data editor katalog...</p>
       </div>
-      <ChevronDown
-        size={16}
-        className={`text-neutral-400 transition-transform duration-200 ${expandedSection === id ? 'rotate-180' : ''}`}
-      />
-    </button>
-  );
+    );
+  }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
-
-      {/* ── Page Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6">
+      {/* ── Top Header & Action Bar ── */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-neutral-200">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <BookOpen size={20} className="text-[#C9A84C]" />
-            <h1 className="text-xl font-bold text-[#2C1810]">Halaman Katalog</h1>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-xs font-semibold text-amber-800 mb-2">
+            <BookOpen size={13} />
+            <span>Katalog & Equipment Advisor CMS</span>
           </div>
-          <p className="text-sm text-neutral-500">
-            Preview & monitoring konten Equipment Advisor pada halaman <code className="bg-neutral-100 px-1.5 py-0.5 rounded text-xs font-mono">/catalog</code>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2C1810]">Editor Konten Katalog</h1>
+          <p className="text-xs sm:text-sm text-neutral-500 mt-1">
+            Ubah teks hero, opsi rekomendasi, dan detail spesifikasi unit yang muncul di Equipment Advisor secara langsung.
           </p>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
+
+        <div className="flex items-center gap-3">
           <Link
             href="/catalog"
             target="_blank"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-neutral-200 text-sm font-medium text-neutral-700 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all shadow-sm"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-neutral-700 bg-white border border-neutral-300 rounded-xl hover:bg-neutral-50 hover:border-neutral-400 transition"
           >
             <Eye size={14} />
-            Preview
-            <ExternalLink size={12} className="opacity-60" />
+            <span>Lihat Publik</span>
+            <ExternalLink size={12} className="text-neutral-400" />
           </Link>
-          <Link
-            href="/admin/products"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2C1810] text-sm font-semibold text-white hover:bg-[#3d2817] transition-all shadow-sm"
+
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 ${
+              saveSuccess
+                ? 'bg-emerald-600 text-white'
+                : 'bg-gradient-to-r from-[#C9A84C] to-[#A88728] hover:from-[#d8b555] hover:to-[#b89530] text-[#1E0E07]'
+            }`}
           >
-            <Layers size={14} />
-            Kelola Produk
-          </Link>
+            {saving ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                <span>Menyimpan...</span>
+              </>
+            ) : saveSuccess ? (
+              <>
+                <CheckCircle2 size={16} />
+                <span>Tersimpan!</span>
+              </>
+            ) : (
+              <>
+                <Save size={16} />
+                <span>Simpan Perubahan</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
-      {/* ── Info Banner ── */}
-      <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-2xl text-sm">
-        <Info size={16} className="text-blue-500 flex-shrink-0 mt-0.5" />
-        <div className="text-blue-700">
-          <p className="font-semibold mb-0.5">Halaman ini bersifat read-only / preview</p>
-          <p className="text-xs leading-relaxed">
-            Konten Equipment Advisor (sektor, prioritas, rekomendasi unit) saat ini di-hardcode di <code className="bg-blue-100 px-1 rounded font-mono">CatalogView.tsx</code>.
-            Untuk mengubah produk yang muncul, kelola data di menu <strong>Produk</strong>. 
-            Gunakan simulator di bawah untuk memverifikasi hasil rekomendasi sebelum update ke live.
+      {/* ── Status Bar Notification ── */}
+      {saveSuccess && (
+        <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl flex items-center gap-3 text-emerald-900 text-sm animate-in fade-in">
+          <CheckCircle2 size={18} className="text-emerald-600 flex-shrink-0" />
+          <p className="font-medium">
+            Perubahan konten katalog berhasil disimpan ke database dan langsung aktif di halaman publik!
           </p>
         </div>
-      </div>
+      )}
 
-      {/* ── Quick Stats ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {/* ── Navigation Tabs ── */}
+      <div className="flex items-center gap-2 border-b border-neutral-200 overflow-x-auto pb-1">
         {[
-          { label: 'Sektor Usaha', value: '3', sub: 'Bakery, Cafe, Supermarket', color: 'bg-amber-50 border-amber-200' },
-          { label: 'Prioritas Kebutuhan', value: '4', sub: 'Display, Storage, Ice, Bar', color: 'bg-emerald-50 border-emerald-200' },
-          { label: 'Skala Kapasitas', value: '3', sub: 'Compact, Medium, High', color: 'bg-sky-50 border-sky-200' },
-          { label: 'Total Kombinasi', value: '36', sub: '3 × 4 × 3 variasi', color: 'bg-purple-50 border-purple-200' },
-        ].map(stat => (
-          <div key={stat.label} className={`${stat.color} border rounded-2xl p-3 sm:p-4`}>
-            <p className="text-2xl font-bold text-[#2C1810]">{stat.value}</p>
-            <p className="text-xs font-semibold text-neutral-600 mt-0.5">{stat.label}</p>
-            <p className="text-[10px] text-neutral-400 mt-1">{stat.sub}</p>
-          </div>
+          { id: 'advisor' as const, label: '🎯 Unit Rekomendasi (Advisor Matrix)' },
+          { id: 'hero' as const, label: '✨ Hero Section & Header' },
+          { id: 'sectors' as const, label: '🏢 Label Sektor Usaha' },
+          { id: 'priorities' as const, label: '⚡ Label Prioritas Kebutuhan' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-xl transition-all whitespace-nowrap ${
+              activeTab === tab.id
+                ? 'bg-[#2C1810] text-[#C9A84C] shadow-sm'
+                : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+            }`}
+          >
+            {tab.label}
+          </button>
         ))}
       </div>
 
-      {/* ── Simulator & Preview ── */}
-      <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-neutral-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-[#C9A84C]" />
-            <h2 className="font-bold text-[#2C1810]">Simulator Equipment Advisor</h2>
-          </div>
-          <button
-            type="button"
-            onClick={() => { setSector('cafe'); setPriority('display'); setScale('medium'); }}
-            className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-[#C9A84C] transition-colors px-2.5 py-1.5 rounded-lg border border-neutral-200 hover:border-[#C9A84C]/50"
-          >
-            <RefreshCw size={11} />
-            Reset
-          </button>
-        </div>
-
-        <div className="p-4 sm:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-
-            {/* Left: Selectors */}
-            <div className="space-y-4">
-
-              {/* 1. Sector */}
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#C9A84C] mb-2">
-                  1. Jenis Usaha / Sektor
-                </p>
-                <div className="grid grid-cols-3 gap-2">
-                  {sectors.map((s) => {
-                    const Icon = s.icon;
-                    const active = sector === s.id;
-                    return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => setSector(s.id)}
-                        className={`p-3 rounded-xl border text-left transition-all ${
-                          active
-                            ? 'bg-[#2C1810] border-[#C9A84C] text-white ring-2 ring-[#C9A84C]/30'
-                            : 'bg-neutral-50 border-neutral-200 text-neutral-600 hover:border-[#C9A84C]/50'
-                        }`}
-                      >
-                        <Icon size={14} className={active ? 'text-[#C9A84C] mb-1.5' : 'text-neutral-400 mb-1.5'} />
-                        <p className="text-[10px] font-bold leading-tight">{s.label}</p>
-                        {active && <CheckCircle2 size={11} className="text-[#C9A84C] mt-1" />}
-                      </button>
-                    );
-                  })}
-                </div>
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {/* TAB 1: ADVISOR MATRIX (EDIT REKOMENDASI PER KOMBINASI)                   */}
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {activeTab === 'advisor' && (
+        <div className="space-y-6">
+          {/* Combinations Selector (Interactive Bar) */}
+          <div className="p-5 bg-gradient-to-r from-[#2C1810] to-[#1A0B06] rounded-2xl text-white shadow-lg space-y-4">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal size={16} className="text-[#C9A84C]" />
+                <span className="text-xs sm:text-sm font-bold tracking-wide">
+                  PILIH KOMBINASI UNTUK DIEDIT
+                </span>
               </div>
-
-              {/* 2. Priority */}
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#C9A84C] mb-2">
-                  2. Fokus Kebutuhan Pendingin
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {priorities.map((p) => {
-                    const Icon = p.icon;
-                    const active = priority === p.id;
-                    return (
-                      <button
-                        key={p.id}
-                        type="button"
-                        onClick={() => setPriority(p.id)}
-                        className={`p-3 rounded-xl border text-left transition-all flex items-center gap-2.5 ${
-                          active
-                            ? 'bg-[#2C1810] border-[#C9A84C] text-white ring-2 ring-[#C9A84C]/30'
-                            : 'bg-neutral-50 border-neutral-200 text-neutral-600 hover:border-[#C9A84C]/50'
-                        }`}
-                      >
-                        <div className={`p-1.5 rounded-lg flex-shrink-0 ${active ? 'bg-[#C9A84C]/20 text-[#C9A84C]' : 'bg-neutral-200 text-neutral-500'}`}>
-                          <Icon size={13} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold leading-tight truncate">{p.label}</p>
-                          <p className="text-[9px] text-neutral-400 mt-0.5 leading-tight line-clamp-2">{p.desc}</p>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 3. Scale */}
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#C9A84C] mb-2">
-                  3. Kapasitas / Skala Operasional
-                </p>
-                <div className="grid grid-cols-3 gap-2">
-                  {scales.map((sc) => {
-                    const active = scale === sc.id;
-                    return (
-                      <button
-                        key={sc.id}
-                        type="button"
-                        onClick={() => setScale(sc.id)}
-                        className={`p-3 rounded-xl border text-center transition-all ${
-                          active
-                            ? 'bg-[#C9A84C] text-[#2C1810] border-[#C9A84C] font-bold'
-                            : 'bg-neutral-50 border-neutral-200 text-neutral-600 hover:border-[#C9A84C]/50'
-                        }`}
-                      >
-                        <p className="text-[10px] font-bold leading-tight">{sc.label}</p>
-                        <p className={`text-[9px] mt-0.5 ${active ? 'text-[#2C1810]/70' : 'text-neutral-400'}`}>{sc.desc}</p>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+              <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#C9A84C]/20 text-[#C9A84C] font-mono font-bold">
+                Key: {currentKey}
+              </span>
             </div>
 
-            {/* Right: Recommendation Preview */}
-            <div className="bg-gradient-to-b from-[#241108] to-[#120603] rounded-2xl p-5 border-2 border-[#C9A84C]/50 relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#C9A84C] to-transparent" />
-
-              {/* Badge row */}
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/40 text-[#C9A84C] text-[10px] font-bold tracking-wider uppercase">
-                  <Sparkles size={10} /> Rekomendasi
-                </span>
-                <span className="text-[10px] font-bold text-[#E3C368] px-2 py-0.5 rounded-md bg-black/40 border border-[#C9A84C]/20 uppercase tracking-wide">
-                  {recommendation.categoryTitle}
-                </span>
-              </div>
-
-              {/* Product Image */}
-              <div className="relative h-36 w-full bg-white/95 rounded-xl flex items-center justify-center mb-3 overflow-hidden">
-                <Image
-                  src={recommendation.unitImage}
-                  alt={recommendation.unitName}
-                  fill
-                  className="object-contain p-3"
-                  unoptimized
-                />
-                <div className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-md bg-black/80 text-[9px] text-neutral-300 font-medium">
-                  {recommendation.unitModel}
-                </div>
-              </div>
-
-              {/* Unit name */}
-              <h3 className="text-sm font-bold text-white mb-1 leading-snug">{recommendation.unitName}</h3>
-              <p className="text-[11px] text-neutral-400 mb-3 leading-relaxed">{recommendation.description}</p>
-
-              {/* Temp & specs */}
-              <div className="bg-black/40 border border-white/5 rounded-xl p-3 mb-3 space-y-2">
-                <div className="flex items-center gap-2">
-                  <ThermometerSnowflake size={13} className="text-[#C9A84C] flex-shrink-0" />
-                  <div>
-                    <p className="text-[9px] uppercase tracking-wider text-neutral-500">Temperatur</p>
-                    <p className="text-[10px] font-bold text-[#F5D580]">{recommendation.temp}</p>
-                  </div>
-                </div>
-                <ul className="space-y-1">
-                  {recommendation.highlightSpecs.map((spec, i) => (
-                    <li key={i} className="flex items-start gap-1.5 text-[10px] text-neutral-300">
-                      <span className="text-[#C9A84C] mt-0.5 flex-shrink-0">✓</span>
-                      {spec}
-                    </li>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Sektor Selector */}
+              <div>
+                <label className="text-[11px] font-semibold text-neutral-300 block mb-1.5 uppercase">
+                  1. Sektor Usaha:
+                </label>
+                <div className="grid grid-cols-3 gap-1.5 bg-black/30 p-1.5 rounded-xl border border-white/10">
+                  {sections.sectors.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setSelectedSector(s.id as Sector)}
+                      className={`py-2 px-1 rounded-lg text-[11px] font-bold transition text-center ${
+                        selectedSector === s.id
+                          ? 'bg-[#C9A84C] text-[#1E0E07] shadow'
+                          : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {s.label.split(' ')[0]}
+                    </button>
                   ))}
-                </ul>
+                </div>
               </div>
 
-              {/* CTA */}
-              <Link
-                href={`/products?category=${recommendation.categorySlug}`}
-                target="_blank"
-                className="w-full py-2.5 px-4 bg-gradient-to-r from-[#C9A84C] to-[#E3C368] text-[#120603] font-bold text-xs uppercase tracking-wide rounded-xl transition-all flex items-center justify-center gap-2 hover:opacity-90"
-              >
-                Buka Katalog {recommendation.categoryTitle}
-                <ChevronRight size={13} />
-              </Link>
-              <p className="text-center text-[10px] text-neutral-500 mt-2">{recommendation.sampleProductsCount}</p>
+              {/* Prioritas Selector */}
+              <div>
+                <label className="text-[11px] font-semibold text-neutral-300 block mb-1.5 uppercase">
+                  2. Prioritas Kebutuhan:
+                </label>
+                <div className="grid grid-cols-4 gap-1 bg-black/30 p-1.5 rounded-xl border border-white/10">
+                  {sections.priorities.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setSelectedPriority(p.id as Priority)}
+                      className={`py-2 px-1 rounded-lg text-[10px] font-bold transition text-center truncate ${
+                        selectedPriority === p.id
+                          ? 'bg-[#C9A84C] text-[#1E0E07] shadow'
+                          : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {p.cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Skala Selector */}
+              <div>
+                <label className="text-[11px] font-semibold text-neutral-300 block mb-1.5 uppercase">
+                  3. Skala Kapasitas:
+                </label>
+                <div className="grid grid-cols-3 gap-1.5 bg-black/30 p-1.5 rounded-xl border border-white/10">
+                  {sections.scales.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setSelectedScale(s.id as Scale)}
+                      className={`py-2 px-1 rounded-lg text-[11px] font-bold transition text-center capitalize ${
+                        selectedScale === s.id
+                          ? 'bg-[#C9A84C] text-[#1E0E07] shadow'
+                          : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {s.id}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* ── Content Structure Overview ── */}
-      <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-neutral-100">
-          <div className="flex items-center gap-2">
-            <Layers size={16} className="text-[#C9A84C]" />
-            <h2 className="font-bold text-[#2C1810]">Struktur Konten Halaman Katalog</h2>
-          </div>
-        </div>
+          {/* Form Edit Card Rekomendasi & Live Preview */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left: Input Form (7 cols) */}
+            <div className="lg:col-span-7 bg-white rounded-2xl border border-neutral-200 p-5 sm:p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
+                <h3 className="text-base font-bold text-[#2C1810] flex items-center gap-2">
+                  <span>Edit Data Unit Rekomendasi</span>
+                </h3>
+                <span className="text-xs text-neutral-500">
+                  Sedang mengedit unit untuk kombinasi aktif
+                </span>
+              </div>
 
-        <div className="divide-y divide-neutral-100">
-
-          {/* Section: Hero */}
-          <div>
-            <SectionHeader id="hero" title="Hero Section" icon={Sparkles} badge="Judul utama & deskripsi halaman" />
-            {expandedSection === 'hero' && (
-              <div className="px-5 pb-4 space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">Judul (ID)</p>
-                    <p className="text-sm font-bold text-[#2C1810]">Solusi Pendingin Tepat</p>
-                    <p className="text-sm font-bold text-[#C9A84C]">Untuk Usaha Anda</p>
-                  </div>
-                  <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">Judul (EN)</p>
-                    <p className="text-sm font-bold text-[#2C1810]">The Right Refrigeration Solution</p>
-                    <p className="text-sm font-bold text-[#C9A84C]">For Your Operation</p>
-                  </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
+                    Nama Unit Rekomendasi *
+                  </label>
+                  <input
+                    type="text"
+                    value={currentRec.unitName || ''}
+                    onChange={(e) => handleUpdateCurrentRec({ unitName: e.target.value })}
+                    className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent outline-none"
+                    placeholder="Contoh: Commercial Compact Ice Maker 35-50 kg"
+                  />
                 </div>
-                <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">Deskripsi</p>
-                  <p className="text-xs text-neutral-600 leading-relaxed">
-                    Temukan pilihan mesin pendingin standar komersial dari Holic yang dirancang tangguh untuk dapur dan gerai usaha Anda. Akses unit spesifik lewat menu navigasi Katalog di atas, atau cocokkan konfigurasi unit secara interaktif di bawah ini.
-                  </p>
+
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
+                    Model / Kode Unit *
+                  </label>
+                  <input
+                    type="text"
+                    value={currentRec.unitModel || ''}
+                    onChange={(e) => handleUpdateCurrentRec({ unitModel: e.target.value })}
+                    className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent outline-none"
+                    placeholder="Contoh: Model: AC-80X Series"
+                  />
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Section: Sectors */}
-          <div>
-            <SectionHeader id="sectors" title="Sektor Usaha" icon={Store} badge="3 pilihan sektor (Bakery, Cafe, Supermarket)" />
-            {expandedSection === 'sectors' && (
-              <div className="px-5 pb-4">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {sectors.map(s => {
-                    const Icon = s.icon;
-                    return (
-                      <div key={s.id} className="p-3 bg-neutral-50 rounded-xl border border-neutral-200">
-                        <Icon size={14} className="text-[#C9A84C] mb-1.5" />
-                        <p className="text-xs font-bold text-[#2C1810]">{s.label}</p>
-                        <p className="text-[10px] text-neutral-500 mt-0.5">{s.sub}</p>
-                      </div>
-                    );
-                  })}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
+                    Tag / Label Highlight
+                  </label>
+                  <input
+                    type="text"
+                    value={currentRec.tag || ''}
+                    onChange={(e) => handleUpdateCurrentRec({ tag: e.target.value })}
+                    className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent outline-none"
+                    placeholder="Contoh: Kapasitas Compact (Outlet Kecil)"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
+                    Rentang Suhu Operasional
+                  </label>
+                  <input
+                    type="text"
+                    value={currentRec.temp || ''}
+                    onChange={(e) => handleUpdateCurrentRec({ temp: e.target.value })}
+                    className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent outline-none"
+                    placeholder="Contoh: +2°C ~ +8°C"
+                  />
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Section: Priorities */}
-          <div>
-            <SectionHeader id="priorities" title="Prioritas Kebutuhan" icon={Zap} badge="4 jenis kebutuhan pendingin" />
-            {expandedSection === 'priorities' && (
-              <div className="px-5 pb-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {priorities.map(p => {
-                    const Icon = p.icon;
-                    return (
-                      <div key={p.id} className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 flex items-start gap-3">
-                        <div className="p-1.5 bg-[#C9A84C]/10 rounded-lg flex-shrink-0">
-                          <Icon size={14} className="text-[#C9A84C]" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-[#2C1810]">{p.label}</p>
-                          <p className="text-[10px] text-neutral-500 mt-0.5">{p.desc}</p>
-                          <span className="inline-block mt-1.5 px-2 py-0.5 bg-[#2C1810] text-white text-[9px] font-bold rounded-md">{p.cat}</span>
-                        </div>
-                      </div>
-                    );
-                  })}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
+                    Kategori Terkait (Judul)
+                  </label>
+                  <input
+                    type="text"
+                    value={currentRec.categoryTitle || ''}
+                    onChange={(e) => handleUpdateCurrentRec({ categoryTitle: e.target.value })}
+                    className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent outline-none"
+                    placeholder="Contoh: Ice Maker Series"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
+                    Slug Kategori (Link Produk)
+                  </label>
+                  <input
+                    type="text"
+                    value={currentRec.categorySlug || ''}
+                    onChange={(e) => handleUpdateCurrentRec({ categorySlug: e.target.value })}
+                    className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent outline-none font-mono"
+                    placeholder="showcase / refrigerator / icemaker / machinery"
+                  />
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Section: Scales */}
-          <div>
-            <SectionHeader id="scales" title="Skala Kapasitas" icon={ThermometerSnowflake} badge="3 tingkat volume operasional" />
-            {expandedSection === 'scales' && (
-              <div className="px-5 pb-4">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {scales.map(s => (
-                    <div key={s.id} className="p-3 bg-neutral-50 rounded-xl border border-neutral-200">
-                      <p className="text-xs font-bold text-[#2C1810]">{s.label}</p>
-                      <p className="text-[10px] text-neutral-500 mt-0.5">{s.desc}</p>
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 mb-1">
+                  Deskripsi / Nilai Rekomendasi
+                </label>
+                <textarea
+                  rows={2}
+                  value={currentRec.description || ''}
+                  onChange={(e) => handleUpdateCurrentRec({ description: e.target.value })}
+                  className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent outline-none"
+                  placeholder="Jelaskan mengapa unit ini paling tepat untuk sektor dan skala ini..."
+                />
+              </div>
+
+              {/* Image Upload Component */}
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 mb-1">
+                  Foto Unit Mesin
+                </label>
+                <ImageUpload
+                  value={currentRec.unitImage || ''}
+                  onChange={(url) => handleUpdateCurrentRec({ unitImage: url })}
+                  label="Upload / Masukkan URL Foto Unit"
+                  hint="Gunakan foto transparan PNG atau foto unit berkualitas tinggi"
+                />
+              </div>
+
+              {/* 3 Highlight Specs */}
+              <div className="pt-2">
+                <label className="block text-xs font-bold text-neutral-700 mb-2">
+                  3 Poin Spesifikasi Unggulan
+                </label>
+                <div className="space-y-2">
+                  {[0, 1, 2].map((idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span className="w-5 text-center text-xs font-bold text-[#C9A84C]">{idx + 1}.</span>
+                      <input
+                        type="text"
+                        value={currentRec.highlightSpecs?.[idx] || ''}
+                        onChange={(e) => handleHighlightSpecChange(idx, e.target.value)}
+                        className="flex-1 px-3 py-1.5 text-xs sm:text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-[#C9A84C] outline-none"
+                        placeholder={`Spesifikasi poin ${idx + 1}...`}
+                      />
                     </div>
                   ))}
                 </div>
               </div>
-            )}
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 mb-1">
+                  Text Info Ketersediaan Unit
+                </label>
+                <input
+                  type="text"
+                  value={currentRec.sampleProductsCount || ''}
+                  onChange={(e) => handleUpdateCurrentRec({ sampleProductsCount: e.target.value })}
+                  className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] outline-none"
+                  placeholder="Contoh: 37+ Unit Model Tersedia"
+                />
+              </div>
+            </div>
+
+            {/* Right: Live Preview Card (5 cols) */}
+            <div className="lg:col-span-5 bg-neutral-900 rounded-2xl p-5 border border-neutral-800 shadow-xl space-y-4">
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+                <div className="flex items-center gap-2 text-[#C9A84C] text-xs font-bold uppercase tracking-wider">
+                  <Sparkles size={14} />
+                  <span>Live Preview Card</span>
+                </div>
+                <span className="text-[10px] text-neutral-400">Tampilan Publik</span>
+              </div>
+
+              <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/40 bg-gradient-to-b from-[#2A150C] to-[#160A05] p-5 shadow-2xl">
+                {/* Header Tag */}
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-[#C9A84C] text-[#1E0E07]">
+                    {currentRec.tag || 'Rekomendasi Utama'}
+                  </span>
+                  <span className="text-[11px] font-mono text-[#C9A84C] font-semibold">
+                    {currentRec.temp || '+2°C ~ +8°C'}
+                  </span>
+                </div>
+
+                {/* Unit Titles */}
+                <h4 className="text-base font-extrabold text-white leading-snug">
+                  {currentRec.unitName || 'Nama Unit'}
+                </h4>
+                <p className="text-xs text-neutral-400 font-mono mt-0.5">
+                  {currentRec.unitModel || 'Model Unit'}
+                </p>
+
+                {/* Image Preview */}
+                <div className="my-4 h-44 rounded-xl bg-black/40 border border-white/5 relative flex items-center justify-center overflow-hidden">
+                  {currentRec.unitImage ? (
+                    <Image
+                      src={currentRec.unitImage}
+                      alt={currentRec.unitName || 'Unit Image'}
+                      fill
+                      className="object-contain p-3 drop-shadow-lg"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="text-center text-neutral-500 text-xs">
+                      <Upload size={24} className="mx-auto mb-1 opacity-50" />
+                      <span>Belum ada foto</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Specs Bullets */}
+                <div className="space-y-1.5 mb-4">
+                  {(currentRec.highlightSpecs || []).map((spec, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs text-neutral-300">
+                      <CheckCircle2 size={13} className="text-[#C9A84C] flex-shrink-0 mt-0.5" />
+                      <span className="line-clamp-2">{spec || `Poin spesifikasi ${i + 1}`}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-[11px] text-neutral-400 italic mb-4 border-t border-white/10 pt-3">
+                  "{currentRec.description || 'Deskripsi rekomendasi unit...'}"
+                </p>
+
+                {/* Action CTA */}
+                <div className="flex items-center justify-between pt-2">
+                  <span className="text-[10px] text-neutral-400">
+                    {currentRec.sampleProductsCount || 'Tersedia'}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-[#C9A84C]">
+                    <span>Lihat di Katalog</span>
+                    <ChevronRight size={13} />
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-[11px] text-neutral-400">
+                💡 Perubahan pada form langsung tampil di preview ini. Tekan tombol{' '}
+                <strong className="text-white">Simpan Perubahan</strong> di atas untuk mempublikasikannya.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {/* TAB 2: HERO SECTION                                                      */}
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {activeTab === 'hero' && (
+        <div className="bg-white rounded-2xl border border-neutral-200 p-6 shadow-sm space-y-4 max-w-3xl">
+          <h3 className="text-base font-bold text-[#2C1810] border-b border-neutral-100 pb-3">
+            Teks Bagian Header (Hero) Halaman Katalog
+          </h3>
+
+          <div>
+            <label className="block text-xs font-bold text-neutral-700 mb-1">Badge Tag Atas</label>
+            <input
+              type="text"
+              value={sections.hero?.badge || ''}
+              onChange={(e) =>
+                setSections((prev) => ({
+                  ...prev,
+                  hero: { ...prev.hero, badge: e.target.value },
+                }))
+              }
+              className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] outline-none"
+            />
           </div>
 
+          <div>
+            <label className="block text-xs font-bold text-neutral-700 mb-1">Judul Utama (H1)</label>
+            <input
+              type="text"
+              value={sections.hero?.title || ''}
+              onChange={(e) =>
+                setSections((prev) => ({
+                  ...prev,
+                  hero: { ...prev.hero, title: e.target.value },
+                }))
+              }
+              className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-neutral-700 mb-1">
+              Deskripsi Pengantar
+            </label>
+            <textarea
+              rows={3}
+              value={sections.hero?.description || ''}
+              onChange={(e) =>
+                setSections((prev) => ({
+                  ...prev,
+                  hero: { ...prev.hero, description: e.target.value },
+                }))
+              }
+              className="w-full px-3.5 py-2 text-sm border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#C9A84C] outline-none"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* ── Quick Links ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {[
-          { href: '/admin/products?category=showcase', label: 'Kelola Produk Showcase', sub: '57+ unit tersedia', color: 'hover:border-amber-400' },
-          { href: '/admin/products?category=refrigerator', label: 'Kelola Refrigerator', sub: '56+ unit tersedia', color: 'hover:border-sky-400' },
-          { href: '/admin/products?category=icemaker', label: 'Kelola Ice Maker', sub: '37+ unit tersedia', color: 'hover:border-emerald-400' },
-        ].map(link => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`p-4 bg-white border border-neutral-200 rounded-2xl ${link.color} hover:shadow-md transition-all group`}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-[#2C1810] group-hover:text-[#C9A84C] transition-colors">{link.label}</p>
-                <p className="text-[11px] text-neutral-400 mt-0.5">{link.sub}</p>
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {/* TAB 3: SECTORS CONFIGURATION                                             */}
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {activeTab === 'sectors' && (
+        <div className="bg-white rounded-2xl border border-neutral-200 p-6 shadow-sm space-y-4 max-w-3xl">
+          <h3 className="text-base font-bold text-[#2C1810] border-b border-neutral-100 pb-3">
+            Opsi Pilihan Sektor Usaha
+          </h3>
+
+          <div className="space-y-4">
+            {sections.sectors.map((s, idx) => (
+              <div key={s.id} className="p-4 bg-neutral-50 border border-neutral-200 rounded-xl space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-neutral-500">ID: {s.id}</span>
+                  <span className="text-xs font-semibold text-[#C9A84C]">Sektor #{idx + 1}</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-700 mb-1">Label</label>
+                    <input
+                      type="text"
+                      value={s.label}
+                      onChange={(e) => {
+                        const updated = [...sections.sectors];
+                        updated[idx].label = e.target.value;
+                        setSections((prev) => ({ ...prev, sectors: updated }));
+                      }}
+                      className="w-full px-3 py-1.5 text-xs sm:text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-[#C9A84C] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-700 mb-1">Sub Label</label>
+                    <input
+                      type="text"
+                      value={s.sub}
+                      onChange={(e) => {
+                        const updated = [...sections.sectors];
+                        updated[idx].sub = e.target.value;
+                        setSections((prev) => ({ ...prev, sectors: updated }));
+                      }}
+                      className="w-full px-3 py-1.5 text-xs sm:text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-[#C9A84C] outline-none"
+                    />
+                  </div>
+                </div>
               </div>
-              <ChevronRight size={16} className="text-neutral-300 group-hover:text-[#C9A84C] transition-colors" />
-            </div>
-          </Link>
-        ))}
-      </div>
+            ))}
+          </div>
+        </div>
+      )}
 
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {/* TAB 4: PRIORITIES CONFIGURATION                                          */}
+      {/* ══════════════════════════════════════════════════════════════════════════ */}
+      {activeTab === 'priorities' && (
+        <div className="bg-white rounded-2xl border border-neutral-200 p-6 shadow-sm space-y-4 max-w-3xl">
+          <h3 className="text-base font-bold text-[#2C1810] border-b border-neutral-100 pb-3">
+            Opsi Pilihan Prioritas Kebutuhan
+          </h3>
+
+          <div className="space-y-4">
+            {sections.priorities.map((p, idx) => (
+              <div key={p.id} className="p-4 bg-neutral-50 border border-neutral-200 rounded-xl space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-neutral-500">ID: {p.id}</span>
+                  <span className="text-xs font-semibold text-[#C9A84C]">Kategori: {p.cat}</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-700 mb-1">Label</label>
+                    <input
+                      type="text"
+                      value={p.label}
+                      onChange={(e) => {
+                        const updated = [...sections.priorities];
+                        updated[idx].label = e.target.value;
+                        setSections((prev) => ({ ...prev, priorities: updated }));
+                      }}
+                      className="w-full px-3 py-1.5 text-xs sm:text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-[#C9A84C] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-700 mb-1">Badge Kategori</label>
+                    <input
+                      type="text"
+                      value={p.cat}
+                      onChange={(e) => {
+                        const updated = [...sections.priorities];
+                        updated[idx].cat = e.target.value;
+                        setSections((prev) => ({ ...prev, priorities: updated }));
+                      }}
+                      className="w-full px-3 py-1.5 text-xs sm:text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-[#C9A84C] outline-none"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-neutral-700 mb-1">Deskripsi Singkat</label>
+                  <input
+                    type="text"
+                    value={p.desc}
+                    onChange={(e) => {
+                      const updated = [...sections.priorities];
+                      updated[idx].desc = e.target.value;
+                      setSections((prev) => ({ ...prev, priorities: updated }));
+                    }}
+                    className="w-full px-3 py-1.5 text-xs sm:text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-[#C9A84C] outline-none"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

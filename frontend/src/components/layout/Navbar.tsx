@@ -34,11 +34,11 @@ export function Navbar() {
       ]
     },
     { 
-      label: t('Katalog', 'Catalog'), 
+      label: t('Produk', 'Products'), 
       href: '/catalog',
       children: [
         { 
-          label: t('PRODUK BY KATEGORI', 'PRODUCTS BY CATEGORY'),
+          label: t('BY KATEGORI', 'BY CATEGORY'),
           isHeader: true,
         },
         { label: t('Showcase', 'Showcase'), href: '/products?category=showcase' },
@@ -46,7 +46,7 @@ export function Navbar() {
         { label: t('Ice Maker', 'Ice Maker'), href: '/products?category=icemaker' },
         { label: t('Bar System', 'Bar System'), href: '/products?category=bar-system' },
         { 
-          label: t('SOLUSI BY INDUSTRI', 'SOLUTIONS BY INDUSTRY'),
+          label: t('BY INDUSTRI', 'BY INDUSTRY'),
           isHeader: true,
         },
         { label: t('Bakery and Pastry Brands', 'Bakery and Pastry Brands'), href: '/products/industry/bakery-pastry' },

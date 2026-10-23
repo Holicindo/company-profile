@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
@@ -42,6 +42,20 @@ export function CatalogView() {
   const [sector, setSector] = useState<'bakery' | 'cafe' | 'supermarket'>('cafe');
   const [priority, setPriority] = useState<'display' | 'storage' | 'ice' | 'bar'>('display');
   const [scale, setScale] = useState<'compact' | 'medium' | 'high'>('medium');
+
+  // CMS dynamic data loaded from database
+  const [cmsData, setCmsData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/pages/slug/katalog')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.sections) {
+          setCmsData(data.sections);
+        }
+      })
+      .catch((e) => console.error('Failed to load CMS catalog data:', e));
+  }, []);
 
   // Sector list with icons
   const sectors = [
@@ -106,6 +120,16 @@ export function CatalogView() {
 
   // Dynamic recommendation based on selection with REAL unit models & images
   const recommendation = useMemo<RecommendedCard>(() => {
+    // Check if customized in CMS first
+    if (cmsData?.recommendations) {
+      const recKeyWithSector = `${priority}-${sector}-${scale}`;
+      const recKey = `${priority}-${scale}`;
+      const found = cmsData.recommendations[recKeyWithSector] || cmsData.recommendations[recKey];
+      if (found && found.unitName) {
+        return found;
+      }
+    }
+
     // 1. ICE MAKER
     if (priority === 'ice') {
       if (scale === 'compact') {
@@ -346,21 +370,28 @@ export function CatalogView() {
             
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 backdrop-blur-sm">
               <Sparkles size={11} className="text-[#C9A84C]" />
-              <span>{t('Katalog Pendingin Komersial', 'Commercial Refrigeration Catalog')}</span>
+              <span>{cmsData?.hero?.badge || t('Katalog Pendingin Komersial', 'Commercial Refrigeration Catalog')}</span>
             </div>
 
             <h1 className="text-2xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-3 sm:mb-4 font-display leading-[1.15]">
-              {t('Solusi Pendingin Tepat', 'The Right Refrigeration Solution')} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F5D580] via-[#C9A84C] to-[#99772B]">
-                {t('Untuk Usaha Anda', 'For Your Operation')}
-              </span>
+              {cmsData?.hero?.title ? (
+                cmsData.hero.title
+              ) : (
+                <>
+                  {t('Solusi Pendingin Tepat', 'The Right Refrigeration Solution')} <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F5D580] via-[#C9A84C] to-[#99772B]">
+                    {t('Untuk Usaha Anda', 'For Your Operation')}
+                  </span>
+                </>
+              )}
             </h1>
 
             <p className="text-neutral-300 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed mb-4 sm:mb-6 font-light px-2 sm:px-0">
-              {t(
-                'Temukan pilihan mesin pendingin standar komersial dari Holic yang dirancang tangguh untuk dapur dan gerai usaha Anda. Akses unit spesifik lewat menu navigasi Katalog di atas, atau cocokkan konfigurasi unit secara interaktif di bawah ini.',
-                'Discover Holic commercial-grade refrigeration built tough for busy kitchens and retail stores. Select a category directly from the Catalog menu above, or interactively configure your unit below.'
-              )}
+              {cmsData?.hero?.description ||
+                t(
+                  'Temukan pilihan mesin pendingin standar komersial dari Holic yang dirancang tangguh untuk dapur dan gerai usaha Anda. Akses unit spesifik lewat menu navigasi Katalog di atas, atau cocokkan konfigurasi unit secara interaktif di bawah ini.',
+                  'Discover Holic commercial-grade refrigeration built tough for busy kitchens and retail stores. Select a category directly from the Catalog menu above, or interactively configure your unit below.'
+                )}
             </p>
 
             {/* Quick Direction Helper */}
@@ -368,8 +399,8 @@ export function CatalogView() {
               <span className="text-[#C9A84C] font-bold text-sm flex-shrink-0">💡</span>
               <span className="text-left">
                 {t(
-                  'Buka menu "Katalog" di atas untuk langsung melihat unit Showcase, Refrigerator, Ice Maker, atau Bar System.',
-                  'Use the "Catalog" menu above to directly view Showcase, Refrigerator, Ice Maker, or Bar System.'
+                  'Buka menu "Produk" di atas untuk langsung melihat unit Showcase, Refrigerator, Ice Maker, atau Bar System.',
+                  'Use the "Products" menu above to directly view Showcase, Refrigerator, Ice Maker, or Bar System.'
                 )}
               </span>
             </div>
