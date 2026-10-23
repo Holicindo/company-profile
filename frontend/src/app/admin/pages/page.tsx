@@ -50,6 +50,7 @@ export default function PagesAdminPage() {
       case 'beranda': return '🏠';
       case 'tentang-kami': return '👥';
       case 'layanan': return '⚙️';
+      case 'katalog': return '📖';
       default: return '📄';
     }
   };
@@ -151,7 +152,13 @@ export default function PagesAdminPage() {
                     <td className="px-6 py-4">
                       <div className="flex justify-center gap-2">
                         <button
-                          onClick={() => router.push(`/admin/pages/${page.slug}/edit`)}
+                          onClick={() => {
+                            if (page.slug === 'katalog') {
+                              router.push('/admin/katalog');
+                            } else {
+                              router.push(`/admin/pages/${page.slug}/edit`);
+                            }
+                          }}
                           className="p-2 bg-gradient-to-r from-[#F5F1E8] to-[#FAF7F0] text-[#2C1810] rounded-lg border-2 border-[#2C1810]/20 hover:shadow-md transition"
                           title="Edit halaman"
                         >
